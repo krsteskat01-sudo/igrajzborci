@@ -1,0 +1,34 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>
+  <circle cx="100" cy="100" r="100" fill="#F5EDE3"/>
+  <g clip-path="url(#c)">
+    <!-- Orange hoodie -->
+    <path d="M0 200 L0 158 Q0 140 46 131 L75 121 L100 127 L125 121 L154 131 Q200 140 200 158 L200 200Z" fill="#E8641A"/>
+    <!-- Hoodie pocket/ribbing -->
+    <path d="M72 131 Q100 137 128 131 L128 145 Q100 151 72 145Z" fill="#C84E0E"/>
+    <!-- Neck -->
+    <path d="M91 128 L91 144 Q100 150 109 144 L109 128 Q100 131 91 128Z" fill="#F2A87C"/>
+    <!-- Head -->
+    <ellipse cx="100" cy="108" rx="33" ry="37" fill="#F2A87C"/>
+    <!-- Smooth swept hair -->
+    <path d="M67 102 Q67 70 100 67 Q133 70 133 90 Q128 76 113 73 Q100 70 87 73 Q72 77 68 98Z" fill="#1E0E20"/>
+    <ellipse cx="100" cy="72" rx="29" ry="11" fill="#1E0E20"/>
+    <!-- Hair side right slight -->
+    <path d="M131 90 Q134 100 132 110" stroke="#1E0E20" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <!-- Ears -->
+    <ellipse cx="67" cy="111" rx="5" ry="7" fill="#F2A87C"/>
+    <ellipse cx="133" cy="111" rx="5" ry="7" fill="#F2A87C"/>
+    <!-- Eyes -->
+    <circle cx="89" cy="111" r="4" fill="#1E0E20"/>
+    <circle cx="111" cy="111" r="4" fill="#1E0E20"/>
+    <circle cx="90.5" cy="109.5" r="1.3" fill="#fff"/>
+    <circle cx="112.5" cy="109.5" r="1.3" fill="#fff"/>
+    <!-- Eyebrows -->
+    <path d="M83 104 Q89 101 95 104" stroke="#1E0E20" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M105 104 Q111 101 117 104" stroke="#1E0E20" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <!-- Nose -->
+    <path d="M97 118 Q100 123 103 118" stroke="#C8845A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <!-- Smile -->
+    <path d="M92 127 Q100 134 108 127" stroke="#1E0E20" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

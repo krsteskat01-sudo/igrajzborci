@@ -1,0 +1,41 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>
+  <circle cx="100" cy="100" r="100" fill="#F5EDE3"/>
+  <g clip-path="url(#c)">
+    <!-- Long hair behind shoulders (painted first) -->
+    <path d="M67 108 Q60 130 55 165 L55 200 L25 200 L25 120 Q28 80 67 72Z" fill="#1E0E20"/>
+    <path d="M133 108 Q140 130 145 165 L145 200 L175 200 L175 120 Q172 80 133 72Z" fill="#1E0E20"/>
+    <!-- Dark top/shirt -->
+    <path d="M0 200 L0 160 Q0 143 46 134 L75 124 L100 129 L125 124 L154 134 Q200 143 200 160 L200 200Z" fill="#3B1F3A"/>
+    <!-- Neck -->
+    <path d="M91 128 L91 144 Q100 150 109 144 L109 128 Q100 131 91 128Z" fill="#F2A87C"/>
+    <!-- Head -->
+    <ellipse cx="100" cy="108" rx="33" ry="37" fill="#F2A87C"/>
+    <!-- Hair on top of head / centre part -->
+    <path d="M67 108 Q67 72 100 68 Q133 72 133 108 Q131 88 116 80 Q100 76 84 80 Q69 88 67 108Z" fill="#1E0E20"/>
+    <ellipse cx="100" cy="73" rx="28" ry="11" fill="#1E0E20"/>
+    <!-- Ears -->
+    <ellipse cx="67" cy="112" rx="5" ry="7" fill="#F2A87C"/>
+    <ellipse cx="133" cy="112" rx="5" ry="7" fill="#F2A87C"/>
+    <!-- Orange hoop earring (right) -->
+    <circle cx="139" cy="117" r="7" fill="none" stroke="#E8641A" stroke-width="3.5"/>
+    <!-- Eyes -->
+    <circle cx="89" cy="111" r="4" fill="#1E0E20"/>
+    <circle cx="111" cy="111" r="4" fill="#1E0E20"/>
+    <circle cx="90.5" cy="109.5" r="1.3" fill="#fff"/>
+    <circle cx="112.5" cy="109.5" r="1.3" fill="#fff"/>
+    <!-- Eyelashes (upper) -->
+    <line x1="85" y1="108" x2="83" y2="105" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="88" y1="107" x2="87" y2="104" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="107" y1="107" x2="106" y2="104" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="110" y1="107" x2="111" y2="104" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="113" y1="108" x2="115" y2="105" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <!-- Eyebrows -->
+    <path d="M83 104 Q89 101 95 104" stroke="#1E0E20" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M105 104 Q111 101 117 104" stroke="#1E0E20" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Nose -->
+    <path d="M97 118 Q100 123 103 118" stroke="#C8845A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <!-- Lips -->
+    <path d="M92 127 Q100 133 108 127" stroke="#C84E0E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

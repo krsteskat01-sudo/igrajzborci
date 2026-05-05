@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="mk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Зборци</title>
+
+  <!-- Google Fonts: Oswald (brand headings) + Nunito (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main id="app"></main>
+
+  <!-- Firebase SDK — must load before firebase.js -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <!-- App — load order matters -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="games/match.js"></script>
+  <script src="games/truefalse.js"></script>
+  <script src="games/hangman.js"></script>
+  <script src="games/quiz.js"></script>
+  <script src="games/speedround.js"></script>
+  <script src="js/leaderboard.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/extras.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+
+</html>

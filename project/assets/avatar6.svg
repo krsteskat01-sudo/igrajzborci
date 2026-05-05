@@ -1,0 +1,46 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>
+  <circle cx="100" cy="100" r="100" fill="#F5EDE3"/>
+  <g clip-path="url(#c)">
+    <!-- Orange top -->
+    <path d="M0 200 L0 158 Q0 140 46 131 L75 121 L100 126 L125 121 L154 131 Q200 140 200 158 L200 200Z" fill="#E8641A"/>
+    <!-- Neck -->
+    <path d="M91 126 L91 142 Q100 148 109 142 L109 126 Q100 129 91 126Z" fill="#F2A87C"/>
+    <!-- Head -->
+    <ellipse cx="100" cy="107" rx="33" ry="37" fill="#F2A87C"/>
+    <!-- Hair sides sweeping up to bun -->
+    <path d="M67 107 Q68 82 83 73 Q90 69 100 68 L100 62 Q88 62 78 68 Q65 76 66 100Z" fill="#1E0E20"/>
+    <path d="M133 107 Q132 82 117 73 Q110 69 100 68 L100 62 Q112 62 122 68 Q135 76 134 100Z" fill="#1E0E20"/>
+    <!-- Hair bun at top -->
+    <circle cx="100" cy="58" r="18" fill="#1E0E20"/>
+    <circle cx="100" cy="52" r="14" fill="#1E0E20"/>
+    <!-- Bun wrap line detail -->
+    <path d="M84 58 Q100 50 116 58" stroke="#2A1535" stroke-width="2" fill="none"/>
+    <!-- Loose face-framing strands -->
+    <path d="M68 95 Q64 105 67 116" stroke="#1E0E20" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M132 95 Q136 105 133 116" stroke="#1E0E20" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <!-- Ears -->
+    <ellipse cx="67" cy="112" rx="5" ry="7" fill="#F2A87C"/>
+    <ellipse cx="133" cy="112" rx="5" ry="7" fill="#F2A87C"/>
+    <!-- Orange stud earring right -->
+    <circle cx="138" cy="115" r="5.5" fill="#E8641A"/>
+    <!-- Eyes -->
+    <circle cx="89" cy="110" r="4" fill="#1E0E20"/>
+    <circle cx="111" cy="110" r="4" fill="#1E0E20"/>
+    <circle cx="90.5" cy="108.5" r="1.3" fill="#fff"/>
+    <circle cx="112.5" cy="108.5" r="1.3" fill="#fff"/>
+    <!-- Eyelashes (upper) -->
+    <line x1="85" y1="107" x2="83" y2="104" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="88" y1="106" x2="87" y2="103" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="107" y1="106" x2="106" y2="103" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="110" y1="106" x2="111" y2="103" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="113" y1="107" x2="115" y2="104" stroke="#1E0E20" stroke-width="1.3" stroke-linecap="round"/>
+    <!-- Eyebrows -->
+    <path d="M83 103 Q89 100 95 103" stroke="#1E0E20" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M105 103 Q111 100 117 103" stroke="#1E0E20" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Nose -->
+    <path d="M97 117 Q100 122 103 117" stroke="#C8845A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <!-- Lips -->
+    <path d="M92 126 Q100 132 108 126" stroke="#C84E0E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
