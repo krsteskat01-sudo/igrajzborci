@@ -39,12 +39,12 @@ function initHangman(category) {
    * Враќа: нова измешана низа
    */
   function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
+    const arrayCopy = [...arr];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    return a;
+    return arrayCopy;
   }
 
   /**
@@ -60,19 +60,19 @@ function initHangman(category) {
       '<span class="star-lost">☆</span>'.repeat(wrongCount);
 
     // HTML за буквите од зборот
-    const tilesHtml = currentWord.split('').map(ch => {
-      const revealed = guessed.has(ch);
-      return `<span class="hm-tile${revealed ? ' revealed' : ''}">${revealed ? ch : ''}</span>`;
+    const tilesHtml = currentWord.split('').map(letter => {
+      const revealed = guessed.has(letter);
+      return `<span class="hm-tile${revealed ? ' revealed' : ''}">${revealed ? letter : ''}</span>`;
     }).join('');
 
     // HTML за тастатурата
-    const keyHtml = MK_ALPHA.map(ch => {
-      const used = guessed.has(ch);
-      const hit  = used && currentWord.includes(ch);
-      const miss = used && !currentWord.includes(ch);
+    const keyHtml = MK_ALPHA.map(letter => {
+      const used = guessed.has(letter);
+      const hit  = used && currentWord.includes(letter);
+      const miss = used && !currentWord.includes(letter);
       return `<button class="key-btn${hit ? ' key-hit' : ''}${miss ? ' key-miss' : ''}"
-        data-ch="${ch}" ${used || transitioning ? 'disabled' : ''}
-        onclick="hmGuess(this.dataset.ch)">${ch}</button>`;
+        data-ch="${letter}" ${used || transitioning ? 'disabled' : ''}
+        onclick="hmGuess(this.dataset.ch)">${letter}</button>`;
     }).join('');
 
     const motivation = MOTIVATIONS[wordIndex % MOTIVATIONS.length];
@@ -102,11 +102,11 @@ function initHangman(category) {
    * Параметри: ch (карактер) - кликнатата буква
    * Враќа: ништо
    */
-  window.hmGuess = function(ch) {
+  window.hmGuess = function(letter) {
     if (transitioning) return;
-    guessed.add(ch);
+    guessed.add(letter);
 
-    if (currentWord.includes(ch)) {
+    if (currentWord.includes(letter)) {
       // ── Точна буква ──
       const allRevealed = currentWord.split('').every(c => guessed.has(c));
       if (allRevealed) {

@@ -62,6 +62,9 @@ function isStrongPassword(pw) {
  * Враќа: ништо
  */
 function initAuth() {
+  // Apply saved cosmetic theme immediately on load (before auth resolves)
+  if (typeof initCosmetics === 'function') initCosmetics();
+
   firebase.auth().onAuthStateChanged(async (user) => {
     // Бележиме редоследен број за овој настан
     const seq = ++_authSeq;
@@ -105,18 +108,28 @@ async function loadUserFromFirestore(uid) {
   try {
     const doc = await db.collection('users').doc(uid).get();
     if (doc.exists) {
-      const d = doc.data();
-      if (d.displayName) savePlayerName(d.displayName);
-      if (d.category)    saveCategory(d.category);
+      const userData = doc.data();
+      if (userData.displayName) savePlayerName(userData.displayName);
+      if (userData.category)    saveCategory(userData.category);
 
       // Синхронизирање на поените од базата локално
-      localStorage.setItem(`zb_${uid}_total`,            String(d.score          || 0));
-      localStorage.setItem(`zb_${uid}_best_match`,        String(d.best_match     || 0));
-      localStorage.setItem(`zb_${uid}_best_truefalse`,    String(d.best_truefalse || 0));
-      localStorage.setItem(`zb_${uid}_best_hangman`,      String(d.best_hangman   || 0));
-      localStorage.setItem(`zb_${uid}_best_quiz`,         String(d.best_quiz        || 0));
-      localStorage.setItem(`zb_${uid}_best_speedround`,   String(d.best_speedround  || 0));
-      if (d.avatarId) localStorage.setItem(`zb_${uid}_avatar`, d.avatarId);
+      localStorage.setItem(`zb_${uid}_total`,            String(userData.score          || 0));
+      localStorage.setItem(`zb_${uid}_best_match`,        String(userData.best_match     || 0));
+      localStorage.setItem(`zb_${uid}_best_truefalse`,    String(userData.best_truefalse || 0));
+      localStorage.setItem(`zb_${uid}_best_hangman`,      String(userData.best_hangman   || 0));
+      localStorage.setItem(`zb_${uid}_best_quiz`,         String(userData.best_quiz         || 0));
+      localStorage.setItem(`zb_${uid}_best_speedround`,   String(userData.best_speedround   || 0));
+      localStorage.setItem(`zb_${uid}_best_wordbuilder`,  String(userData.best_wordbuilder  || 0));
+      localStorage.setItem(`zb_${uid}_best_memoryflip`,   String(userData.best_memoryflip   || 0));
+      localStorage.setItem(`zb_${uid}_best_fasttyping`,   String(userData.best_fasttyping   || 0));
+      if (userData.unlocked_wordbuilder) localStorage.setItem(`zb_${uid}_unlock_wordbuilder`, '1');
+      if (userData.unlocked_memoryflip)  localStorage.setItem(`zb_${uid}_unlock_memoryflip`,  '1');
+      if (userData.unlocked_fasttyping)  localStorage.setItem(`zb_${uid}_unlock_fasttyping`,  '1');
+      if (userData.avatarId) localStorage.setItem(`zb_${uid}_avatar`, userData.avatarId);
+      if (typeof userData.coins !== 'undefined') {
+        localStorage.setItem(`zb_${uid}_coins`, String(Math.max(0, userData.coins || 0)));
+      }
+      if (typeof restoreCosmeticsFromFirestore === 'function') restoreCosmeticsFromFirestore(userData);
     }
   } catch (err) {
     console.warn('[Auth] Firestore load failed:', err.code || 'unknown');
@@ -262,42 +275,42 @@ window.handleSignUp = async function() {
   const name     = document.getElementById('signup-name')?.value.trim();
   const email    = (document.getElementById('signup-email')?.value || '').trim();
   const password = document.getElementById('signup-password')?.value || '';
-  const errEl    = document.getElementById('signup-error');
-  const btn      = document.getElementById('signup-btn');
+  const errorElement    = document.getElementById('signup-error');
+  const submitButton      = document.getElementById('signup-btn');
 
-  if (errEl) errEl.textContent = '';
+  if (errorElement) errorElement.textContent = '';
 
   // Валидации пред испраќање
   if (!name) {
-    if (errEl) errEl.textContent = 'Внеси прекар.'; return;
+    if (errorElement) errorElement.textContent = 'Внеси прекар.'; return;
   }
   if (!isValidEmail(email)) {
-    if (errEl) errEl.textContent = 'Внеси валидна е-пошта адреса.'; return;
+    if (errorElement) errorElement.textContent = 'Внеси валидна е-пошта адреса.'; return;
   }
   if (!isStrongPassword(password)) {
-    if (errEl) errEl.textContent = 'Лозинката мора да има барем 8 знаци и еден број (0–9).'; return;
+    if (errorElement) errorElement.textContent = 'Лозинката мора да има барем 8 знаци и еден број (0–9).'; return;
   }
   if (!_signupSelectedAvatar) {
-    if (errEl) errEl.textContent = 'Избери аватар.';
+    if (errorElement) errorElement.textContent = 'Избери аватар.';
     const hint = document.getElementById('avatar-hint');
     if (hint) { hint.style.color = 'var(--orange)'; hint.style.fontWeight = '700'; }
     return;
   }
 
   // Забрани повеќе кликања
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Се регистрира...'; }
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = '⏳ Се регистрира...'; }
 
   try {
     // 1. Креирај Firebase сметка
-    const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
-    const uid  = cred.user.uid;
+    const signUpResult = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    const newUserId  = signUpResult.user.uid;
 
     // Зачувај локално привремено за да се прикаже веднаш
-    localStorage.setItem(`zb_${uid}_name`, name);
-    if (_signupSelectedAvatar) localStorage.setItem(`zb_${uid}_avatar`, _signupSelectedAvatar);
+    localStorage.setItem(`zb_${newUserId}_name`, name);
+    if (_signupSelectedAvatar) localStorage.setItem(`zb_${newUserId}_avatar`, _signupSelectedAvatar);
 
     // 2. Запиши го профилот во Firestore
-    await db.collection('users').doc(uid).set({
+    await db.collection('users').doc(newUserId).set({
       displayName:    name,
       category:       '',
       score:          0,
@@ -305,19 +318,22 @@ window.handleSignUp = async function() {
       best_truefalse: 0,
       best_hangman:   0,
       best_quiz:       0,
-      best_speedround: 0,
-      streak:          0,
-      lastPlayDate:   '',
-      achievements:   {},
-      avatarId:        _signupSelectedAvatar,
-      createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
+      best_speedround:  0,
+      best_wordbuilder: 0,
+      best_memoryflip:  0,
+      best_fasttyping:  0,
+      streak:           0,
+      lastPlayDate:     '',
+      achievements:     {},
+      avatarId:         _signupSelectedAvatar,
+      createdAt:        firebase.firestore.FieldValue.serverTimestamp(),
     });
-    localStorage.setItem(`zb_${uid}_avatar`, _signupSelectedAvatar);
+    localStorage.setItem(`zb_${newUserId}_avatar`, _signupSelectedAvatar);
 
   } catch (err) {
     // Прикажи македонска порака за грешка
-    if (errEl) errEl.textContent = authErrorMsg(err.code);
-    if (btn)   { btn.disabled = false; btn.textContent = 'Регистрирај се →'; }
+    if (errorElement) errorElement.textContent = authErrorMsg(err.code);
+    if (submitButton)   { submitButton.disabled = false; submitButton.textContent = 'Регистрирај се →'; }
   }
 };
 
@@ -331,26 +347,26 @@ window.handleSignUp = async function() {
 window.handleLogIn = async function() {
   const email    = (document.getElementById('login-email')?.value || '').trim();
   const password = document.getElementById('login-password')?.value || '';
-  const errEl    = document.getElementById('login-error');
-  const btn      = document.getElementById('login-btn');
+  const errorElement    = document.getElementById('login-error');
+  const submitButton      = document.getElementById('login-btn');
 
-  if (errEl) errEl.textContent = '';
+  if (errorElement) errorElement.textContent = '';
 
   if (!isValidEmail(email)) {
-    if (errEl) errEl.textContent = 'Внеси валидна е-пошта адреса.'; return;
+    if (errorElement) errorElement.textContent = 'Внеси валидна е-пошта адреса.'; return;
   }
   if (!password) {
-    if (errEl) errEl.textContent = 'Внеси лозинка.'; return;
+    if (errorElement) errorElement.textContent = 'Внеси лозинка.'; return;
   }
 
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Влегување...'; }
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = '⏳ Влегување...'; }
 
   try {
     // Обид за најава
     await firebase.auth().signInWithEmailAndPassword(email, password);
   } catch (err) {
-    if (errEl) errEl.textContent = authErrorMsg(err.code);
-    if (btn)   { btn.disabled = false; btn.textContent = 'Влез →'; }
+    if (errorElement) errorElement.textContent = authErrorMsg(err.code);
+    if (submitButton)   { submitButton.disabled = false; submitButton.textContent = 'Влез →'; }
   }
 };
 
@@ -362,24 +378,24 @@ window.handleLogIn = async function() {
  * Враќа: ништо (асинхрона функција)
  */
 window.handleGoogleLogin = async function() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  const errEl = document.getElementById('login-error') || document.getElementById('signup-error');
-  const btns  = document.querySelectorAll('[onclick="handleGoogleLogin()"]');
-  if (errEl) errEl.textContent = '';
-  btns.forEach(b => { b.disabled = true; b.textContent = '⏳ Се поврзува...'; });
+  const googleProvider = new firebase.auth.GoogleAuthProvider();
+  const errorElement = document.getElementById('login-error') || document.getElementById('signup-error');
+  const googleButtons  = document.querySelectorAll('[onclick="handleGoogleLogin()"]');
+  if (errorElement) errorElement.textContent = '';
+  googleButtons.forEach(b => { b.disabled = true; b.textContent = '⏳ Се поврзува...'; });
 
   try {
-    const result = await firebase.auth().signInWithPopup(provider);
-    const uid    = result.user.uid;
+    const result = await firebase.auth().signInWithPopup(googleProvider);
+    const newUserId    = result.user.uid;
     const name   = (result.user.displayName || '').split(' ')[0] || 'Корисник';
 
     // Зачувај локално веднаш — onAuthStateChanged не чека на Firestore
-    localStorage.setItem(`zb_${uid}_name`, name);
+    localStorage.setItem(`zb_${newUserId}_name`, name);
 
     // Создади документ само за нови корисници
-    const existing = await db.collection('users').doc(uid).get();
+    const existing = await db.collection('users').doc(newUserId).get();
     if (!existing.exists) {
-      await db.collection('users').doc(uid).set({
+      await db.collection('users').doc(newUserId).set({
         displayName:     name,
         category:        '',
         score:           0,
@@ -387,18 +403,21 @@ window.handleGoogleLogin = async function() {
         best_truefalse:  0,
         best_hangman:    0,
         best_quiz:       0,
-        best_speedround: 0,
-        streak:          0,
-        lastPlayDate:    '',
-        achievements:    {},
-        avatarId:        '',
-        createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
+        best_speedround:  0,
+        best_wordbuilder: 0,
+        best_memoryflip:  0,
+        best_fasttyping:  0,
+        streak:           0,
+        lastPlayDate:     '',
+        achievements:     {},
+        avatarId:         '',
+        createdAt:        firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
     // onAuthStateChanged → loadUserFromFirestore → showHub / showAgeSelect
   } catch (err) {
-    if (errEl) errEl.textContent = authErrorMsg(err.code);
-    btns.forEach(b => { b.disabled = false; b.textContent = '🌍 Најава со Google'; });
+    if (errorElement) errorElement.textContent = authErrorMsg(err.code);
+    googleButtons.forEach(b => { b.disabled = false; b.textContent = '🌍 Најава со Google'; });
   }
 };
 
@@ -411,27 +430,27 @@ window.handleGoogleLogin = async function() {
  */
 window.handleForgotPassword = async function() {
   const email = (document.getElementById('forgot-email')?.value || '').trim();
-  const msgEl = document.getElementById('forgot-msg');
-  const btn   = document.getElementById('forgot-btn');
+  const messageElement = document.getElementById('forgot-msg');
+  const resetButton   = document.getElementById('forgot-btn');
 
-  if (msgEl) { msgEl.textContent = ''; msgEl.className = 'auth-error'; }
+  if (messageElement) { messageElement.textContent = ''; messageElement.className = 'auth-error'; }
 
   if (!isValidEmail(email)) {
-    if (msgEl) msgEl.textContent = 'Внеси валидна е-пошта адреса.'; return;
+    if (messageElement) messageElement.textContent = 'Внеси валидна е-пошта адреса.'; return;
   }
 
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+  if (resetButton) { resetButton.disabled = true; resetButton.textContent = '⏳'; }
 
   try {
     await firebase.auth().sendPasswordResetEmail(email);
-    if (msgEl) {
-      msgEl.textContent = '✅ Линкот е испратен! Провери ја е-поштата.';
-      msgEl.className   = 'auth-success';
+    if (messageElement) {
+      messageElement.textContent = '✅ Линкот е испратен! Провери ја е-поштата.';
+      messageElement.className   = 'auth-success';
     }
   } catch (err) {
-    if (msgEl) { msgEl.textContent = authErrorMsg(err.code); msgEl.className = 'auth-error'; }
+    if (messageElement) { messageElement.textContent = authErrorMsg(err.code); messageElement.className = 'auth-error'; }
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Испрати линк 📧'; }
+    if (resetButton) { resetButton.disabled = false; resetButton.textContent = 'Испрати линк 📧'; }
   }
 };
 

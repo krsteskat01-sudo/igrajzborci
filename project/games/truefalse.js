@@ -9,7 +9,7 @@ function initTrueFalse(category) {
   const TOTAL_Q = 20; // Вкупно прашања
 
   // ── Локална состојба ──
-  let score = 0, qIndex = 0, streak = 0;
+  let score = 0, questionIndex = 0, streak = 0;
   let startTime = 0, timerInterval = null;
   let _advancing = false; // Заштита од повеќе кликови
   let lastTickSec = -1;
@@ -42,12 +42,12 @@ function initTrueFalse(category) {
    * Враќа: нова измешана низа
    */
   function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
+    const arrayCopy = [...arr];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    return a;
+    return arrayCopy;
   }
 
   /**
@@ -82,13 +82,13 @@ function initTrueFalse(category) {
    */
   function dotsHtml() {
     return `<div class="tf-progress">${
-      Array.from({ length: TOTAL_Q }, (_, i) => {
-        const r   = resultHistory[i];
-        const cls = r === 'correct' ? 'd-correct'
-                  : r === 'wrong'   ? 'd-wrong'
-                  : i === qIndex    ? 'd-current'
+      Array.from({ length: TOTAL_Q }, (_, dotIndex) => {
+        const dotStatus = resultHistory[dotIndex];
+        const cls = dotStatus === 'correct' ? 'd-correct'
+                  : dotStatus === 'wrong'   ? 'd-wrong'
+                  : dotIndex === questionIndex ? 'd-current'
                   : '';
-        return `<div class="tf-dot ${cls}" data-qi="${i}"></div>`;
+        return `<div class="tf-dot ${cls}" data-qi="${dotIndex}"></div>`;
       }).join('')
     }</div>`;
   }
@@ -99,12 +99,12 @@ function initTrueFalse(category) {
    * Враќа: ништо
    */
   function renderQuestion() {
-    if (qIndex >= TOTAL_Q) { showResult(score, 'truefalse'); return; }
+    if (questionIndex >= TOTAL_Q) { showResult(score, 'truefalse'); return; }
 
     _advancing  = false;
     lastTickSec = -1;
-    const q          = questions[qIndex];
-    const motivation = MOTIVATIONS[qIndex % MOTIVATIONS.length];
+    const question          = questions[questionIndex];
+    const motivation = MOTIVATIONS[questionIndex % MOTIVATIONS.length];
 
     document.getElementById('app').innerHTML = `
       <div class="game-wrap fade-in">
@@ -113,7 +113,7 @@ function initTrueFalse(category) {
           <button class="exit-btn" onclick="tfExit()">✕</button>
           <span class="bar-title">Точно или Неточно</span>
           <span class="bar-stat">Поени: <strong id="tf-score">${score}</strong></span>
-          <span class="bar-stat">${qIndex + 1}/${TOTAL_Q}</span>
+          <span class="bar-stat">${questionIndex + 1}/${TOTAL_Q}</span>
         </div>
         <div class="tf-body">
           <div class="tf-meta">
@@ -121,8 +121,8 @@ function initTrueFalse(category) {
             <span id="tf-streak" class="tf-streak ${streak >= 3 ? 'hot' : ''}">🔥 Низа: ${streak}</span>
           </div>
           <div class="tf-card card-enter" id="tf-card">
-            <div class="tf-word">${q.zbor}</div>
-            <div class="tf-def">&bdquo;${q.def}&ldquo;</div>
+            <div class="tf-word">${question.zbor}</div>
+            <div class="tf-def">&bdquo;${question.def}&ldquo;</div>
           </div>
           <div class="tf-buttons">
             <button class="btn-true"  onclick="tfAnswer(true)">✓ ТОЧНО</button>
@@ -143,10 +143,10 @@ function initTrueFalse(category) {
       
       const elapsed = (Date.now() - startTime) / 1000;
       el.textContent = '⏱ ' + elapsed.toFixed(1) + 's';
-      
-      const intSec = Math.floor(elapsed);
-      if (intSec >= 5 && intSec !== lastTickSec) {
-        lastTickSec = intSec;
+
+      const wholeSeconds = Math.floor(elapsed);
+      if (wholeSeconds >= 5 && wholeSeconds !== lastTickSec) {
+        lastTickSec = wholeSeconds;
         SoundFX.tick(); // Звук за отчукување секоја секунда после 5та
       }
     }, 100);
@@ -162,25 +162,25 @@ function initTrueFalse(category) {
     _advancing = true;
     clearInterval(timerInterval); // Запри го тајмерот
 
-    const q       = questions[qIndex];
+    const question       = questions[questionIndex];
     const elapsed = (Date.now() - startTime) / 1000;
-    const correct = answer === q.isCorrect;
-    
-    if (typeof window.onWordAnswered === 'function') window.onWordAnswered(q.zbor, q.def, correct, q.wordData);
+    const correct = answer === question.isCorrect;
+
+    if (typeof window.onWordAnswered === 'function') window.onWordAnswered(question.zbor, question.def, correct, question.wordData);
 
     // Оневозможи копчиња за да спречиш повеќе кликови
     document.querySelectorAll('.btn-true, .btn-false').forEach(b => b.disabled = true);
 
     // Запиши во историјата и ажурирај ја точката за прогрес
-    resultHistory[qIndex] = correct ? 'correct' : 'wrong';
-    const thisDot = document.querySelector(`.tf-dot[data-qi="${qIndex}"]`);
+    resultHistory[questionIndex] = correct ? 'correct' : 'wrong';
+    const thisDot = document.querySelector(`.tf-dot[data-qi="${questionIndex}"]`);
     if (thisDot) {
       thisDot.classList.remove('d-current');
       thisDot.classList.add(correct ? 'd-correct' : 'd-wrong');
     }
 
     let pts = 0, msg = '';
-    const prevScoreTF = score;
+    const previousScore = score;
 
     if (correct) {
       // ── Точен одговор ──
@@ -210,11 +210,11 @@ function initTrueFalse(category) {
       SoundFX.wrong();
       
       // Најди ја вистинската дефиниција за тој збор
-      const realDef = pool.find(z => z.zbor === q.zbor)?.definicija || q.def;
-      msg = `<span class="fb-wrong">Неточно −3 поени. „${q.zbor}": „${realDef}"</span>`;
+      const realDef = pool.find(z => z.zbor === question.zbor)?.definicija || question.def;
+      msg = `<span class="fb-wrong">Неточно −3 поени. „${question.zbor}": „${realDef}"</span>`;
     }
     
-    if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - prevScoreTF);
+    if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - previousScore);
 
     // Ажурирај UI за низа и поени
     const streakEl = document.getElementById('tf-streak');
@@ -228,7 +228,7 @@ function initTrueFalse(category) {
     if (fb) fb.innerHTML = msg;
 
     // Оди на следно прашање по кратка пауза
-    qIndex++;
+    questionIndex++;
     setTimeout(renderQuestion, 1200);
   };
 

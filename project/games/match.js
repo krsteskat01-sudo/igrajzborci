@@ -45,12 +45,12 @@ function initMatch(category) {
    * Враќа: нова измешана низа
    */
   function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
+    const arrayCopy = [...arr];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    return a;
+    return arrayCopy;
   }
 
   /**
@@ -184,10 +184,10 @@ function initMatch(category) {
     } else {
       // ── Погрешно ──
       setBusy(true);
-      const prevScoreM = score;
+      const previousScore = score;
       score = Math.max(0, score - 3); // Одземи поени (без да оди под 0)
-      
-      if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - prevScoreM);
+
+      if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - previousScore);
       SoundFX.wrong();
       
       const scoreEl = document.getElementById('match-score');

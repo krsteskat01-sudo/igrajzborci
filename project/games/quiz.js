@@ -9,7 +9,7 @@ function initQuiz(category) {
   const TOTAL_Q = 10; // Вкупно прашања
 
   // ── Локална состојба ──
-  let score = 0, qIndex = 0, hintUsed = false;
+  let score = 0, questionIndex = 0, hintUsed = false;
   let questions = [];
   let _advancing = false; // Заштита од повеќе кликови
 
@@ -38,12 +38,12 @@ function initQuiz(category) {
    * Враќа: нова измешана низа
    */
   function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
+    const arrayCopy = [...arr];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    return a;
+    return arrayCopy;
   }
 
   /**
@@ -71,17 +71,17 @@ function initQuiz(category) {
    * Враќа: ништо
    */
   function renderQuestion() {
-    if (qIndex >= TOTAL_Q) { showResult(score, 'quiz'); return; }
+    if (questionIndex >= TOTAL_Q) { showResult(score, 'quiz'); return; }
 
     _advancing = false;
     hintUsed   = false;
-    const q          = questions[qIndex];
-    const motivation = MOTIVATIONS[qIndex % MOTIVATIONS.length];
+    const question          = questions[questionIndex];
+    const motivation = MOTIVATIONS[questionIndex % MOTIVATIONS.length];
 
     // Генерирај копчиња за опциите
-    const optsHtml = q.options.map((opt, i) =>
+    const optsHtml = question.options.map((option, i) =>
       `<button class="quiz-opt card-enter" style="animation-delay:${i * 70}ms"
-        data-ans="${opt}" onclick="quizAnswer(this)">${opt}</button>`
+        data-ans="${option}" onclick="quizAnswer(this)">${option}</button>`
     ).join('');
 
     document.getElementById('app').innerHTML = `
@@ -93,10 +93,10 @@ function initQuiz(category) {
           <span class="bar-stat">Поени: <strong id="quiz-score">${score}</strong></span>
         </div>
         <div class="quiz-body">
-          <div class="quiz-def card-enter">&bdquo;${q.def}&ldquo;</div>
+          <div class="quiz-def card-enter">&bdquo;${question.def}&ldquo;</div>
           <div id="quiz-hint" class="quiz-hint-box"></div>
           <div class="quiz-options">${optsHtml}</div>
-          <div class="quiz-counter">Прашање ${qIndex + 1} од ${TOTAL_Q}</div>
+          <div class="quiz-counter">Прашање ${questionIndex + 1} од ${TOTAL_Q}</div>
           <button class="hint-btn" id="quiz-hint-btn" onclick="quizHint()">💡 Намек (−10 поени)</button>
           <div id="quiz-msg" class="game-msg"></div>
           <p class="game-motivate">${motivation}</p>
@@ -114,21 +114,21 @@ function initQuiz(category) {
     _advancing = true;
 
     const answer  = btn.dataset.ans;
-    const q       = questions[qIndex];
-    const correct = answer === q.correct;
+    const question       = questions[questionIndex];
+    const correct = answer === question.correct;
 
     // Поени: точно +15 (или +5 со намек), погрешно −5
     const pts = correct ? (hintUsed ? 5 : 15) : -5;
-    if (typeof window.onWordAnswered === 'function') window.onWordAnswered(q.correct, q.def, correct, q.wordData);
-    
-    const prevScoreQ = score;
+    if (typeof window.onWordAnswered === 'function') window.onWordAnswered(question.correct, question.def, correct, question.wordData);
+
+    const previousScore = score;
     score = Math.max(0, score + pts);
-    if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - prevScoreQ);
+    if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - previousScore);
 
     // Обој ги копчињата за фидбек
     document.querySelectorAll('.quiz-opt').forEach(b => {
       b.disabled = true;
-      if (b.dataset.ans === q.correct) b.classList.add('opt-correct');
+      if (b.dataset.ans === question.correct) b.classList.add('opt-correct');
     });
     if (!correct) btn.classList.add('opt-wrong');
 
@@ -149,10 +149,10 @@ function initQuiz(category) {
     const msg = document.getElementById('quiz-msg');
     if (msg) msg.innerHTML = correct
       ? `<span class="fb-correct">Точно! +${pts} поени</span>`
-      : `<span class="fb-wrong">Неточно −5 поени. Точно: <strong>${q.correct}</strong></span>`;
+      : `<span class="fb-wrong">Неточно −5 поени. Точно: <strong>${question.correct}</strong></span>`;
 
     // Оди на следно прашање по кратка пауза
-    qIndex++;
+    questionIndex++;
     setTimeout(renderQuestion, 1100);
   };
 
@@ -164,10 +164,10 @@ function initQuiz(category) {
   window.quizHint = function() {
     if (hintUsed || _advancing) return;
     hintUsed = true;
-    const q       = questions[qIndex];
-    const hintEl  = document.getElementById('quiz-hint');
+    const question       = questions[questionIndex];
+    const hintElement  = document.getElementById('quiz-hint');
     const hintBtn = document.getElementById('quiz-hint-btn');
-    if (hintEl)  hintEl.textContent = `Намек: Зборот почнува со „${q.correct[0]}"`;
+    if (hintElement)  hintElement.textContent = `Намек: Зборот почнува со „${question.correct[0]}"`;
     if (hintBtn) hintBtn.disabled = true;
   };
 

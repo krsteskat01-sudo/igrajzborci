@@ -39,12 +39,12 @@ function chatInject() {
   const footer = document.querySelector('.hub-footer');
   if (!footer) return;
 
-  const sec = document.createElement('section');
-  sec.id        = 'hub-chat';
-  sec.className = 'hub-chat';
+  const chatSection = document.createElement('section');
+  chatSection.id        = 'hub-chat';
+  chatSection.className = 'hub-chat';
 
   if (!currentUser) {
-    sec.innerHTML = `
+    chatSection.innerHTML = `
       <div class="chat-header">💬 Коментари на заедницата</div>
       <div class="chat-guest-msg">
         <span class="chat-login-link" onclick="showAuthScreen('login')">Најави се</span>
@@ -52,11 +52,11 @@ function chatInject() {
         <span class="chat-login-link" onclick="showAuthScreen('signup')">регистрирај се</span>
         за да коментираш
       </div>`;
-    footer.insertAdjacentElement('beforebegin', sec);
+    footer.insertAdjacentElement('beforebegin', chatSection);
     return;
   }
 
-  sec.innerHTML = `
+  chatSection.innerHTML = `
     <div class="chat-header">💬 Коментари на заедницата</div>
     <div class="chat-feed" id="chat-feed">
       <div class="chat-empty">Биди прв да коментираш! 💬</div>
@@ -68,7 +68,7 @@ function chatInject() {
       <button class="chat-send-btn" id="chat-send-btn" onclick="chatSend()">→</button>
     </div>
     <div class="chat-rate-msg" id="chat-rate-msg"></div>`;
-  footer.insertAdjacentElement('beforebegin', sec);
+  footer.insertAdjacentElement('beforebegin', chatSection);
 
   // DOM is fresh — reset rendered set so cached docs re-render
   _chatRenderedIds = new Set();
@@ -88,20 +88,20 @@ function _chatOnUpdate(docs) {
   if (_chatRenderedIds.size === 0) {
     // Initial load — render everything without animation then scroll
     if (docs.length === 0) return; // keep placeholder
-    feed.innerHTML = docs.map(d => _chatBubble(d.id, d.data(), false)).join('');
-    _chatRenderedIds = new Set(docs.map(d => d.id));
+    feed.innerHTML = docs.map(doc => _chatBubble(doc.id, doc.data(), false)).join('');
+    _chatRenderedIds = new Set(docs.map(doc => doc.id));
     setTimeout(() => { feed.scrollTop = feed.scrollHeight; }, 30);
   } else {
-    const fresh = docs.filter(d => !_chatRenderedIds.has(d.id));
+    const fresh = docs.filter(doc => !_chatRenderedIds.has(doc.id));
     if (fresh.length === 0) return;
 
-    fresh.forEach(d => {
+    fresh.forEach(doc => {
       feed.querySelector('.chat-empty')?.remove();
-      feed.insertAdjacentHTML('beforeend', _chatBubble(d.id, d.data(), true));
-      _chatRenderedIds.add(d.id);
+      feed.insertAdjacentHTML('beforeend', _chatBubble(doc.id, doc.data(), true));
+      _chatRenderedIds.add(doc.id);
     });
 
-    const isMyMsg = fresh.some(d => currentUser && d.data().uid === currentUser.uid);
+    const isMyMsg = fresh.some(doc => currentUser && doc.data().uid === currentUser.uid);
     if (nearBottom || isMyMsg) {
       setTimeout(() => { feed.scrollTop = feed.scrollHeight; }, 60);
     }
@@ -112,31 +112,31 @@ function _chatBubble(id, data, animate) {
   if (!data || !data.text) return '';
   const isMe = currentUser && data.uid === currentUser.uid;
   const side = isMe ? 'chat-mine' : 'chat-other';
-  const anim = animate ? ' chat-anim' : '';
-  const av   = playerAvatarHtml(data.displayName || '?', data.avatarId || '', 30);
+  const animClass = animate ? ' chat-anim' : '';
+  const avatarHtml   = playerAvatarHtml(data.displayName || '?', data.avatarId || '', 30);
   const name = escHtml(data.displayName || '?');
   const text = escHtml(data.text);
-  const ago  = _chatAgo(data.timestamp);
+  const timeAgoText  = _chatAgo(data.timestamp);
 
-  return `<div class="chat-msg ${side}${anim}" data-id="${id}">
-    ${!isMe ? `<div class="chat-av">${av}</div>` : ''}
+  return `<div class="chat-msg ${side}${animClass}" data-id="${id}">
+    ${!isMe ? `<div class="chat-av">${avatarHtml}</div>` : ''}
     <div class="chat-bubble-wrap">
       <div class="chat-name">${name}</div>
       <div class="chat-bubble">${text}</div>
-      <div class="chat-ago">${ago}</div>
+      <div class="chat-ago">${timeAgoText}</div>
     </div>
-    ${isMe ? `<div class="chat-av">${av}</div>` : ''}
+    ${isMe ? `<div class="chat-av">${avatarHtml}</div>` : ''}
   </div>`;
 }
 
 function _chatAgo(ts) {
   if (!ts || typeof ts.toMillis !== 'function') return '';
-  const s = Math.floor((Date.now() - ts.toMillis()) / 1000);
-  if (s < 5)  return 'пред малку';
-  if (s < 60) return `пред ${s}с`;
-  const m = Math.floor(s / 60);
-  if (m < 60) return `пред ${m} мин`;
-  return `пред ${Math.floor(m / 60)}ч`;
+  const secondsElapsed = Math.floor((Date.now() - ts.toMillis()) / 1000);
+  if (secondsElapsed < 5)  return 'пред малку';
+  if (secondsElapsed < 60) return `пред ${secondsElapsed}с`;
+  const minutesElapsed = Math.floor(secondsElapsed / 60);
+  if (minutesElapsed < 60) return `пред ${minutesElapsed} мин`;
+  return `пред ${Math.floor(minutesElapsed / 60)}ч`;
 }
 
 // ── Send ──────────────────────────────────────────────────────
@@ -144,45 +144,45 @@ window.chatSend = async function() {
   if (!currentUser || typeof db === 'undefined') return;
 
   const input  = document.getElementById('chat-input');
-  const rateEl = document.getElementById('chat-rate-msg');
+  const rateLimitElement = document.getElementById('chat-rate-msg');
   if (!input) return;
 
-  const text = input.value.trim();
-  if (!text) return;
+  const messageText = input.value.trim();
+  if (!messageText) return;
 
   // Rate limit
-  const now     = Date.now();
-  const elapsed = now - _chatLastSentMs;
-  if (_chatLastSentMs > 0 && elapsed < CHAT_COOLDOWN_MS) {
-    const secs = Math.ceil((CHAT_COOLDOWN_MS - elapsed) / 1000);
-    if (rateEl) rateEl.textContent = `Почекај уште ${secs}с пред да коментираш повторно.`;
-    setTimeout(() => { if (rateEl && rateEl.textContent.includes('с')) rateEl.textContent = ''; }, 3500);
+  const currentTime     = Date.now();
+  const timeSinceLastMessage = currentTime - _chatLastSentMs;
+  if (_chatLastSentMs > 0 && timeSinceLastMessage < CHAT_COOLDOWN_MS) {
+    const secs = Math.ceil((CHAT_COOLDOWN_MS - timeSinceLastMessage) / 1000);
+    if (rateLimitElement) rateLimitElement.textContent = `Почекај уште ${secs}с пред да коментираш повторно.`;
+    setTimeout(() => { if (rateLimitElement && rateLimitElement.textContent.includes('с')) rateLimitElement.textContent = ''; }, 3500);
     return;
   }
 
   input.value     = '';
-  _chatLastSentMs = now;
-  if (rateEl) rateEl.textContent = '';
+  _chatLastSentMs = currentTime;
+  if (rateLimitElement) rateLimitElement.textContent = '';
 
-  const btn = document.getElementById('chat-send-btn');
-  if (btn) btn.disabled = true;
+  const sendButton = document.getElementById('chat-send-btn');
+  if (sendButton) sendButton.disabled = true;
 
   try {
     await db.collection('comments').add({
       uid:         currentUser.uid,
       displayName: loadPlayerName() || 'Анонимно',
       avatarId:    loadAvatarId() || '',
-      text,
+      text: messageText,
       timestamp:   new Date(),
     });
-  } catch (e) {
-    console.warn('[Chat] Send error:', e.message);
-    if (rateEl) {
-      rateEl.textContent = 'Грешка. Обиди се пак.';
-      setTimeout(() => { if (rateEl) rateEl.textContent = ''; }, 3000);
+  } catch (error) {
+    console.warn('[Chat] Send error:', error.message);
+    if (rateLimitElement) {
+      rateLimitElement.textContent = 'Грешка. Обиди се пак.';
+      setTimeout(() => { if (rateLimitElement) rateLimitElement.textContent = ''; }, 3000);
     }
   } finally {
-    if (btn) btn.disabled = false;
+    if (sendButton) sendButton.disabled = false;
     input.focus();
   }
 };

@@ -96,8 +96,57 @@ function loadAvatarId()   { return localStorage.getItem(`zb_${_uid()}_avatar`) |
  */
 function clearUserLocalStorage(uid) {
   if (!uid) return;
-  ['cat', 'name', 'total', 'best_match', 'best_truefalse', 'best_hangman', 'best_quiz', 'best_speedround', 'avatar']
-    .forEach(k => localStorage.removeItem(`zb_${uid}_${k}`));
+  ['cat', 'name', 'total',
+   'best_match', 'best_truefalse', 'best_hangman', 'best_quiz', 'best_speedround',
+   'best_wordbuilder', 'best_memoryflip', 'best_fasttyping',
+   'unlock_wordbuilder', 'unlock_memoryflip', 'unlock_fasttyping',
+   'avatar', 'cos_settings', 'cos_owned', 'coins']
+    .forEach(storageKey => localStorage.removeItem(`zb_${uid}_${storageKey}`));
+}
+
+// ── Coins (spendable balance) ──────────────────────────────────
+/**
+ * Враќа тековниот баланс на монети на играчот.
+ */
+function loadCoins() {
+  return parseInt(localStorage.getItem(`zb_${_uid()}_coins`)) || 0;
+}
+
+/**
+ * Зачувува нов баланс на монети (не оди под 0).
+ */
+function saveCoins(amount) {
+  const amt = Math.max(0, Math.floor(amount));
+  localStorage.setItem(`zb_${_uid()}_coins`, String(amt));
+  return amt;
+}
+
+/**
+ * Додава монети на балансот и ги синхронизира со Firestore.
+ */
+function addCoins(amount) {
+  if (!amount || amount <= 0) return loadCoins();
+  const newBalance = saveCoins(loadCoins() + amount);
+  _pushCoinsToFirestore(newBalance);
+  return newBalance;
+}
+
+/**
+ * Одзема монети ако балансот е доволен. Враќа true ако успешно.
+ */
+function spendCoins(amount) {
+  const current = loadCoins();
+  if (current < amount) return false;
+  const newBalance = saveCoins(current - amount);
+  _pushCoinsToFirestore(newBalance);
+  return true;
+}
+
+function _pushCoinsToFirestore(balance) {
+  if (typeof db === 'undefined' || typeof currentUser === 'undefined' || !currentUser) return;
+  db.collection('users').doc(currentUser.uid)
+    .set({ coins: balance }, { merge: true })
+    .catch(() => {});
 }
 
 // Стари функции за компатибилност (не се користат)

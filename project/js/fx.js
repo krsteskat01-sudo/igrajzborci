@@ -3,41 +3,41 @@
 
 // ── Звучни ефекти ──────────────────────────────────────────────
 const SoundFX = (() => {
-  let ctx = null;
+  let audioContext = null;
 
   /**
    * Што прави: Иницијализира аудио контекст за пуштање звуци
    * Параметри: нема
    * Враќа: AudioContext објект или null
    */
-  function getCtx() {
+  function getAudioContext() {
     try {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-      if (ctx.state === 'suspended') ctx.resume();
-      return ctx;
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      return audioContext;
     } catch (e) { return null; }
   }
 
   /**
    * Што прави: Пушта еден тон со одредена фреквенција и траење
-   * Параметри: freq (фреквенција во Hz), startDelay (одложување во секунди), dur (траење во секунди), type (тип на бран), vol (гласност)
+   * Параметри: frequency (фреквенција во Hz), startDelay (одложување во секунди), duration (траење во секунди), type (тип на бран), volume (гласност)
    * Враќа: ништо
    */
-  function note(freq, startDelay, dur, type = 'sine', vol = 0.24) {
-    const c = getCtx();
-    if (!c) return;
+  function note(frequency, startDelay, duration, type = 'sine', volume = 0.24) {
+    const audioCtx = getAudioContext();
+    if (!audioCtx) return;
     try {
-      const osc = c.createOscillator();
-      const g   = c.createGain();
-      osc.connect(g);
-      g.connect(c.destination);
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, c.currentTime + startDelay);
-      g.gain.setValueAtTime(0.001, c.currentTime + startDelay);
-      g.gain.linearRampToValueAtTime(vol, c.currentTime + startDelay + 0.015);
-      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + startDelay + dur);
-      osc.start(c.currentTime + startDelay);
-      osc.stop(c.currentTime + startDelay + dur + 0.05);
+      const oscillator = audioCtx.createOscillator();
+      const gainNode   = audioCtx.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime + startDelay);
+      gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime + startDelay);
+      gainNode.gain.linearRampToValueAtTime(volume, audioCtx.currentTime + startDelay + 0.015);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + startDelay + duration);
+      oscillator.start(audioCtx.currentTime + startDelay);
+      oscillator.stop(audioCtx.currentTime + startDelay + duration + 0.05);
     } catch (e) {}
   }
 
@@ -108,27 +108,27 @@ function launchConfetti(originEl) {
   const rect   = originEl
     ? originEl.getBoundingClientRect()
     : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
-  const cx = rect.left + rect.width  / 2;
-  const cy = rect.top  + rect.height / 2;
+  const centerX = rect.left + rect.width  / 2;
+  const centerY = rect.top  + rect.height / 2;
 
   for (let i = 0; i < 26; i++) {
-    const el    = document.createElement('div');
-    el.className = 'confetti-piece';
+    const confettiPiece    = document.createElement('div');
+    confettiPiece.className = 'confetti-piece';
     const angle = Math.random() * Math.PI * 2;
-    const dist  = 70 + Math.random() * 130;
+    const travelDistance  = 70 + Math.random() * 130;
     const size  = 5 + Math.random() * 7;
-    el.style.cssText = [
-      `left:${cx}px`, `top:${cy}px`,
+    confettiPiece.style.cssText = [
+      `left:${centerX}px`, `top:${centerY}px`,
       `background:${COLORS[i % COLORS.length]}`,
-      `--tx:${(Math.cos(angle) * dist).toFixed(1)}px`,
-      `--ty:${(Math.sin(angle) * dist - 90).toFixed(1)}px`,
+      `--tx:${(Math.cos(angle) * travelDistance).toFixed(1)}px`,
+      `--ty:${(Math.sin(angle) * travelDistance - 90).toFixed(1)}px`,
       `--rot:${Math.round(Math.random() * 720)}deg`,
       `width:${size.toFixed(1)}px`, `height:${size.toFixed(1)}px`,
       `border-radius:${Math.random() > .5 ? '50%' : '2px'}`
     ].join(';');
-    document.body.appendChild(el);
+    document.body.appendChild(confettiPiece);
     // Отстрани ги по 950ms кога анимацијата ќе заврши
-    setTimeout(() => el.remove(), 950);
+    setTimeout(() => confettiPiece.remove(), 950);
   }
 }
 

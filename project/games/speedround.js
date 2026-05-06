@@ -12,7 +12,7 @@ function initSpeedRound(category) {
   let score = 0, answered = 0, correct = 0;
   let timeLeft = TIME_LIMIT;
   let timerInterval = null;
-  let currentQ = null;
+  let currentQuestionuestion = null;
   let _advancing = false;
 
   // Дополнителна позадина за деца
@@ -34,12 +34,12 @@ function initSpeedRound(category) {
    * Враќа: нова измешана низа
    */
   function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
+    const arrayCopy = [...arr];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    return a;
+    return arrayCopy;
   }
 
   /**
@@ -53,11 +53,11 @@ function initSpeedRound(category) {
     const isCorrect = Math.random() > 0.5; // 50% шанса да е точна дефиницијата
     
     const others = pool.filter(w => w.zbor !== word.zbor);
-    const def = isCorrect
+    const definition = isCorrect
       ? word.definicija
       : others[Math.floor(Math.random() * others.length)].definicija;
-      
-    currentQ = { zbor: word.zbor, def, isCorrect, wordData: word };
+
+    currentQuestion = { zbor: word.zbor, def: definition, isCorrect, wordData: word };
   }
 
   /**
@@ -66,7 +66,7 @@ function initSpeedRound(category) {
    * Враќа: ништо
    */
   function render() {
-    const barPct = (timeLeft / TIME_LIMIT) * 100;
+    const barPercent = (timeLeft / TIME_LIMIT) * 100;
     // Бојата се менува како што истекува времето
     const barColor = timeLeft > 20 ? 'var(--teal)' : timeLeft > 10 ? 'var(--orange)' : '#e53e3e';
 
@@ -80,12 +80,12 @@ function initSpeedRound(category) {
         </div>
         <div class="sr-body">
           <div class="sr-timer-wrap">
-            <div class="sr-timer-bar" id="sr-bar" style="width:${barPct}%;background:${barColor}"></div>
+            <div class="sr-timer-bar" id="sr-bar" style="width:${barPercent}%;background:${barColor}"></div>
           </div>
           <div class="sr-time-label${timeLeft <= 10 ? ' sr-urgent' : ''}" id="sr-time">${timeLeft}s</div>
           <div class="sr-card card-enter">
-            <div class="sr-word">${currentQ.zbor}</div>
-            <div class="sr-def">&bdquo;${currentQ.def}&ldquo;</div>
+            <div class="sr-word">${currentQuestion.zbor}</div>
+            <div class="sr-def">&bdquo;${currentQuestion.def}&ldquo;</div>
           </div>
           <div class="tf-buttons">
             <button class="btn-true"  onclick="srAnswer(true)">✓ ТОЧНО</button>
@@ -106,35 +106,35 @@ function initSpeedRound(category) {
     if (_advancing) return;
     _advancing = true;
     
-    const q = currentQ;
-    const isCorrect = answer === q.isCorrect;
+    const question = currentQuestion;
+    const isCorrect = answer === question.isCorrect;
     document.querySelectorAll('.btn-true, .btn-false').forEach(b => b.disabled = true);
     answered++;
-    
-    const prevScoreSR = score;
-    const fb = document.getElementById('sr-feedback');
+
+    const previousScore = score;
+    const feedbackElement = document.getElementById('sr-feedback');
     
     if (isCorrect) {
       score += 10;
       correct++;
       SoundFX.correct();
       popScore(document.getElementById('sr-score'));
-      
+
       const scoreEl = document.getElementById('sr-score');
       if (scoreEl) scoreEl.textContent = score;
-      if (fb) fb.innerHTML = '<span class="fb-correct">✓ +10</span>';
+      if (feedbackElement) feedbackElement.innerHTML = '<span class="fb-correct">✓ +10</span>';
     } else {
       score = Math.max(0, score - 3);
       SoundFX.wrong();
-      
+
       const scoreEl = document.getElementById('sr-score');
       if (scoreEl) scoreEl.textContent = score;
-      if (fb) fb.innerHTML = '<span class="fb-wrong">✗ −3</span>';
+      if (feedbackElement) feedbackElement.innerHTML = '<span class="fb-wrong">✗ −3</span>';
     }
-    
-    if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - prevScoreSR);
+
+    if (typeof window.saveAnswerDelta === 'function') window.saveAnswerDelta(score - previousScore);
     if (typeof window.onWordAnswered === 'function') {
-      window.onWordAnswered(q.zbor, q.def, isCorrect, q.wordData);
+      window.onWordAnswered(question.zbor, question.def, isCorrect, question.wordData);
     }
     
     nextQuestion();
@@ -155,18 +155,18 @@ function initSpeedRound(category) {
    */
   function tickTimer() {
     timeLeft--;
-    const timeEl = document.getElementById('sr-time');
-    const barEl  = document.getElementById('sr-bar');
-    
-    if (timeEl) {
-      timeEl.textContent = timeLeft + 's';
-      timeEl.className = 'sr-time-label' + (timeLeft <= 10 ? ' sr-urgent' : '');
+    const timerElement = document.getElementById('sr-time');
+    const progressBar  = document.getElementById('sr-bar');
+
+    if (timerElement) {
+      timerElement.textContent = timeLeft + 's';
+      timerElement.className = 'sr-time-label' + (timeLeft <= 10 ? ' sr-urgent' : '');
     }
-    
+
     const barColor = timeLeft > 20 ? 'var(--teal)' : timeLeft > 10 ? 'var(--orange)' : '#e53e3e';
-    if (barEl) {
-      barEl.style.width = (timeLeft / TIME_LIMIT * 100) + '%';
-      barEl.style.background = barColor;
+    if (progressBar) {
+      progressBar.style.width = (timeLeft / TIME_LIMIT * 100) + '%';
+      progressBar.style.background = barColor;
     }
     
     if (timeLeft <= 5 && timeLeft > 0) SoundFX.tick();

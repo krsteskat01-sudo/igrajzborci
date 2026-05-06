@@ -3,8 +3,8 @@
 // Мора да се вчита ПОСЛЕДЕН (по features.js).
 
 // ── Локална состојба ──────────────────────────────────────────────────────
-let _extSavedWords = []; // Зачувани зборови
-let _extMistakes   = []; // Направени грешки
+let _savedWords = []; // Зачувани зборови
+let _mistakes   = []; // Направени грешки
 
 // ── Тежина на игра ─────────────────────────────────────────────────
 
@@ -23,7 +23,7 @@ function loadDifficulty()    { return localStorage.getItem('zb_difficulty') || '
 function saveDifficulty(d)   { localStorage.setItem('zb_difficulty', d); }
 
 // Ги пресретнуваме оригиналните функции за да додадеме филтер по тежина
-const _extBaseGetWordPool = getWordPool;
+const _originalGetWordPool = getWordPool;
 
 /**
  * Што прави: Враќа зборови според избраната категорија и тежина
@@ -31,13 +31,13 @@ const _extBaseGetWordPool = getWordPool;
  * Враќа: низа со објекти (зборови)
  */
 window.getWordPool = function(category) {
-  const base = _extBaseGetWordPool(category);
-  const diff = loadDifficulty();
+  const baseWordPool = _originalGetWordPool(category);
+  const difficultyLevel = loadDifficulty();
   // Ако е лесно, дај ги само лесните (тежина 1)
-  if (diff === 'easy') { const f = base.filter(w => w.težina === 1); return f.length >= 4 ? f : base; }
+  if (difficultyLevel === 'easy') { const easyWords = baseWordPool.filter(w => w.težina === 1); return easyWords.length >= 4 ? easyWords : baseWordPool; }
   // Ако е тешко, дај ги сите зборови од базата без филтер
-  if (diff === 'hard') return ZBOROVI;
-  return base; // нормално
+  if (difficultyLevel === 'hard') return ZBOROVI;
+  return baseWordPool; // нормално
 };
 
 /**
@@ -47,9 +47,9 @@ window.getWordPool = function(category) {
  */
 window.extSetDifficulty = function(d) {
   saveDifficulty(d);
-  document.querySelectorAll('.diff-btn').forEach(b => {
+  document.querySelectorAll('.diff-btn').forEach(difficultyButton => {
     const map = { easy: 'Лесно', normal: 'Нормално', hard: 'Тешко' };
-    b.classList.toggle('diff-active', b.textContent.trim() === map[d]);
+    difficultyButton.classList.toggle('diff-active', difficultyButton.textContent.trim() === map[d]);
   });
 };
 
@@ -61,8 +61,8 @@ window.extSetDifficulty = function(d) {
  * Параметри: zbor (стринг), def (стринг), isCorrect (булова вредност), wordData (објект)
  * Враќа: ништо
  */
-window.onWordAnswered = function(zbor, def, isCorrect, wordData) {
-  if (!isCorrect) _extTrackMistake(zbor, def);
+window.onWordAnswered = function(wordText, definition, isCorrect, wordData) {
+  if (!isCorrect) _extTrackMistake(wordText, definition);
 };
 
 // ── Колекција на зборови ────────────────────────────────────────────
@@ -72,15 +72,15 @@ window.onWordAnswered = function(zbor, def, isCorrect, wordData) {
  * Параметри: zbor (стринг)
  * Враќа: ништо
  */
-window.extSaveWord = function(zbor) {
-  if (_extSavedWords.some(w => w.zbor === zbor)) return;
-  const wd = ZBOROVI.find(w => w.zbor === zbor);
+window.extSaveWord = function(wordText) {
+  if (_savedWords.some(savedWord => savedWord.zbor === wordText)) return;
+  const wd = ZBOROVI.find(savedWord => savedWord.zbor === wordText);
   if (!wd) return;
-  _extSavedWords.push({ zbor: wd.zbor, def: wd.definicija, fact: wd.fact || '' });
+  _savedWords.push({ zbor: wd.zbor, def: wd.definicija, fact: wd.fact || '' });
 
   if (currentUser && typeof db !== 'undefined') {
     db.collection('users').doc(currentUser.uid)
-      .set({ savedWords: firebase.firestore.FieldValue.arrayUnion(zbor) }, { merge: true })
+      .set({ savedWords: firebase.firestore.FieldValue.arrayUnion(wordText) }, { merge: true })
       .catch(() => {});
   }
   _extToast('💾 Зборот е зачуван!');
@@ -93,7 +93,7 @@ window.extSaveWord = function(zbor) {
  */
 window.showCollection = function() {
   document.body.className = getThemeClass(loadCategory());
-  if (_extSavedWords.length === 0) {
+  if (_savedWords.length === 0) {
     showScreen(`<div class="game-wrap"><div class="score-bar">
       <button class="exit-btn" onclick="showHub()">✕</button>
       <span class="bar-title">💾 Мои Зборови</span>
@@ -103,17 +103,17 @@ window.showCollection = function() {
     </div></div>`);
     return;
   }
-  const html = _extSavedWords.map(w => `
+  const html = _savedWords.map(savedWord => `
     <div class="collection-item">
-      <div class="ci-word">${escHtml(w.zbor)}</div>
-      <div class="ci-def">${escHtml(w.def)}</div>
-      ${w.fact ? `<div class="ci-fact">✦ ${escHtml(w.fact)}</div>` : ''}
-      <button class="ci-remove" onclick="extRemoveWord('${w.zbor.replace(/'/g,"\\'")}')">✕</button>
+      <div class="ci-word">${escHtml(savedWord.zbor)}</div>
+      <div class="ci-def">${escHtml(savedWord.def)}</div>
+      ${savedWord.fact ? `<div class="ci-fact">✦ ${escHtml(savedWord.fact)}</div>` : ''}
+      <button class="ci-remove" onclick="extRemoveWord('${savedWord.zbor.replace(/'/g,"\\'")}')">✕</button>
     </div>`).join('');
   showScreen(`<div class="game-wrap"><div class="score-bar">
     <button class="exit-btn" onclick="showHub()">✕</button>
     <span class="bar-title">💾 Мои Зборови</span>
-    <span class="bar-stat">${_extSavedWords.length} зборови</span>
+    <span class="bar-stat">${_savedWords.length} зборови</span>
   </div><div class="collection-list">${html}</div></div>`);
 };
 
@@ -122,11 +122,11 @@ window.showCollection = function() {
  * Параметри: zbor (стринг)
  * Враќа: ништо
  */
-window.extRemoveWord = function(zbor) {
-  _extSavedWords = _extSavedWords.filter(w => w.zbor !== zbor);
+window.extRemoveWord = function(wordText) {
+  _savedWords = _savedWords.filter(savedWord => savedWord.zbor !== wordText);
   if (currentUser && typeof db !== 'undefined') {
     db.collection('users').doc(currentUser.uid)
-      .set({ savedWords: firebase.firestore.FieldValue.arrayRemove(zbor) }, { merge: true })
+      .set({ savedWords: firebase.firestore.FieldValue.arrayRemove(wordText) }, { merge: true })
       .catch(() => {});
   }
   window.showCollection();
@@ -140,11 +140,11 @@ window.extRemoveWord = function(zbor) {
 async function _extLoadSavedWords() {
   if (!currentUser || typeof db === 'undefined') return;
   try {
-    const snap = await db.collection('users').doc(currentUser.uid).get();
-    if (!snap.exists) return;
-    _extSavedWords = (snap.data().savedWords || [])
-      .map(z => ZBOROVI.find(w => w.zbor === z)).filter(Boolean)
-      .map(w => ({ zbor: w.zbor, def: w.definicija, fact: w.fact || '' }));
+    const firestoreSnapshot = await db.collection('users').doc(currentUser.uid).get();
+    if (!firestoreSnapshot.exists) return;
+    _savedWords = (firestoreSnapshot.data().savedWords || [])
+      .map(savedWordId => ZBOROVI.find(wordEntry => wordEntry.zbor === savedWordId)).filter(Boolean)
+      .map(wordEntry => ({ zbor: wordEntry.zbor, def: wordEntry.definicija, fact: wordEntry.fact || '' }));
   } catch (e) {}
 }
 
@@ -155,14 +155,14 @@ async function _extLoadSavedWords() {
  * Параметри: zbor (стринг), def (стринг)
  * Враќа: ништо
  */
-function _extTrackMistake(zbor, def) {
-  if (_extMistakes.some(m => m.zbor === zbor)) return;
-  _extMistakes.unshift({ zbor, def }); // Додај на почеток
-  if (_extMistakes.length > 30) _extMistakes.pop(); // Чувај само последните 30
+function _extTrackMistake(wordText, definition) {
+  if (_mistakes.some(mistake => mistake.zbor === wordText)) return;
+  _mistakes.unshift({ zbor: wordText, def: definition }); // Додај на почеток
+  if (_mistakes.length > 30) _mistakes.pop(); // Чувај само последните 30
 
   if (currentUser && typeof db !== 'undefined') {
     db.collection('users').doc(currentUser.uid)
-      .set({ mistakes: _extMistakes.slice(0, 20).map(m => ({ zbor: m.zbor, def: m.def })) }, { merge: true })
+      .set({ mistakes: _mistakes.slice(0, 20).map(mistake => ({ zbor: mistake.zbor, def: mistake.def })) }, { merge: true })
       .catch(() => {});
   }
 }
@@ -174,7 +174,7 @@ function _extTrackMistake(zbor, def) {
  */
 window.showMistakes = function() {
   document.body.className = getThemeClass(loadCategory());
-  if (_extMistakes.length === 0) {
+  if (_mistakes.length === 0) {
     showScreen(`<div class="game-wrap"><div class="score-bar">
       <button class="exit-btn" onclick="showHub()">✕</button>
       <span class="bar-title">✗ Грешки</span>
@@ -184,15 +184,15 @@ window.showMistakes = function() {
     </div></div>`);
     return;
   }
-  const html = _extMistakes.map(m => `
+  const html = _mistakes.map(mistake => `
     <div class="collection-item mistakes-item">
-      <div class="ci-word">${escHtml(m.zbor)}</div>
-      <div class="ci-def">${escHtml(m.def)}</div>
+      <div class="ci-word">${escHtml(mistake.zbor)}</div>
+      <div class="ci-def">${escHtml(mistake.def)}</div>
     </div>`).join('');
   showScreen(`<div class="game-wrap"><div class="score-bar">
     <button class="exit-btn" onclick="showHub()">✕</button>
     <span class="bar-title">✗ Грешки</span>
-    <span class="bar-stat">${_extMistakes.length}</span>
+    <span class="bar-stat">${_mistakes.length}</span>
   </div><div class="collection-list">${html}</div></div>`);
 };
 
@@ -204,9 +204,9 @@ window.showMistakes = function() {
 async function _extLoadMistakes() {
   if (!currentUser || typeof db === 'undefined') return;
   try {
-    const snap = await db.collection('users').doc(currentUser.uid).get();
-    if (!snap.exists) return;
-    _extMistakes = (snap.data().mistakes || []).map(m => ({ zbor: m.zbor, def: m.def }));
+    const firestoreSnapshot = await db.collection('users').doc(currentUser.uid).get();
+    if (!firestoreSnapshot.exists) return;
+    _mistakes = (firestoreSnapshot.data().mistakes || []).map(mistake => ({ zbor: mistake.zbor, def: mistake.def }));
   } catch (e) {}
 }
 
@@ -223,9 +223,9 @@ window.showStats = async function() {
     <button class="exit-btn" onclick="showHub()">✕</button>
     <span class="bar-title">📊 Статистики</span>
   </div><div class="lb-loading">⏳ Се вчитува...</div></div>`);
-  let d = {};
+  let userData = {};
   if (currentUser && typeof db !== 'undefined') {
-    try { const s = await db.collection('users').doc(currentUser.uid).get(); if (s.exists) d = s.data(); }
+    try { const userSnapshot = await db.collection('users').doc(currentUser.uid).get(); if (userSnapshot.exists) userData = userSnapshot.data(); }
     catch (e) {}
   }
   document.getElementById('app').innerHTML = `
@@ -240,19 +240,25 @@ window.showStats = async function() {
           <div class="stats-profile-name">${escHtml(loadPlayerName() || '')}</div>
         </div>
         <div class="stats-grid">
-          <div class="stat-box stat-primary"><div class="sb-val">${d.score||0}</div><div class="sb-label">Вкупно поени</div></div>
-          <div class="stat-box"><div class="sb-val">${d.streak||0}</div><div class="sb-label">🔥 Денови по ред</div></div>
-          <div class="stat-box"><div class="sb-val">${Math.max(d.best_match||0,d.best_truefalse||0,d.best_hangman||0,d.best_quiz||0,d.best_speedround||0)}</div><div class="sb-label">⭐ Најдобар резултат</div></div>
-          <div class="stat-box"><div class="sb-val">${(d.savedWords||[]).length}</div><div class="sb-label">💾 Зачувани зборови</div></div>
+          <div class="stat-box stat-primary"><div class="sb-val">${userData.score||0}</div><div class="sb-label">Вкупно поени</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.streak||0}</div><div class="sb-label">🔥 Денови по ред</div></div>
+          <div class="stat-box"><div class="sb-val">${Math.max(userData.best_match||0,userData.best_truefalse||0,userData.best_hangman||0,userData.best_quiz||0,userData.best_speedround||0)}</div><div class="sb-label">⭐ Најдобар резултат</div></div>
+          <div class="stat-box"><div class="sb-val">${(userData.savedWords||[]).length}</div><div class="sb-label">💾 Зачувани зборови</div></div>
         </div>
         <div class="stats-section-title">Рекорди по игра</div>
         <div class="stats-grid">
-          <div class="stat-box"><div class="sb-val">${d.best_match||0}</div><div class="sb-label">🔗 Спој</div></div>
-          <div class="stat-box"><div class="sb-val">${d.best_truefalse||0}</div><div class="sb-label">✓✗ Точно/Неточно</div></div>
-          <div class="stat-box"><div class="sb-val">${d.best_hangman||0}</div><div class="sb-label">⭐ Збор по збор</div></div>
-          <div class="stat-box"><div class="sb-val">${d.best_quiz||0}</div><div class="sb-label">❓ Кој збор</div></div>
-          <div class="stat-box"><div class="sb-val">${d.best_speedround||0}</div><div class="sb-label">⚡ Брза Рунда</div></div>
-          <div class="stat-box"><div class="sb-val">${(d.mistakes||[]).length}</div><div class="sb-label">✗ Грешки</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_match||0}</div><div class="sb-label">🔗 Спој</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_truefalse||0}</div><div class="sb-label">✓✗ Точно/Неточно</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_hangman||0}</div><div class="sb-label">⭐ Збор по збор</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_quiz||0}</div><div class="sb-label">❓ Кој збор</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_speedround||0}</div><div class="sb-label">⚡ Брза Рунда</div></div>
+          <div class="stat-box"><div class="sb-val">${(userData.mistakes||[]).length}</div><div class="sb-label">✗ Грешки</div></div>
+        </div>
+        <div class="stats-section-title">Напредни игри</div>
+        <div class="stats-grid">
+          <div class="stat-box"><div class="sb-val">${userData.best_wordbuilder||0}</div><div class="sb-label">🧩 Word Builder</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_memoryflip||0}</div><div class="sb-label">🃏 Memory Flip</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_fasttyping||0}</div><div class="sb-label">⌨️ Fast Typing</div></div>
         </div>
       </div>
     </div>`;
@@ -267,11 +273,11 @@ window.showStats = async function() {
  */
 function _extGetWeekStart() {
   const now = new Date();
-  const day = now.getDay();
-  const diff = day === 0 ? -6 : 1 - day; // пресметај разлика до понеделник
-  const mon = new Date(now);
-  mon.setDate(now.getDate() + diff);
-  return mon.toISOString().split('T')[0];
+  const dayOfWeek = now.getDay();
+  const daysUntilMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // пресметај разлика до понеделник
+  const mondayDate = new Date(now);
+  mondayDate.setDate(now.getDate() + daysUntilMonday);
+  return mondayDate.toISOString().split('T')[0];
 }
 
 /**
@@ -282,31 +288,34 @@ function _extGetWeekStart() {
 async function _extUpdateWeeklyScore(uid, gameScore) {
   if (!uid || typeof db === 'undefined') return;
   const weekStart = _extGetWeekStart();
-  const ref = db.collection('users').doc(uid);
+  const userDocRef = db.collection('users').doc(uid);
   try {
     // Користи трансакција за безбедно ажурирање
     await db.runTransaction(async t => {
-      const doc = await t.get(ref);
-      const d = doc.exists ? doc.data() : {};
-      if ((d.weeklyResetDate || '') !== weekStart) {
+      const userDoc = await t.get(userDocRef);
+      const userData = userDoc.exists ? userDoc.data() : {};
+      if ((userData.weeklyResetDate || '') !== weekStart) {
         // Ресетирај за нова недела
-        t.set(ref, { weeklyScore: gameScore, weeklyResetDate: weekStart }, { merge: true });
+        t.set(userDocRef, { weeklyScore: gameScore, weeklyResetDate: weekStart }, { merge: true });
       } else {
         // Додај на постоечка недела
-        t.update(ref, { weeklyScore: firebase.firestore.FieldValue.increment(gameScore) });
+        t.update(userDocRef, { weeklyScore: firebase.firestore.FieldValue.increment(gameScore) });
       }
     });
   } catch (e) { console.warn('[Extras] Weekly score:', e.message); }
 }
 
-const _extAllTabDefs = [
-  { key: 'score',           label: 'Вкупно', icon: '🏆' },
-  { key: 'best_match',      label: 'Спој',   icon: '🔗' },
-  { key: 'best_truefalse',  label: 'Т/Н',    icon: '✓✗' },
-  { key: 'best_hangman',    label: 'Збор',   icon: '⭐' },
-  { key: 'best_quiz',       label: 'Кој',    icon: '❓' },
-  { key: 'best_speedround', label: 'Брза',   icon: '⚡' },
-  { key: 'weeklyScore',     label: 'Недела', icon: '📅' },
+const _tabDefinitions = [
+  { key: 'score',            label: 'Вкупно',  icon: '🏆' },
+  { key: 'best_match',       label: 'Спој',    icon: '🔗' },
+  { key: 'best_truefalse',   label: 'Т/Н',     icon: '✓✗' },
+  { key: 'best_hangman',     label: 'Збор',    icon: '⭐' },
+  { key: 'best_quiz',        label: 'Кој',     icon: '❓' },
+  { key: 'best_speedround',  label: 'Брза',    icon: '⚡' },
+  { key: 'best_wordbuilder', label: 'Builder', icon: '🧩' },
+  { key: 'best_memoryflip',  label: 'Flip',    icon: '🃏' },
+  { key: 'best_fasttyping',  label: 'Typing',  icon: '⌨️' },
+  { key: 'weeklyScore',      label: 'Недела',  icon: '📅' },
 ];
 
 /**
@@ -317,31 +326,31 @@ const _extAllTabDefs = [
 function _extRenderWeeklyTab() {
   const weekStart   = _extGetWeekStart();
   const weekPlayers = [..._lbPlayers]
-    .filter(p => p.weeklyResetDate === weekStart && (p.weeklyScore || 0) > 0)
+    .filter(player => player.weeklyResetDate === weekStart && (player.weeklyScore || 0) > 0)
     .sort((a, b) => (b.weeklyScore || 0) - (a.weeklyScore || 0));
-  const top20  = weekPlayers.slice(0, 20);
-  const myUid  = currentUser ? currentUser.uid : null;
-  const myIdx  = myUid ? weekPlayers.findIndex(p => p.id === myUid) : -1;
-  const rankLabel = i => i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`;
+  const topPlayers  = weekPlayers.slice(0, 20);
+  const currentUserId  = currentUser ? currentUser.uid : null;
+  const currentUserIndex  = currentUserId ? weekPlayers.findIndex(player => player.id === currentUserId) : -1;
+  const rankLabel = rankIndex => rankIndex === 0 ? '👑' : rankIndex === 1 ? '🥈' : rankIndex === 2 ? '🥉' : `#${rankIndex+1}`;
 
-  const rowsHtml = top20.length === 0
+  const rowsHtml = topPlayers.length === 0
     ? '<div class="lb-empty">Нема резултати оваа недела 🗓</div>'
-    : top20.map((p, i) => {
-        const isMe = p.id === myUid;
-        const cls  = ['lb-row', i===0?'lb-top1':i===1?'lb-top2':i===2?'lb-top3':'', isMe?'lb-me':''].filter(Boolean).join(' ');
-        return `<div class="${cls}">
-          <span class="lb-rank">${rankLabel(i)}</span>
-          ${playerAvatarHtml(p.displayName, p.avatarId, 30)}
-          <span class="lb-name">${escHtml(p.displayName||'')}${isMe?'<span class="lb-you">ти</span>':''}</span>
-          <span class="lb-pts">${p.weeklyScore||0}</span>
-        </div>`;
-      }).join('');
+    : topPlayers.map((player, rankIndex) =>
+        typeof _lbBuildRow === 'function'
+          ? _lbBuildRow(player, rankIndex, currentUserId, 'weeklyScore')
+          : `<div class="lb-row">
+               <span class="lb-rank">${rankLabel(rankIndex)}</span>
+               ${playerAvatarHtml(player.displayName, player.avatarId, 30)}
+               <span class="lb-name">${escHtml(player.displayName||'')}</span>
+               <span class="lb-pts">${player.weeklyScore||0}</span>
+             </div>`
+      ).join('');
   let myRankHtml = '';
-  if (myUid && myIdx === -1) myRankHtml = '<div class="lb-my-rank">🎮 Играј оваа недела за да влезеш!</div>';
-  else if (myUid && myIdx + 1 > 20) myRankHtml = `<div class="lb-my-rank">📍 Ти си #${myIdx+1} — продолжи!</div>`;
+  if (currentUserId && currentUserIndex === -1) myRankHtml = '<div class="lb-my-rank">🎮 Играј оваа недела за да влезеш!</div>';
+  else if (currentUserId && currentUserIndex + 1 > 20) myRankHtml = `<div class="lb-my-rank">📍 Ти си #${currentUserIndex+1} — продолжи!</div>`;
 
-  const tabsHtml = _extAllTabDefs.map(t =>
-    `<button class="lb-tab${_lbTab===t.key?' lb-tab-active':''}" onclick="lbSwitchTab('${t.key}')">${t.icon} ${t.label}</button>`
+  const tabsHtml = _tabDefinitions.map(tabDefinition =>
+    `<button class="lb-tab${_lbTab===tabDefinition.key?' lb-tab-active':''}" onclick="lbSwitchTab('${tabDefinition.key}')">${tabDefinition.icon} ${tabDefinition.label}</button>`
   ).join('');
 
   document.body.className = getThemeClass(loadCategory());
@@ -360,7 +369,7 @@ function _extRenderWeeklyTab() {
 }
 
 // ── Ажурирање на табелата (monkey patch) ───────────────────────────────────
-const _extBaseRenderLB = renderLeaderboard;
+const _originalRenderLeaderboard = renderLeaderboard;
 
 /**
  * Што прави: Ги црта новите јазичиња (Брза рунда, Недела) во табелата
@@ -371,21 +380,28 @@ window.renderLeaderboard = function() {
   if (_lbTab === 'weeklyScore') {
     _extRenderWeeklyTab();
   } else {
-    _extBaseRenderLB();
+    _originalRenderLeaderboard();
     // Вметни ги новите јазичиња откако ќе се исцрта основата
     const tabsEl = document.querySelector('.lb-tabs');
     if (tabsEl && !tabsEl.querySelector('[data-ext-tab]')) {
-      if (['best_speedround','weeklyScore'].includes(_lbTab)) {
-        tabsEl.querySelectorAll('.lb-tab-active').forEach(b => b.classList.remove('lb-tab-active'));
+      const extraTabKeys = ['best_speedround','best_wordbuilder','best_memoryflip','best_fasttyping','weeklyScore'];
+      if (extraTabKeys.includes(_lbTab)) {
+        tabsEl.querySelectorAll('.lb-tab-active').forEach(button => button.classList.remove('lb-tab-active'));
       }
-      [{ key:'best_speedround', label:'Брза', icon:'⚡' }, { key:'weeklyScore', label:'Недела', icon:'📅' }]
-        .forEach(t => {
-          const btn = document.createElement('button');
-          btn.className = 'lb-tab' + (_lbTab === t.key ? ' lb-tab-active' : '');
-          btn.setAttribute('data-ext-tab', t.key);
-          btn.onclick = () => lbSwitchTab(t.key);
-          btn.textContent = t.icon + ' ' + t.label;
-          tabsEl.appendChild(btn);
+      [
+        { key:'best_speedround',  label:'Брза',    icon:'⚡' },
+        { key:'best_wordbuilder', label:'Builder', icon:'🧩' },
+        { key:'best_memoryflip',  label:'Flip',    icon:'🃏' },
+        { key:'best_fasttyping',  label:'Typing',  icon:'⌨️' },
+        { key:'weeklyScore',      label:'Недела',  icon:'📅' },
+      ]
+        .forEach(tabDefinition => {
+          const button = document.createElement('button');
+          button.className = 'lb-tab' + (_lbTab === tabDefinition.key ? ' lb-tab-active' : '');
+          button.setAttribute('data-ext-tab', tabDefinition.key);
+          button.onclick = () => lbSwitchTab(tabDefinition.key);
+          button.textContent = tabDefinition.icon + ' ' + tabDefinition.label;
+          tabsEl.appendChild(button);
         });
     }
   }
@@ -426,30 +442,30 @@ window.showSuggestionForm = function() {
  * Враќа: ништо (асинхрона функција)
  */
 window.extSubmitSuggestion = async function() {
-  const zbor = (document.getElementById('sug-zbor')?.value || '').trim();
-  const def  = (document.getElementById('sug-def')?.value  || '').trim();
-  const fact = (document.getElementById('sug-fact')?.value || '').trim();
-  const msg  = document.getElementById('sug-msg');
-  const btn  = document.getElementById('sug-btn');
+  const wordText = (document.getElementById('sug-zbor')?.value || '').trim();
+  const definition  = (document.getElementById('sug-def')?.value  || '').trim();
+  const randomFact = (document.getElementById('sug-fact')?.value || '').trim();
+  const feedbackMessage  = document.getElementById('sug-msg');
+  const submitButton  = document.getElementById('sug-btn');
 
-  if (!zbor || !def) { if (msg) msg.innerHTML = '<span class="fb-wrong">Внеси збор и дефиниција.</span>'; return; }
+  if (!wordText || !definition) { if (feedbackMessage) feedbackMessage.innerHTML = '<span class="fb-wrong">Внеси збор и дефиниција.</span>'; return; }
 
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = '⏳'; }
   try {
     if (typeof db !== 'undefined') {
       await db.collection('suggestions').add({
-        zbor, def, fact: fact || '',
+        zbor: wordText, def: definition, fact: randomFact || '',
         uid: currentUser ? currentUser.uid : 'anon',
         displayName: loadPlayerName() || 'Анонимно',
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
-    if (msg) msg.innerHTML = '<span class="fb-correct">✓ Благодариме! Ќе го разгледаме.</span>';
-    if (btn) { btn.disabled = false; btn.textContent = 'Испрати уште →'; }
+    if (feedbackMessage) feedbackMessage.innerHTML = '<span class="fb-correct">✓ Благодариме! Ќе го разгледаме.</span>';
+    if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Испрати уште →'; }
     ['sug-zbor','sug-def','sug-fact'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   } catch (e) {
-    if (msg) msg.innerHTML = '<span class="fb-wrong">Грешка — обиди се пак.</span>';
-    if (btn) { btn.disabled = false; btn.textContent = 'Испрати →'; }
+    if (feedbackMessage) feedbackMessage.innerHTML = '<span class="fb-wrong">Грешка — обиди се пак.</span>';
+    if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Испрати →'; }
   }
 };
 
@@ -465,10 +481,10 @@ function _extInjectWordOfWeek() {
   const grid = document.querySelector('.games-grid');
   if (!grid) return;
 
-  const now = new Date();
-  const soy = new Date(now.getFullYear(), 0, 1);
-  const weekNum = Math.ceil(((now - soy) / 86400000 + soy.getDay() + 1) / 7);
-  const word = ZBOROVI[weekNum % ZBOROVI.length];
+  const currentDate = new Date();
+  const yearStartDate = new Date(currentDate.getFullYear(), 0, 1);
+  const weekNumber = Math.ceil(((currentDate - yearStartDate) / 86400000 + yearStartDate.getDay() + 1) / 7);
+  const word = ZBOROVI[weekNumber % ZBOROVI.length];
 
   const card = document.createElement('div');
   card.className = 'wow-card';
@@ -525,7 +541,7 @@ function _extInjectDifficulty() {
 
 // ── Известување за серија поени ─────────────────────────────────────────
 
-const _extBaseUpdateStreak = updateStreak;
+const _originalUpdateStreak = updateStreak;
 
 /**
  * Што прави: Ги ажурира деновите по ред и дава бонус поени
@@ -533,10 +549,10 @@ const _extBaseUpdateStreak = updateStreak;
  * Враќа: ништо (асинхрона функција)
  */
 window.updateStreak = async function() {
-  const prev = _featStreak;
-  await _extBaseUpdateStreak();
-  if (_featStreak > prev && _featStreak > 1) {
-    _extStreakBonusToast(_featStreak);
+  const previousStreak = _streakDays;
+  await _originalUpdateStreak();
+  if (_streakDays > previousStreak && _streakDays > 1) {
+    _extStreakBonusToast(_streakDays);
     if (currentUser && typeof db !== 'undefined') {
       db.collection('users').doc(currentUser.uid)
         .update({ score: firebase.firestore.FieldValue.increment(20) })
@@ -551,12 +567,12 @@ window.updateStreak = async function() {
  * Враќа: ништо
  */
 function _extStreakBonusToast(streak) {
-  const t = document.createElement('div');
-  t.className = 'streak-bonus-toast';
-  t.innerHTML = `🔥 ${streak} дена по ред! <strong>+20 бонус поени</strong>`;
-  document.body.appendChild(t);
-  setTimeout(() => t.classList.add('sbt-show'), 10);
-  setTimeout(() => { t.classList.remove('sbt-show'); setTimeout(() => t.remove(), 400); }, 3200);
+  const toastElement = document.createElement('div');
+  toastElement.className = 'streak-bonus-toast';
+  toastElement.innerHTML = `🔥 ${streak} дена по ред! <strong>+20 бонус поени</strong>`;
+  document.body.appendChild(toastElement);
+  setTimeout(() => toastElement.classList.add('sbt-show'), 10);
+  setTimeout(() => { toastElement.classList.remove('sbt-show'); setTimeout(() => toastElement.remove(), 400); }, 3200);
 }
 
 // ── Проверка за нови достигнувања ───────────────────────────────────
@@ -572,13 +588,13 @@ async function _extCheckAchievements() {
     const ref  = db.collection('users').doc(currentUser.uid);
     const snap = await ref.get();
     if (!snap.exists) return;
-    const d   = snap.data();
-    const ach = d.achievements || {};
-    const upd = {};
-    if (!ach.kolekcioner && (d.savedWords||[]).length >= 5)  upd['achievements.kolekcioner'] = true;
-    if (!ach.brzinec     && (d.best_speedround||0) > 0)      upd['achievements.brzinec']     = true;
-    if (!ach.nedelen     && (d.streak||0) >= 7)              upd['achievements.nedelen']     = true;
-    if (Object.keys(upd).length > 0) await ref.update(upd);
+    const userData   = snap.data();
+    const achievements = userData.achievements || {};
+    const achievementUpdates = {};
+    if (!achievements.kolekcioner && (userData.savedWords||[]).length >= 5)  achievementUpdates['achievements.kolekcioner'] = true;
+    if (!achievements.brzinec     && (userData.best_speedround||0) > 0)      achievementUpdates['achievements.brzinec']     = true;
+    if (!achievements.nedelen     && (userData.streak||0) >= 7)              achievementUpdates['achievements.nedelen']     = true;
+    if (Object.keys(achievementUpdates).length > 0) await ref.update(achievementUpdates);
   } catch (e) {}
 }
 
@@ -590,19 +606,19 @@ async function _extCheckAchievements() {
  * Враќа: ништо
  */
 function _extToast(msg) {
-  let t = document.querySelector('.badge-toast');
-  if (t) t.remove();
-  t = document.createElement('div');
-  t.className = 'badge-toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.classList.add('bt-show'), 10);
-  setTimeout(() => { t.classList.remove('bt-show'); setTimeout(() => t.remove(), 300); }, 2200);
+  let toastElement = document.querySelector('.badge-toast');
+  if (toastElement) toastElement.remove();
+  toastElement = document.createElement('div');
+  toastElement.className = 'badge-toast';
+  toastElement.textContent = msg;
+  document.body.appendChild(toastElement);
+  setTimeout(() => toastElement.classList.add('bt-show'), 10);
+  setTimeout(() => { toastElement.classList.remove('bt-show'); setTimeout(() => toastElement.remove(), 300); }, 2200);
 }
 
 // ── Ажурирање на зачувувањето поени ────────────────────────────────────────────
 
-const _extBaseSyncScore = syncScore;
+const _originalSyncScore = syncScore;
 
 /**
  * Што прави: Зачувува поени и истовремено проверува неделни поени и значки
@@ -610,7 +626,7 @@ const _extBaseSyncScore = syncScore;
  * Враќа: ништо (асинхрона функција)
  */
 window.syncScore = async function(game, score) {
-  await _extBaseSyncScore(game, score);
+  await _originalSyncScore(game, score);
   if (currentUser) {
     await _extUpdateWeeklyScore(currentUser.uid, score);
     await _extCheckAchievements();
@@ -619,7 +635,7 @@ window.syncScore = async function(game, score) {
 
 // ── Ажурирање на менито (Hub) ──────────────────────────────────────────────
 
-const _extBaseShowHub = showHub;
+const _originalShowHub = showHub;
 
 /**
  * Што прави: Го отвора главното мени и вметнува нови елементи (збор на недела, копчиња)
@@ -627,7 +643,7 @@ const _extBaseShowHub = showHub;
  * Враќа: ништо
  */
 window.showHub = function() {
-  _extBaseShowHub();
+  _originalShowHub();
   _extLoadSavedWords().catch(() => {});
   _extLoadMistakes().catch(() => {});
 

@@ -39,7 +39,7 @@ const AVATAR_IDS = ['avatar1','avatar2','avatar3','avatar4','avatar5','avatar6']
  * Параметри: name (стринг - ime), size (број - големина во пиксели)
  * Враќа: стринг (HTML за аватарот)
  */
-function _makeInitial(name, size) {
+function _createInitialAvatar(name, size) {
   const letter  = ((name || '?')[0] || '?').toUpperCase();
   const palette = ['#3B1F3A','#1A7A6E','#E8641A','#8B7AB8','#2D6A4F','#C9442B'];
   const bg      = palette[((name || '?').charCodeAt(0) || 0) % palette.length];
@@ -55,11 +55,11 @@ function playerAvatarHtml(name, avatarId, size) {
   size = size || 36;
   // Провери дали корисникот има избран аватар од постоечките
   if (avatarId && AVATAR_IDS.includes(avatarId)) {
-    const safe = (name || '').replace(/"/g, '&quot;');
-    return `<span class="avatar-circle av-${avatarId}" style="--av-sz:${size}px" aria-label="${safe}"></span>`;
+    const escapedName = (name || '').replace(/"/g, '&quot;');
+    return `<span class="avatar-circle av-${avatarId}" style="--av-sz:${size}px" aria-label="${escapedName}"></span>`;
   }
   // Ако нема, креирај аватар со иницијал
-  return _makeInitial(name, size);
+  return _createInitialAvatar(name, size);
 }
 
 // ── Логика за најава и одјава ────────────────────────────────
@@ -70,9 +70,9 @@ function playerAvatarHtml(name, avatarId, size) {
  * Враќа: ништо
  */
 window._showLogoutConfirm = function() {
-  const ov = document.createElement('div');
-  ov.className = 'confirm-dialog-overlay';
-  ov.innerHTML = `
+  const overlayDialog = document.createElement('div');
+  overlayDialog.className = 'confirm-dialog-overlay';
+  overlayDialog.innerHTML = `
     <div class="confirm-dialog">
       <div class="confirm-dialog-icon">👋</div>
       <div class="confirm-dialog-title">Сигурен/а си?</div>
@@ -83,8 +83,8 @@ window._showLogoutConfirm = function() {
       </div>
     </div>`;
   // Затвори го дијалогот ако се кликне надвор од него
-  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
-  document.body.appendChild(ov);
+  overlayDialog.addEventListener('click', event => { if (event.target === overlayDialog) overlayDialog.remove(); });
+  document.body.appendChild(overlayDialog);
 };
 
 /**
@@ -115,9 +115,9 @@ window._doLogOut = function() {
  * Враќа: ништо
  */
 window._showDeleteAccountConfirm = function() {
-  const ov = document.createElement('div');
-  ov.className = 'confirm-dialog-overlay';
-  ov.innerHTML = `
+  const overlayDialog = document.createElement('div');
+  overlayDialog.className = 'confirm-dialog-overlay';
+  overlayDialog.innerHTML = `
     <div class="confirm-dialog">
       <div class="confirm-dialog-icon">⚠️</div>
       <div class="confirm-dialog-title">Избриши профил?</div>
@@ -128,8 +128,8 @@ window._showDeleteAccountConfirm = function() {
       </div>
     </div>`;
   // Затвори го дијалогот ако се кликне надвор од него
-  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
-  document.body.appendChild(ov);
+  overlayDialog.addEventListener('click', event => { if (event.target === overlayDialog) overlayDialog.remove(); });
+  document.body.appendChild(overlayDialog);
 };
 
 /**
@@ -201,8 +201,8 @@ function showNameEntry(fromHub) {
 
   // Фокусирај го полето за текст после кратко време
   setTimeout(() => {
-    const el = document.getElementById('name-input');
-    if (el) { el.focus(); el.select(); }
+    const nameInput = document.getElementById('name-input');
+    if (nameInput) { nameInput.focus(); nameInput.select(); }
   }, 80);
 }
 
@@ -316,13 +316,13 @@ function showHub() {
   ];
 
   // Генерирај HTML картички за игрите
-  const cardsHtml = games.map(g => {
-    const best = loadBest(g.id); // Вчитај го најдобриот резултат
+  const cardsHtml = games.map(gameCard => {
+    const best = loadBest(gameCard.id); // Вчитај го најдобриот резултат
     return `
-      <div class="game-card ${g.color}" onclick="startGame('${g.id}')">
-        <div class="game-icon">${g.icon}</div>
-        <div class="game-name">${g.name}</div>
-        <div class="game-desc">${g.desc}</div>
+      <div class="game-card ${gameCard.color}" onclick="startGame('${gameCard.id}')">
+        <div class="game-icon">${gameCard.icon}</div>
+        <div class="game-name">${gameCard.name}</div>
+        <div class="game-desc">${gameCard.desc}</div>
         <div class="game-best">${best > 0 ? '* ' + best + ' поени' : '— нема рекорд'}</div>
       </div>`;
   }).join('');
@@ -332,13 +332,17 @@ function showHub() {
       <div class="hub-header">
         <button class="back-btn" onclick="showAgeSelect()">← Назад</button>
         <h2 class="hub-logo">${LOGO}</h2>
-        <div class="hub-total">* ${total}</div>
+        <div class="hub-coins" id="hub-coins-display">🪙 <strong id="hub-coins-val">${typeof loadCoins === 'function' ? loadCoins() : 0}</strong></div>
+        <button class="cosmetics-hub-btn" onclick="showCosmeticsShop('themes')">🎨</button>
         <button class="logout-btn" onclick="handleLogOut()">Излез</button>
       </div>
       <div class="hub-body">
       <div class="hub-player">
-        ${playerAvatarHtml(playerName, loadAvatarId(), 36)}
+        <div class="avatar-frame-wrap ${typeof getActiveFrameClass === 'function' ? getActiveFrameClass() : ''}">
+          ${playerAvatarHtml(playerName, loadAvatarId(), 36)}
+        </div>
         <strong>${escHtml(playerName)}</strong>
+        ${typeof getActiveBadgeHtml === 'function' ? getActiveBadgeHtml() : ''}
         <button class="change-name-btn" onclick="showNameEntry(true)">Промени</button>
         ${currentUser ? `<button class="delete-acc-btn" onclick="_showDeleteAccountConfirm()">Избриши профил</button>` : ''}
       </div>
@@ -353,6 +357,19 @@ function showHub() {
         <span class="hlb-arrow">→</span>
       </button>
       <div class="games-grid">${cardsHtml}</div>
+
+      <div class="premium-section">
+        <p class="premium-label">
+          <span class="star-accent">✦</span> Напредни Игри
+          <span class="premium-score">⭐ ${total} поени</span>
+        </p>
+        <div class="games-grid">
+          ${typeof PREMIUM_GAMES !== 'undefined'
+            ? PREMIUM_GAMES.map(g => typeof premiumCardHtml === 'function' ? premiumCardHtml(g) : '').join('')
+            : ''}
+        </div>
+      </div>
+
       <div class="hub-footer">
         <button class="lb-open-btn" onclick="showLeaderboard()">* Табела на резултати</button>
       </div>
@@ -391,11 +408,14 @@ function showHub() {
 function startGame(gameId) {
   const cat = loadCategory();
   // Провери кое ID е избрано и пушти ја играта
-  if      (gameId === 'match')     initMatch(cat);
-  else if (gameId === 'truefalse') initTrueFalse(cat);
-  else if (gameId === 'hangman')   initHangman(cat);
-  else if (gameId === 'quiz')       initQuiz(cat);
-  else if (gameId === 'speedround') initSpeedRound(cat);
+  if      (gameId === 'match')       initMatch(cat);
+  else if (gameId === 'truefalse')   initTrueFalse(cat);
+  else if (gameId === 'hangman')     initHangman(cat);
+  else if (gameId === 'quiz')        initQuiz(cat);
+  else if (gameId === 'speedround')  initSpeedRound(cat);
+  else if (gameId === 'wordbuilder') initWordBuilder(cat);
+  else if (gameId === 'memoryflip')  initMemoryFlip(cat);
+  else if (gameId === 'fasttyping')  initFastTyping(cat);
 }
 
 // ── Резултати ────────────────────────────────────────────────────
@@ -412,31 +432,47 @@ function showResult(score, game) {
   syncScore(game, score); // Ажурирај најдобар резултат во база
   saveBest(game, score);
 
+  // ── Earn coins ──────────────────────────────────────────────
+  const premiumIds    = ['wordbuilder', 'memoryflip', 'fasttyping'];
+  const isPremium     = premiumIds.includes(game);
+  const coinsEarned   = Math.max(1, Math.floor(score / (isPremium ? 3 : 5)));
+  if (typeof addCoins === 'function') addCoins(coinsEarned);
+
   const names = {
-    match:      'Спој го зборот',
-    truefalse:  'Точно или Неточно',
-    hangman:    'Збор по збор',
-    quiz:       'Кој збор е тоа',
-    speedround: 'Брза Рунда',
+    match:       'Спој го зборот',
+    truefalse:   'Точно или Неточно',
+    hangman:     'Збор по збор',
+    quiz:        'Кој збор е тоа',
+    speedround:  'Брза Рунда',
+    wordbuilder: 'Word Builder',
+    memoryflip:  'Memory Flip',
+    fasttyping:  'Fast Typing',
   };
 
   // Постави различно емоџи зависно од освоените поени
-  const emoji = score >= 100 ? '🏆' : score >= 50 ? '⭐' : '💪';
+  const resultEmoji = score >= 100 ? '🏆' : score >= 50 ? '⭐' : '💪';
 
   showScreen(`
     <div class="result-screen">
-      <div class="result-emoji">${emoji}</div>
+      <div class="result-emoji">${resultEmoji}</div>
       <h2 class="result-title">Играта заврши!</h2>
       <div class="result-game">${names[game] || game}</div>
       <div class="result-score">${score}<span class="pts-label"> поени</span></div>
       ${isNew
         ? '<div class="result-new">* Нов рекорд!</div>'
         : `<div class="result-prev">Твој рекорд: ${prev} поени</div>`}
+      <div class="result-coins-earned" id="result-coins-earned">+${coinsEarned} 🪙 монети</div>
       <div class="result-btns">
         <button class="btn-primary"   onclick="startGame('${game}')">Играј повторно</button>
         <button class="btn-secondary" onclick="showHub()">Кон игри</button>
       </div>
     </div>`);
+
+  // Animate coin reward after render
+  setTimeout(() => {
+    const earnedEl = document.getElementById('result-coins-earned');
+    if (typeof animateCoinReward === 'function') animateCoinReward(coinsEarned, earnedEl);
+  }, 350);
 }
 
 // ── Почетно стартување ─────────────────────────────────────────────────────
