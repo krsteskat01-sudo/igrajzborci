@@ -2462,6 +2462,7 @@ body.theme-dark .guest-banner   { background: rgba(255,255,255,.06); border-colo
    ═══════════════════════════════════════════ */
 body[data-theme="ohrid-sunset"] {
   background: linear-gradient(180deg,#C8280A 0%,#E8501A 12%,#F57832 26%,#F9A85C 42%,#EEB4D8 60%,#B06CC0 78%,#6030A0 100%);
+  background-attachment: fixed;
 }
 body[data-theme="ohrid-sunset"] .game-wrap   { background: rgba(80,20,10,.18) !important; }
 body[data-theme="ohrid-sunset"] .hub,
@@ -2475,7 +2476,7 @@ body[data-theme="ohrid-sunset"] .game-wrap::before {
     radial-gradient(ellipse 220px 110px at 66% 62%, rgba(255,110,20,.5) 0%, transparent 65%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,430 90,340 200,395 330,265 470,345 600,210 740,305 880,235 1010,295 1120,250 1200,270 1200,800' fill='%235020A0' opacity='.5'/%3E%3C/svg%3E") center/cover no-repeat,
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,530 70,490 170,520 280,455 410,500 540,430 660,475 780,420 900,460 1020,405 1130,445 1200,425 1200,800' fill='%23300818'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 60%, rgba(5,15,48,.55) 80%, rgba(5,15,48,.18) 100%),
+    linear-gradient(to bottom, transparent 55%, rgba(5,15,48,.18) 100%),
     radial-gradient(ellipse 28px 90px at 66% 87%, rgba(255,155,35,.32) 0%, transparent 80%);
 }
 @keyframes sunsetShimmer { 0%,100%{opacity:.6;} 50%{opacity:1;} }
@@ -2505,6 +2506,7 @@ body[data-theme="ohrid-sunset"] .premium-score { color:#FF8C00; }
    ═══════════════════════════════════════════ */
 body[data-theme="skopje-neon"] {
   background: linear-gradient(180deg,#000208 0%,#020818 25%,#030D20 55%,#020610 100%);
+  background-attachment: fixed;
 }
 body[data-theme="skopje-neon"] .game-wrap   { background: rgba(1,4,14,.72) !important; color: #C8F0FF; }
 body[data-theme="skopje-neon"] .hub,
@@ -2550,7 +2552,7 @@ body[data-theme="skopje-neon"] .game-wrap::before {
     radial-gradient(ellipse 280px 480px at 95% 50%, rgba(255,0,200,.09) 0%, transparent 65%),
     radial-gradient(ellipse 240px 380px at 5% 55%, rgba(0,80,255,.1) 0%, transparent 60%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='40' y='470' width='55' height='330' fill='%23060C22'/%3E%3Crect x='115' y='410' width='42' height='390' fill='%23080F28'/%3E%3Crect x='180' y='350' width='75' height='450' fill='%23060C22'/%3E%3Crect x='280' y='430' width='38' height='370' fill='%23080F28'/%3E%3Crect x='340' y='290' width='88' height='510' fill='%23060C22'/%3E%3Crect x='455' y='370' width='52' height='430' fill='%23080F28'/%3E%3Crect x='535' y='240' width='95' height='560' fill='%23060C22'/%3E%3Crect x='658' y='310' width='68' height='490' fill='%23080F28'/%3E%3Crect x='750' y='390' width='48' height='410' fill='%23060C22'/%3E%3Crect x='822' y='270' width='82' height='530' fill='%23080F28'/%3E%3Crect x='930' y='340' width='62' height='460' fill='%23060C22'/%3E%3Crect x='1015' y='410' width='44' height='390' fill='%23080F28'/%3E%3Crect x='1082' y='360' width='78' height='440' fill='%23060C22'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 70%, rgba(1,3,6,.6) 86%, rgba(1,3,6,.2) 100%);
+    linear-gradient(to bottom, transparent 65%, rgba(1,3,6,.15) 100%);
 }
 @keyframes neonFlicker { 0%,88%,100%{opacity:1;} 90%{opacity:.35;} 92%{opacity:.9;} 94%{opacity:.25;} 96%{opacity:1;} }
 body[data-theme="skopje-neon"] .game-wrap::after {
@@ -2591,6 +2593,7 @@ body[data-theme="skopje-neon"] .difficulty-wrap { background:rgba(4,10,28,.85); 
 body[data-theme="retro-yugoslav"] {
   --cream:#E8D8A0;
   background: linear-gradient(180deg,#B87820 0%,#CC9030 18%,#E0B050 38%,#EEC860 55%,#E4B840 72%,#C89020 88%,#A06010 100%);
+  background-attachment: fixed;
 }
 body[data-theme="retro-yugoslav"] .game-wrap  { background: rgba(100,50,5,.22) !important; }
 body[data-theme="retro-yugoslav"] .hub,
@@ -2609,7 +2612,7 @@ body[data-theme="retro-yugoslav"] .game-wrap::after {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background:
     radial-gradient(circle 100px at 50% 16%, rgba(180,60,10,.2) 0%, transparent 65%),
-    linear-gradient(to bottom, transparent 78%, rgba(110,40,5,.22) 90%, transparent 100%);
+    linear-gradient(to bottom, transparent 70%, rgba(110,40,5,.12) 100%);
 }
 body[data-theme="retro-yugoslav"] .hub-player  { background:rgba(255,248,210,.85); }
 body[data-theme="retro-yugoslav"] .hub-sub,
@@ -2629,6 +2632,7 @@ body[data-theme="retro-yugoslav"] .name-form    { background:rgba(255,248,215,.9
    ═══════════════════════════════════════════ */
 body[data-theme="balkan-folklore"] {
   background: linear-gradient(180deg,#4A0808 0%,#6A1010 22%,#801818 44%,#6A1010 66%,#480808 88%,#320505 100%);
+  background-attachment: fixed;
 }
 body[data-theme="balkan-folklore"] .game-wrap  { background: rgba(20,1,1,.70) !important; color: #F8E8C0; }
 body[data-theme="balkan-folklore"] .hub,
@@ -2711,6 +2715,7 @@ body[data-theme="balkan-folklore"] .difficulty-wrap { background:rgba(42,5,5,.88
    ═══════════════════════════════════════════ */
 body[data-theme="mountain-village"] {
   background: linear-gradient(180deg,#3A80CC 0%,#55A0E0 14%,#78BEEE 30%,#9ED0F5 48%,#C2E4F8 62%,#9ACA90 76%,#5EA855 88%,#307030 100%);
+  background-attachment: fixed;
 }
 body[data-theme="mountain-village"] .game-wrap  { background: rgba(20,60,20,.16) !important; }
 body[data-theme="mountain-village"] .hub,
@@ -2722,7 +2727,7 @@ body[data-theme="mountain-village"] .game-wrap::before {
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,390 110,290 230,355 365,205 505,310 645,170 785,270 910,195 1045,260 1160,210 1200,230 1200,800' fill='%239AB0C8' opacity='.52'/%3E%3C/svg%3E") center/cover no-repeat,
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,510 85,455 195,490 305,400 430,460 555,370 675,432 800,360 920,415 1035,348 1150,390 1200,370 1200,800' fill='%23226030'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 66%, rgba(20,56,20,.4) 82%, rgba(20,56,20,.15) 100%),
+    linear-gradient(to bottom, transparent 60%, rgba(20,56,20,.12) 100%),
     radial-gradient(circle 55px at 82% 11%, rgba(255,240,180,.55), transparent 62%);
 }
 @keyframes cloudDrift { 0%{transform:translateX(-18%);} 100%{transform:translateX(118%);} }
@@ -2751,6 +2756,7 @@ body[data-theme="mountain-village"] .premium-score { color:#2A8A2A; }
    ═══════════════════════════════════════════ */
 body[data-theme="macedonian-bazaar"] {
   background: linear-gradient(180deg,#B83C00 0%,#D05510 16%,#E87828 32%,#F5A045 52%,#EEB848 68%,#D89030 84%,#A86018 100%);
+  background-attachment: fixed;
 }
 body[data-theme="macedonian-bazaar"] .game-wrap  { background: rgba(80,25,0,.20) !important; }
 body[data-theme="macedonian-bazaar"] .hub,
@@ -2762,7 +2768,7 @@ body[data-theme="macedonian-bazaar"] .game-wrap::before {
   background:
     radial-gradient(circle 80px at 50% 7%, rgba(255,238,100,.78) 0%, rgba(255,175,25,.45) 48%, transparent 68%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cellipse cx='190' cy='572' rx='85' ry='68' fill='%23581800'/%3E%3Crect x='148' y='572' width='84' height='228' fill='%23581800'/%3E%3Crect x='178' y='504' width='28' height='80' fill='%23781E00'/%3E%3Cellipse cx='490' cy='512' rx='115' ry='88' fill='%23682000'/%3E%3Crect x='418' y='512' width='144' height='288' fill='%23682000'/%3E%3Crect x='462' y='432' width='22' height='90' fill='%23882A00'/%3E%3Cellipse cx='880' cy='532' rx='98' ry='78' fill='%23581800'/%3E%3Crect x='820' y='532' width='118' height='268' fill='%23581800'/%3E%3Crect x='852' y='454' width='24' height='88' fill='%23782200'/%3E%3Cellipse cx='1090' cy='595' rx='76' ry='58' fill='%23481400'/%3E%3Crect x='1038' y='595' width='104' height='205' fill='%23481400'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 63%, rgba(72,20,0,.45) 80%, rgba(72,20,0,.15) 100%),
+    linear-gradient(to bottom, transparent 58%, rgba(72,20,0,.12) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M9,0 L18,9 L9,18 L0,9 Z' fill='none' stroke='%23FFA820' stroke-width='.45' opacity='.12'/%3E%3C/svg%3E");
 }
 @keyframes heatHaze { 0%,100%{opacity:.45;} 50%{opacity:.78;} }
@@ -2795,6 +2801,7 @@ body[data-theme="macedonian-bazaar"] .name-form    { background:rgba(255,242,215
    ═══════════════════════════════════════════ */
 body[data-theme="lake-night"] {
   background: linear-gradient(180deg,#000106 0%,#010412 18%,#020818 38%,#030B22 58%,#040C22 68%,#030818 82%,#020410 100%);
+  background-attachment: fixed;
 }
 body[data-theme="lake-night"] .game-wrap   { background: rgba(1,3,12,.70) !important; color: #B5D6F5; }
 body[data-theme="lake-night"] .hub,
@@ -2838,7 +2845,7 @@ body[data-theme="lake-night"] .game-wrap::before {
     radial-gradient(circle 30px at 74% 13%, #EEEED5 0%, #C0C09A 42%, transparent 62%),
     radial-gradient(circle 85px at 74% 13%, rgba(200,200,145,.16) 0%, transparent 70%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,462 105,382 210,425 348,292 488,374 608,258 728,342 865,280 1002,352 1105,302 1200,322 1200,800' fill='%23030810'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 53%, rgba(1,6,16,.5) 68%, rgba(0,3,8,.22) 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 50%, rgba(1,6,16,.12) 100%),
     radial-gradient(ellipse 16px 95px at 74% 83%, rgba(200,200,140,.18) 0%, transparent 82%),
     radial-gradient(ellipse 280px 35px at 50% 73%, rgba(8,28,75,.55) 0%, transparent 80%);
 }
