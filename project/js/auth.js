@@ -73,8 +73,41 @@ function initAuth() {
       // Постави го корисникот веднаш
       currentUser = user;
 
+      // Always sync Google photo URL from the auth object so every user's photo
+      // is visible on the leaderboard — catches accounts created before
+      // googlePhotoUrl was stored, and keeps the URL fresh if Google rotates it.
+      if (user.photoURL) {
+        if (typeof saveGooglePhotoUrl === 'function') saveGooglePhotoUrl(user.photoURL);
+        if (typeof db !== 'undefined') {
+          db.collection('users').doc(user.uid)
+            .update({ googlePhotoUrl: user.photoURL })
+            .catch(() => {});
+        }
+      }
+
+      // Save avatarId BEFORE loadUserFromFirestore wipes localStorage, so we can
+      // recover it if Firestore doesn't have the value yet (race condition: new
+      // signup's Firestore write may not complete before onAuthStateChanged fires,
+      // and clearUserLocalStorage inside loadUserFromFirestore erases the local value).
+      const priorAvId = localStorage.getItem(`zb_${user.uid}_avatar`) || '';
+
       // Вчитај ги основните податоци од Firebase
       await loadUserFromFirestore(user.uid);
+
+      // Restore and sync avatarId using priority: Firestore value > pre-clear
+      // localStorage value > current signup selection (race condition fallback).
+      if (typeof db !== 'undefined' && typeof loadAvatarId === 'function') {
+        let avId = loadAvatarId();
+        if (!avId) {
+          avId = priorAvId || (typeof _signupSelectedAvatar === 'string' ? _signupSelectedAvatar : '');
+          if (avId) localStorage.setItem(`zb_${user.uid}_avatar`, avId);
+        }
+        if (avId) {
+          db.collection('users').doc(user.uid)
+            .update({ avatarId: avId })
+            .catch(() => {});
+        }
+      }
 
       // Прекини ако меѓувреме се случил нов настан
       if (seq !== _authSeq) return;
@@ -126,6 +159,7 @@ async function loadUserFromFirestore(uid) {
       if (userData.unlocked_memoryflip)  localStorage.setItem(`zb_${uid}_unlock_memoryflip`,  '1');
       if (userData.unlocked_fasttyping)  localStorage.setItem(`zb_${uid}_unlock_fasttyping`,  '1');
       if (userData.avatarId) localStorage.setItem(`zb_${uid}_avatar`, userData.avatarId);
+      if (userData.googlePhotoUrl && typeof saveGooglePhotoUrl === 'function') saveGooglePhotoUrl(userData.googlePhotoUrl);
       if (typeof userData.coins !== 'undefined') {
         localStorage.setItem(`zb_${uid}_coins`, String(Math.max(0, userData.coins || 0)));
       }
@@ -154,6 +188,15 @@ function showAuthScreen(tab = 'login') {
         <h1 class="logo">${LOGO}</h1>
         <p class="logo-sub">Македонски зборови &mdash; учи преку игра</p>
       </div>
+
+      <div class="auth-features">
+        <div class="af-item">🎮<span>5+ игри</span></div>
+        <div class="af-item">🏆<span>Рангирање</span></div>
+        <div class="af-item">🎯<span>Мак. зборови</span></div>
+        <div class="af-item">🪙<span>Монети</span></div>
+        <div class="af-item">🎨<span>Теми</span></div>
+      </div>
+      <button class="auth-rules-btn" onclick="showHowToPlay ? showHowToPlay() : null">❓ Правила на игра</button>
 
       <div class="auth-card">
         <div class="auth-tabs">
@@ -386,11 +429,13 @@ window.handleGoogleLogin = async function() {
 
   try {
     const result = await firebase.auth().signInWithPopup(googleProvider);
-    const newUserId    = result.user.uid;
-    const name   = (result.user.displayName || '').split(' ')[0] || 'Корисник';
+    const newUserId  = result.user.uid;
+    const name       = (result.user.displayName || '').split(' ')[0] || 'Корисник';
+    const photoUrl   = result.user.photoURL || '';
 
     // Зачувај локално веднаш — onAuthStateChanged не чека на Firestore
     localStorage.setItem(`zb_${newUserId}_name`, name);
+    if (photoUrl && typeof saveGooglePhotoUrl === 'function') saveGooglePhotoUrl(photoUrl);
 
     // Создади документ само за нови корисници
     const existing = await db.collection('users').doc(newUserId).get();
@@ -411,8 +456,12 @@ window.handleGoogleLogin = async function() {
         lastPlayDate:     '',
         achievements:     {},
         avatarId:         '',
+        googlePhotoUrl:   photoUrl,
         createdAt:        firebase.firestore.FieldValue.serverTimestamp(),
       });
+    } else if (photoUrl) {
+      // Always refresh the photo URL — Google URLs can change between logins
+      await db.collection('users').doc(newUserId).update({ googlePhotoUrl: photoUrl });
     }
     // onAuthStateChanged → loadUserFromFirestore → showHub / showAgeSelect
   } catch (err) {

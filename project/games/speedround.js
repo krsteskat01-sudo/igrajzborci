@@ -12,7 +12,7 @@ function initSpeedRound(category) {
   let score = 0, answered = 0, correct = 0;
   let timeLeft = TIME_LIMIT;
   let timerInterval = null;
-  let currentQuestionuestion = null;
+  let currentQuestion = null;
   let _advancing = false;
 
   // Дополнителна позадина за деца

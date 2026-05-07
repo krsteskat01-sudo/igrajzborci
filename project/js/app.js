@@ -51,14 +51,18 @@ function _createInitialAvatar(name, size) {
  * Параметри: name (стринг), avatarId (стринг - ID на слика), size (број)
  * Враќа: стринг (HTML за аватарот)
  */
-function playerAvatarHtml(name, avatarId, size) {
+// photoUrl is an optional explicit URL — never read localStorage here because
+// this function is also called for OTHER players (leaderboard) where localStorage
+// only contains the *viewing* user's photo, not the player being rendered.
+function playerAvatarHtml(name, avatarId, size, photoUrl) {
   size = size || 36;
-  // Провери дали корисникот има избран аватар од постоечките
+  const escapedName = (name || '').replace(/"/g, '&quot;');
   if (avatarId && AVATAR_IDS.includes(avatarId)) {
-    const escapedName = (name || '').replace(/"/g, '&quot;');
     return `<span class="avatar-circle av-${avatarId}" style="--av-sz:${size}px" aria-label="${escapedName}"></span>`;
   }
-  // Ако нема, креирај аватар со иницијал
+  if (photoUrl) {
+    return `<span class="avatar-circle avatar-google-photo" style="--av-sz:${size}px;background-image:url('${photoUrl}')" aria-label="${escapedName}"></span>`;
+  }
   return _createInitialAvatar(name, size);
 }
 
@@ -333,16 +337,16 @@ function showHub() {
         <button class="back-btn" onclick="showAgeSelect()">← Назад</button>
         <h2 class="hub-logo">${LOGO}</h2>
         <div class="hub-coins" id="hub-coins-display">🪙 <strong id="hub-coins-val">${typeof loadCoins === 'function' ? loadCoins() : 0}</strong></div>
+        <button class="how-to-hub-btn" onclick="showHowToPlay()" title="Правила и упатство">❓</button>
         <button class="cosmetics-hub-btn" onclick="showCosmeticsShop('themes')">🎨</button>
         <button class="logout-btn" onclick="handleLogOut()">Излез</button>
       </div>
       <div class="hub-body">
       <div class="hub-player">
         <div class="avatar-frame-wrap ${typeof getActiveFrameClass === 'function' ? getActiveFrameClass() : ''}">
-          ${playerAvatarHtml(playerName, loadAvatarId(), 36)}
+          ${playerAvatarHtml(playerName, loadAvatarId(), 36, typeof loadGooglePhotoUrl === 'function' ? loadGooglePhotoUrl() : '')}
         </div>
         <strong>${escHtml(playerName)}</strong>
-        ${typeof getActiveBadgeHtml === 'function' ? getActiveBadgeHtml() : ''}
         <button class="change-name-btn" onclick="showNameEntry(true)">Промени</button>
         ${currentUser ? `<button class="delete-acc-btn" onclick="_showDeleteAccountConfirm()">Избриши профил</button>` : ''}
       </div>
@@ -474,6 +478,101 @@ function showResult(score, game) {
     if (typeof animateCoinReward === 'function') animateCoinReward(coinsEarned, earnedEl);
   }, 350);
 }
+
+// ── Правила и упатство ────────────────────────────────────────────────────
+window.showHowToPlay = function() {
+  const cat = loadCategory && loadCategory();
+  if (cat) document.body.className = getThemeClass(cat);
+  showScreen(`
+    <div class="game-wrap">
+      <div class="score-bar">
+        <button class="exit-btn" onclick="showHub ? showHub() : showAuthScreen()">✕</button>
+        <span class="bar-title">❓ Правила &amp; Упатство</span>
+      </div>
+      <div class="how-to-screen">
+
+        <div class="htp-intro">
+          <div class="htp-logo">${LOGO}</div>
+          <p class="htp-tagline">Учи македонски зборови &mdash; играј, освојувај, напредувај!</p>
+        </div>
+
+        <div class="htp-section">
+          <h3 class="htp-heading">🎮 Режими на игра</h3>
+          <div class="htp-games">
+            <div class="htp-game">
+              <span class="htp-icon card-teal">🔗</span>
+              <div class="htp-game-info">
+                <strong>Спој го зборот</strong>
+                <p>Поврзи ги зборовите со нивните дефиниции пред да истече времето. Колку побрзо — толку повеќе поени!</p>
+              </div>
+            </div>
+            <div class="htp-game">
+              <span class="htp-icon card-lavender">✓✗</span>
+              <div class="htp-game-info">
+                <strong>Точно или Неточно</strong>
+                <p>Прочитај го зборот и дефиницијата — одлучи дали е точно или неточно за 60 секунди.</p>
+              </div>
+            </div>
+            <div class="htp-game">
+              <span class="htp-icon card-dark">⭐</span>
+              <div class="htp-game-info">
+                <strong>Збор по збор</strong>
+                <p>Погоди го скриениот збор буква по буква. Имаш само 6 обиди — грешките бројат!</p>
+              </div>
+            </div>
+            <div class="htp-game">
+              <span class="htp-icon card-orange">❓</span>
+              <div class="htp-game-info">
+                <strong>Кој збор е тоа</strong>
+                <p>Прочитај ја дефиницијата и избери точниот збор меѓу 4 понудени одговори.</p>
+              </div>
+            </div>
+            <div class="htp-game">
+              <span class="htp-icon card-speed">⚡</span>
+              <div class="htp-game-info">
+                <strong>Брза Рунда</strong>
+                <p>60 секунди, максимален темпо! Одговори Точно/Неточно — колку поодговори, толку повеќе поени.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="htp-section">
+          <h3 class="htp-heading">📊 Поени, монети и напредок</h3>
+          <div class="htp-tips">
+            <div class="htp-tip"><span class="htp-tip-icon">⭐</span><span>Освојуваш <strong>поени</strong> со секој точен одговор — рекордот се чува автоматски</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">🪙</span><span>Добиваш <strong>монети</strong> по секоја игра — трошете ги во продавницата за теми и рамки</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">🔥</span><span>Играј секој ден за да го зголемиш <strong>стрикот</strong> и да освоиш бонус монети</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">🏆</span><span>Споредувај ги своите резултати со другите на <strong>Табелата</strong></span></div>
+          </div>
+        </div>
+
+        <div class="htp-section">
+          <h3 class="htp-heading">📚 Категории на тежина</h3>
+          <div class="htp-tips">
+            <div class="htp-tip"><span class="htp-tip-icon">🌱</span><span><strong>Млади (7–12)</strong> — едноставни зборови за деца</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">📖</span><span><strong>Средно (13–17)</strong> — зборови со средна тежина</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">🧠</span><span><strong>Напредно (18+)</strong> — потешки македонски зборови</span></div>
+          </div>
+        </div>
+
+        <div class="htp-section">
+          <h3 class="htp-heading">🎨 Козметика и теми</h3>
+          <div class="htp-tips">
+            <div class="htp-tip"><span class="htp-tip-icon">🎨</span><span>Отклучи <strong>7 уникатни теми</strong> — од Охрид до Скопје Неон</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">✨</span><span>Купи <strong>рамки</strong> за твојот аватар со монети</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">👤</span><span>Избери <strong>фолклорен аватар</strong> за уникатен идентитет</span></div>
+          </div>
+        </div>
+
+        <div class="htp-cta">
+          <button class="btn-primary htp-start-btn" onclick="showHub ? showHub() : showAuthScreen()">
+            🎮 Кон игрите →
+          </button>
+        </div>
+      </div>
+    </div>`);
+};
 
 // ── Почетно стартување ─────────────────────────────────────────────────────
 initAuth();

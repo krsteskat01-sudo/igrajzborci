@@ -89,6 +89,9 @@ function saveAvatarId(id) { localStorage.setItem(`zb_${_uid()}_avatar`, id); }
  */
 function loadAvatarId()   { return localStorage.getItem(`zb_${_uid()}_avatar`) || ''; }
 
+function saveGooglePhotoUrl(url) { if (url) localStorage.setItem(`zb_${_uid()}_gpurl`, url); }
+function loadGooglePhotoUrl()    { return localStorage.getItem(`zb_${_uid()}_gpurl`) || ''; }
+
 /**
  * Што прави: Ги брише сите локални податоци за корисникот (при одјава)
  * Параметри: uid (стринг - ID на корисник)
@@ -100,7 +103,7 @@ function clearUserLocalStorage(uid) {
    'best_match', 'best_truefalse', 'best_hangman', 'best_quiz', 'best_speedround',
    'best_wordbuilder', 'best_memoryflip', 'best_fasttyping',
    'unlock_wordbuilder', 'unlock_memoryflip', 'unlock_fasttyping',
-   'avatar', 'cos_settings', 'cos_owned', 'coins']
+   'avatar', 'cos_settings', 'cos_owned', 'coins', 'gpurl']
     .forEach(storageKey => localStorage.removeItem(`zb_${uid}_${storageKey}`));
 }
 

@@ -1,4 +1,4 @@
-// ── cosmetics.js — Macedonia-themed skins, frames, badges, folk avatars ──
+// ── cosmetics.js — Macedonia-themed skins, frames, folk avatars ──
 // Cosmetics are purchased by SPENDING coins (spendCoins in storage.js).
 // Ownership is permanent once bought; coins are deducted at purchase.
 
@@ -12,13 +12,6 @@ const COSMETIC_CATALOG = {
     { id: 'balkan-folklore',    name: 'Балкански Фолклор',    icon: '🎭', cost: 40,  desc: 'Богати фолклорни бои и шари',             swatch: 'swatch-balkan-folklore' },
     { id: 'skopje-neon',        name: 'Скопје Неон',          icon: '🌃', cost: 50,  desc: 'Неонска светлина на ноќниот Скопје',      swatch: 'swatch-skopje-neon' },
     { id: 'lake-night',         name: 'Ноќно Езеро',          icon: '🌙', cost: 60,  desc: 'Мирна сина палета на ноќното езеро',      swatch: 'swatch-lake-night' },
-  ],
-  badges: [
-    { id: 'none',          name: 'Без значка',       icon: '—',  cost: 0,   desc: 'Оди без значка' },
-    { id: 'ajvar',         name: 'Ајвар Мастер',     icon: '🫙', cost: 15,  desc: 'За вистинскиот мајстор на ајвар' },
-    { id: 'folklore-star', name: 'Фолклорна Ѕвезда', icon: '⭐', cost: 20,  desc: 'За играчи со македонски дух' },
-    { id: 'ohrid-pearl',   name: 'Охридски Бисер',   icon: '🦪', cost: 30,  desc: 'Ексклузивна охридска значка' },
-    { id: 'rakija',        name: 'Ракија Легенда',   icon: '🔥', cost: 45,  desc: 'Огнена значка за смели играчи' },
   ],
   frames: [
     { id: 'none',           name: 'Без рамка',       icon: '○',  cost: 0,   desc: 'Оди без рамка' },
@@ -47,15 +40,20 @@ function loadCosmeticSettings() {
 function saveCosmeticSettings(settings) {
   localStorage.setItem(_cosKey('settings'), JSON.stringify(settings));
   if (typeof db !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
+    // Use dotted field paths so Firestore surgically updates each sub-key without
+    // replacing the entire cosmeticSettings object (merge:true only merges top-level
+    // fields — it would wipe avatar/frame/theme keys not present in settings).
     db.collection('users').doc(currentUser.uid)
-      .set({
-        cosmeticSettings: settings,
-        // Top-level fields for easy leaderboard queries and public display
+      .update({
+        'cosmeticSettings.theme':  settings.theme  || 'default',
+        'cosmeticSettings.badge':  settings.badge  || 'none',
+        'cosmeticSettings.frame':  settings.frame  || 'none',
+        'cosmeticSettings.avatar': settings.avatar || 'none',
         selectedSkin:    settings.theme  || 'default',
         selectedBadge:   settings.badge  || 'none',
         selectedFrame:   settings.frame  || 'none',
         selectedAvatar:  settings.avatar || 'none',
-      }, { merge: true }).catch(() => {});
+      }).catch(() => {});
   }
 }
 
@@ -103,14 +101,6 @@ function getActiveFrameClass() {
   return 'frame-' + frameId;
 }
 
-function getActiveBadgeHtml() {
-  const badgeId = loadCosmeticSettings().badge || 'none';
-  if (badgeId === 'none' || !isCosmeticOwned(badgeId)) return '';
-  const item = _findItem(badgeId);
-  if (!item) return '';
-  return `<span class="cosmetic-badge badge-${badgeId}" title="${item.name}">${item.icon}</span>`;
-}
-
 function getActiveFolkAvatarClass() {
   const avId = loadCosmeticSettings().avatar || 'none';
   if (avId === 'none' || !isCosmeticOwned(avId)) return '';
@@ -151,7 +141,7 @@ window.showCosmeticsShop = function(tab) {
 };
 
 function _catKey(tab) {
-  return { themes: 'theme', badges: 'badge', frames: 'frame', avatars: 'avatar' }[tab] || 'theme';
+  return { themes: 'theme', frames: 'frame', avatars: 'avatar' }[tab] || 'theme';
 }
 
 function _renderCosmeticsShop() {
@@ -161,7 +151,6 @@ function _renderCosmeticsShop() {
 
   const tabsHtml = [
     { id: 'themes',  label: 'Теми',    icon: '🎨' },
-    { id: 'badges',  label: 'Значки',  icon: '🏅' },
     { id: 'frames',  label: 'Рамки',   icon: '✨' },
     { id: 'avatars', label: 'Аватари', icon: '👤' },
   ].map(t =>

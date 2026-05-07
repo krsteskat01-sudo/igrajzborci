@@ -81,7 +81,7 @@ function initHangman(category) {
       <div class="game-wrap fade-in">
         ${GAME_BG}
         <div class="score-bar">
-          <button class="exit-btn" onclick="showHub()">✕</button>
+          <button class="exit-btn" onclick="hmExit()">✕</button>
           <span class="bar-title">Збор по збор</span>
           <span class="bar-stat">Поени: <strong>${score}</strong></span>
           <span class="bar-stat">Збор ${wordIndex + 1}/${TOTAL_WORDS}</span>
@@ -146,15 +146,30 @@ function initHangman(category) {
     }
   };
 
-  /**
-   * Што прави: Започнува нов збор или ја завршува играта
-   * Параметри: нема
-   * Враќа: ништо
-   */
+  // Keyboard support — Macedonian letters trigger hmGuess directly
+  function _hmKey(e) {
+    if (transitioning) return;
+    const key = e.key.toUpperCase();
+    if (MK_ALPHA.includes(key) && !guessed.has(key)) {
+      e.preventDefault();
+      window.hmGuess(key);
+    }
+  }
+  document.addEventListener('keydown', _hmKey);
+
+  window.hmExit = function() {
+    document.removeEventListener('keydown', _hmKey);
+    showHub();
+  };
+
   function startWord() {
-    if (wordIndex >= TOTAL_WORDS) { showResult(score, 'hangman'); return; }
+    if (wordIndex >= TOTAL_WORDS) {
+      document.removeEventListener('keydown', _hmKey);
+      showResult(score, 'hangman');
+      return;
+    }
     currentWord   = words[wordIndex].zbor.toUpperCase();
-    guessed       = new Set(); // Ресетирај ги погодените букви
+    guessed       = new Set();
     wrongCount    = 0;
     transitioning = false;
     render(null);

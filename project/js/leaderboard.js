@@ -32,6 +32,7 @@ const LB_ACH_DEFS = {
 function _lbAvatarHtml(player, size) {
   const sz       = size || 34;
   const settings = player.cosmeticSettings || {};
+  // Folk avatar (purchased cosmetic) takes highest priority
   const folkAvId = (settings.avatar && settings.avatar !== 'none') ? settings.avatar : null;
   if (folkAvId) {
     const letter  = ((player.displayName || '?')[0] || '?').toUpperCase();
@@ -39,16 +40,12 @@ function _lbAvatarHtml(player, size) {
     const bg      = palette[((player.displayName || '?').charCodeAt(0) || 0) % palette.length];
     return `<span class="initial-avatar av-${folkAvId}" style="--av-sz:${sz}px;background:${bg}">${letter}</span>`;
   }
+  // Google profile photo stored in Firestore
+  if (player.googlePhotoUrl) {
+    const escapedName = (player.displayName || '').replace(/"/g, '&quot;');
+    return `<span class="avatar-circle avatar-google-photo" style="--av-sz:${sz}px;background-image:url('${player.googlePhotoUrl}')" aria-label="${escapedName}"></span>`;
+  }
   return playerAvatarHtml(player.displayName, player.avatarId || '', sz);
-}
-
-// ── Badge HTML for leaderboard context ───────────────────────
-function _lbBadgeHtml(badgeId) {
-  if (!badgeId || badgeId === 'none') return '';
-  const cat = typeof COSMETIC_CATALOG !== 'undefined' ? (COSMETIC_CATALOG.badges || []) : [];
-  const badge = cat.find(b => b.id === badgeId);
-  if (!badge) return '';
-  return `<span class="cosmetic-badge badge-${badgeId} lb-badge" title="${badge.name}">${badge.icon}</span>`;
 }
 
 // ── Tiny theme-swatch bar under the username ─────────────────
@@ -59,24 +56,43 @@ function _lbThemeBar(themeId) {
   return `<div class="lb-theme-bar swatch-${themeId}" title="${item ? item.name : themeId}"></div>`;
 }
 
+// ── Achievement mini-badges visible directly in the row ──────
+// Shows up to 4 earned achievements as labelled pills next to the player name.
+// Full achievement names are repeated in the expand panel for clarity.
+function _lbMiniBadgesHtml(player) {
+  const ach    = player.achievements || {};
+  const earned = Object.entries(LB_ACH_DEFS).filter(([key]) => ach[key]);
+  if (!earned.length) return '';
+  const shown = earned.slice(0, 4);
+  const rest  = earned.length - shown.length;
+  const pills = shown.map(([key, def]) =>
+    `<span class="lb-mini-badge lb-ach-${key}" title="${def.name}">${def.icon}<span class="lb-ach-lbl">${def.name}</span></span>`
+  ).join('');
+  const more = rest > 0 ? `<span class="lb-mini-badge lb-ach-more" title="${rest} повеќе">+${rest}</span>` : '';
+  return `<div class="lb-mini-badges">${pills}${more}</div>`;
+}
+
 // ── Expandable cosmetics + achievement panel ─────────────────
 function _lbBuildExpandPanel(player) {
   const settings = player.cosmeticSettings || {};
-  const catalog  = typeof COSMETIC_CATALOG !== 'undefined' ? COSMETIC_CATALOG : { themes:[], badges:[], frames:[], avatars:[] };
+  const catalog  = typeof COSMETIC_CATALOG !== 'undefined' ? COSMETIC_CATALOG : { themes:[], frames:[], avatars:[] };
 
   const findName = (cat, id) => (catalog[cat] || []).find(i => i.id === id)?.name || id;
 
   const cosmeticsHtml = [
     settings.theme  && settings.theme  !== 'default' ? `<span class="lbep-chip lbep-theme">🎨 ${findName('themes',  settings.theme)}</span>`  : '',
     settings.frame  && settings.frame  !== 'none'    ? `<span class="lbep-chip lbep-frame">✨ ${findName('frames',  settings.frame)}</span>`  : '',
-    settings.badge  && settings.badge  !== 'none'    ? `<span class="lbep-chip lbep-badge">🏅 ${findName('badges',  settings.badge)}</span>`  : '',
     settings.avatar && settings.avatar !== 'none'    ? `<span class="lbep-chip lbep-avatar">👤 ${findName('avatars', settings.avatar)}</span>` : '',
   ].filter(Boolean).join('');
 
   const ach = player.achievements || {};
   const achHtml = Object.entries(LB_ACH_DEFS)
     .filter(([key]) => ach[key])
-    .map(([, def]) => `<span class="lbep-ach" title="${def.name}">${def.icon}</span>`)
+    .map(([key, def]) => `
+      <span class="lbep-ach lb-ach-${key}" title="${def.name}">
+        <span class="lbep-ach-icon">${def.icon}</span>
+        <span class="lbep-ach-name">${def.name}</span>
+      </span>`)
     .join('');
 
   if (!cosmeticsHtml && !achHtml) return '<div class="lbep-empty">Нема козметика уште</div>';
@@ -89,10 +105,10 @@ function _lbBuildExpandPanel(player) {
 function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
   const settings   = player.cosmeticSettings || {};
   const frameId    = (settings.frame  && settings.frame  !== 'none') ? settings.frame  : null;
-  const badgeId    = (settings.badge  && settings.badge  !== 'none') ? settings.badge  : null;
   const themeId    = (settings.theme  && settings.theme  !== 'default') ? settings.theme : null;
   const frameClass = frameId ? 'frame-' + frameId : '';
-  const tintBg     = themeId ? LB_THEME_TINTS[themeId] || '' : '';
+  // Don't apply tintBg on top-3 rows — it overrides their solid orange/teal/lavender backgrounds
+  const tintBg     = (themeId && rankIndex >= 3) ? LB_THEME_TINTS[themeId] || '' : '';
   const tintBorder = themeId ? `border-left:3px solid ${_lbThemeBorderColor(themeId)};` : '';
 
   const isMe      = player.id === myUid;
@@ -121,9 +137,9 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
       <div class="lb-name-col">
         <div class="lb-name-row">
           <span class="lb-name">${escHtml(player.displayName || '')}</span>
-          ${_lbBadgeHtml(badgeId)}
           ${isMe ? '<span class="lb-you">ти</span>' : ''}
         </div>
+        ${_lbMiniBadgesHtml(player)}
         ${_lbThemeBar(themeId)}
       </div>
       <span class="lb-pts">${player[scoreKey] || 0}</span>
@@ -195,6 +211,11 @@ async function syncScore(game, gameScore) {
       category:    category,
       lastPlayed:  firebase.firestore.FieldValue.serverTimestamp(),
     };
+    // Only sync avatarId / googlePhotoUrl if localStorage has real values
+    const localAvId   = typeof loadAvatarId      === 'function' ? loadAvatarId()      : '';
+    const localGpUrl  = typeof loadGooglePhotoUrl === 'function' ? loadGooglePhotoUrl() : '';
+    if (localAvId)  update.avatarId       = localAvId;
+    if (localGpUrl) update.googlePhotoUrl = localGpUrl;
 
     // Sync public cosmetics so leaderboard always reflects current loadout
     if (typeof loadCosmeticSettings === 'function') {
@@ -282,6 +303,19 @@ async function showLeaderboard() {
   try {
     if (typeof db === 'undefined') throw new Error('Firebase не е конфигуриран');
 
+    // Eagerly push the current user's avatar/photo into Firestore so every viewer
+    // sees the correct avatar — not just the owner seeing their own patched row.
+    if (currentUser) {
+      const _avId  = typeof loadAvatarId      === 'function' ? loadAvatarId()      : '';
+      const _gpUrl = typeof loadGooglePhotoUrl === 'function' ? loadGooglePhotoUrl() : '';
+      if (_avId || _gpUrl) {
+        const _upd = {};
+        if (_avId)  _upd.avatarId       = _avId;
+        if (_gpUrl) _upd.googlePhotoUrl = _gpUrl;
+        db.collection('users').doc(currentUser.uid).update(_upd).catch(() => {});
+      }
+    }
+
     lbDetach(); // Исчисти претходен слушател ако има
 
     // Следи ги топ 200 играчи во реално време (onSnapshot)
@@ -340,8 +374,23 @@ function renderLeaderboard() {
     })
     .sort((a, b) => (b[_lbTab] || 0) - (a[_lbTab] || 0));
 
-  const topPlayers       = allSorted.slice(0, 20);
   const currentUserId    = currentUser ? currentUser.uid : null;
+  // For the current user, fill in avatar/photo from localStorage if Firestore doc is missing
+  // them (race condition during signup, or account predating the fields).
+  // For the current user, localStorage is always the most up-to-date source for
+  // avatarId and googlePhotoUrl (synced from Firestore on login, set on signup).
+  // Firestore may lag behind or be missing these fields due to signup race conditions.
+  const localAvId  = currentUserId && typeof loadAvatarId      === 'function' ? loadAvatarId()      : '';
+  const localGpUrl = currentUserId && typeof loadGooglePhotoUrl === 'function' ? loadGooglePhotoUrl() : '';
+  const topPlayers = allSorted.slice(0, 20).map(player => {
+    if (currentUserId && player.id === currentUserId) {
+      const patched = { ...player };
+      if (localAvId)  patched.avatarId       = localAvId;   // always trust local
+      if (localGpUrl) patched.googlePhotoUrl = localGpUrl;
+      return patched;
+    }
+    return player;
+  });
   const currentUserRankIndex = currentUserId ? allSorted.findIndex(player => player.id === currentUserId) : -1;
   const myRank           = currentUserRankIndex + 1;
 
