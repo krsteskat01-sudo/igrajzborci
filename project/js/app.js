@@ -482,7 +482,11 @@ function showResult(score, game) {
 // ── Правила и упатство ────────────────────────────────────────────────────
 window.showHowToPlay = function() {
   const cat = loadCategory && loadCategory();
-  if (cat) document.body.className = getThemeClass(cat);
+  if (cat) {
+    const wasDark = document.body.classList.contains('theme-dark');
+    document.body.className = getThemeClass(cat);
+    if (wasDark) document.body.classList.add('theme-dark');
+  }
   showScreen(`
     <div class="game-wrap">
       <div class="score-bar">

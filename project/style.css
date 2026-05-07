@@ -3629,13 +3629,23 @@ body.theme-dark .confirm-dialog p  { color: rgba(224,236,255,.75); }
   width: 100%;
 }
 
-/* Intro block */
-.htp-intro { text-align: center; padding: 8px 0 4px; }
+/* Intro block — same glass card as sections so it reads on any landscape */
+.htp-intro {
+  text-align: center; padding: 18px 20px 16px;
+  background: rgba(255,255,255,.92);
+  border: 2px solid rgba(59,31,58,.1);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 rgba(59,31,58,.06);
+}
 .htp-logo {
-  font-family: 'Oswald', sans-serif; font-size: 2.2rem; font-weight: 700;
-  color: var(--dark); letter-spacing: .04em; line-height: 1;
+  font-family: 'Oswald', sans-serif; font-size: 2.4rem; font-weight: 700;
+  letter-spacing: .04em; line-height: 1;
   margin-bottom: 8px;
 }
+/* Logo span colours match the hub header branding */
+.htp-logo .logo-zbor { color: var(--dark); }
+.htp-logo .logo-ci   { color: var(--orange); }
+.htp-logo .logo-star { color: var(--orange); }
 .htp-tagline {
   font-size: .95rem; color: var(--muted);
   font-family: 'Nunito', sans-serif; line-height: 1.5;
@@ -3712,9 +3722,17 @@ body[data-theme="lake-night"]     .htp-tip { color: #fff; }
 body[data-theme="skopje-neon"]    .htp-game-info p,
 body[data-theme="balkan-folklore"] .htp-game-info p,
 body[data-theme="lake-night"]     .htp-game-info p { color: rgba(255,255,255,.6); }
-body[data-theme="skopje-neon"]    .htp-logo,
-body[data-theme="balkan-folklore"] .htp-logo,
-body[data-theme="lake-night"]     .htp-logo { color: #fff; }
+/* Dark theme intro card */
+body[data-theme="skopje-neon"]    .htp-intro,
+body[data-theme="balkan-folklore"] .htp-intro,
+body[data-theme="lake-night"]     .htp-intro { background: rgba(10,18,32,.92); border-color: rgba(255,255,255,.1); }
+body[data-theme="skopje-neon"]    .htp-intro  { border-color: rgba(0,245,224,.2); }
+body[data-theme="balkan-folklore"] .htp-intro { border-color: rgba(255,215,0,.18); }
+body[data-theme="lake-night"]     .htp-intro  { border-color: rgba(74,160,212,.2); }
+
+body[data-theme="skopje-neon"]    .htp-logo .logo-zbor,
+body[data-theme="balkan-folklore"] .htp-logo .logo-zbor,
+body[data-theme="lake-night"]     .htp-logo .logo-zbor { color: #fff; }
 body[data-theme="skopje-neon"]    .htp-tagline,
 body[data-theme="balkan-folklore"] .htp-tagline,
 body[data-theme="lake-night"]     .htp-tagline { color: rgba(255,255,255,.55); }
