@@ -486,7 +486,7 @@ window.showHowToPlay = function() {
   showScreen(`
     <div class="game-wrap">
       <div class="score-bar">
-        <button class="exit-btn" onclick="showHub ? showHub() : showAuthScreen()">✕</button>
+        <button class="exit-btn" onclick="(typeof currentUser!=='undefined'&&currentUser)?showHub():showAuthScreen('login')">✕</button>
         <span class="bar-title">❓ Правила &amp; Упатство</span>
       </div>
       <div class="how-to-screen">
@@ -566,7 +566,7 @@ window.showHowToPlay = function() {
         </div>
 
         <div class="htp-cta">
-          <button class="btn-primary htp-start-btn" onclick="showHub ? showHub() : showAuthScreen()">
+          <button class="btn-primary htp-start-btn" onclick="(typeof currentUser!=='undefined'&&currentUser)?showHub():showAuthScreen('login')">
             🎮 Кон игрите →
           </button>
         </div>
