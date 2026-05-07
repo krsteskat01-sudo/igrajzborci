@@ -2928,10 +2928,24 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
 
 /* Badges removed */
 
-/* Folk avatar CSS skins */
+/* Folk avatar CSS skins — used in cosmetics shop preview only */
 .av-folklore-1 { background:linear-gradient(135deg,#8B1A1A 0%,#C0392B 40%,#FFD700 100%) !important; }
 .av-folklore-2 { background:linear-gradient(135deg,#1A5A8A 0%,#2E86C1 40%,#F8C471 100%) !important; }
 .av-folklore-3 { background:linear-gradient(135deg,#1A3A1A 0%,#2E7D32 50%,#F0E68C 100%) !important; }
+
+/* Folk avatar rings on the leaderboard wrapper — shows profile photo + coloured ring */
+.folk-folklore-1 .avatar-circle,
+.folk-folklore-1 .initial-avatar {
+  box-shadow: 0 0 0 2.5px #C0392B, 0 0 0 5px #FFD700, 0 0 10px rgba(192,57,43,.45) !important;
+}
+.folk-folklore-2 .avatar-circle,
+.folk-folklore-2 .initial-avatar {
+  box-shadow: 0 0 0 2.5px #2E86C1, 0 0 0 5px #F8C471, 0 0 10px rgba(46,134,193,.45) !important;
+}
+.folk-folklore-3 .avatar-circle,
+.folk-folklore-3 .initial-avatar {
+  box-shadow: 0 0 0 2.5px #2E7D32, 0 0 0 5px #F0E68C, 0 0 10px rgba(46,125,50,.45) !important;
+}
 
 /* Cosmetics shop screen */
 .cosmetics-screen { flex:1; display:flex; flex-direction:column; overflow:hidden; }

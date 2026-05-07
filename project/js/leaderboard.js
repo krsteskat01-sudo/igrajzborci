@@ -30,17 +30,9 @@ const LB_ACH_DEFS = {
 
 // ── Per-player avatar with folk-avatar support ───────────────
 function _lbAvatarHtml(player, size) {
-  const sz       = size || 34;
-  const settings = player.cosmeticSettings || {};
-  // Folk avatar (purchased cosmetic) takes highest priority
-  const folkAvId = (settings.avatar && settings.avatar !== 'none') ? settings.avatar : null;
-  if (folkAvId) {
-    const letter  = ((player.displayName || '?')[0] || '?').toUpperCase();
-    const palette = ['#3B1F3A','#1A7A6E','#E8641A','#8B7AB8','#2D6A4F','#C9442B'];
-    const bg      = palette[((player.displayName || '?').charCodeAt(0) || 0) % palette.length];
-    return `<span class="initial-avatar av-${folkAvId}" style="--av-sz:${sz}px;background:${bg}">${letter}</span>`;
-  }
-  // Google profile photo stored in Firestore
+  const sz = size || 34;
+  // Always show the real photo — Google photo or SVG registration avatar.
+  // Folk avatar cosmetic is applied as a ring on the wrapper in _lbBuildRow.
   if (player.googlePhotoUrl) {
     const escapedName = (player.displayName || '').replace(/"/g, '&quot;');
     return `<span class="avatar-circle avatar-google-photo" style="--av-sz:${sz}px;background-image:url('${player.googlePhotoUrl}')" aria-label="${escapedName}"></span>`;
@@ -106,7 +98,9 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
   const settings   = player.cosmeticSettings || {};
   const frameId    = (settings.frame  && settings.frame  !== 'none') ? settings.frame  : null;
   const themeId    = (settings.theme  && settings.theme  !== 'default') ? settings.theme : null;
-  const frameClass = frameId ? 'frame-' + frameId : '';
+  const folkAvId   = (settings.avatar && settings.avatar !== 'none') ? settings.avatar : null;
+  const frameClass = frameId  ? 'frame-' + frameId  : '';
+  const folkClass  = folkAvId ? 'folk-' + folkAvId  : '';
   // Don't apply tintBg on top-3 rows — it overrides their solid orange/teal/lavender backgrounds
   const tintBg     = (themeId && rankIndex >= 3) ? LB_THEME_TINTS[themeId] || '' : '';
   const tintBorder = themeId ? `border-left:3px solid ${_lbThemeBorderColor(themeId)};` : '';
@@ -131,7 +125,7 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
       onclick="lbToggleExpand('${expandId}')"
       style="${tintBg ? `background:${tintBg};` : ''}${tintBorder}">
       <span class="lb-rank">${rankDisp}</span>
-      <div class="avatar-frame-wrap ${frameClass} lb-av-wrap" style="flex-shrink:0;">
+      <div class="avatar-frame-wrap ${frameClass} ${folkClass} lb-av-wrap" style="flex-shrink:0;">
         ${_lbAvatarHtml(player, 34)}
       </div>
       <div class="lb-name-col">
