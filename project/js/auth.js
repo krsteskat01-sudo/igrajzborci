@@ -221,7 +221,7 @@ function showAuthScreen(tab = 'login') {
         <!-- Регистрација (Sign Up) -->
         <div id="auth-signup" class="auth-form"${tab !== 'signup' ? ' style="display:none"' : ''}>
           <input class="auth-input" type="text"     id="signup-name"
-            placeholder="Прекар / Ime" autocomplete="nickname" maxlength="20"
+            placeholder="Име" autocomplete="nickname" maxlength="20"
             onkeydown="if(event.key==='Enter') handleSignUp()">
           <input class="auth-input" type="email"    id="signup-email"
             placeholder="Е-пошта" autocomplete="email"
