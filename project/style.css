@@ -2484,7 +2484,7 @@ body.theme-dark .guest-banner   { background: rgba(255,255,255,.06); border-colo
    1. OHRID SUNSET  — burning sky, mountain silhouette, glowing lake
    ═══════════════════════════════════════════ */
 body[data-theme="ohrid-sunset"] {
-  background: linear-gradient(180deg,#C8280A 0%,#E8501A 12%,#F57832 26%,#F9A85C 42%,#EEB4D8 60%,#B06CC0 78%,#6030A0 100%);
+  background: linear-gradient(180deg,#1A0428 0%,#4A0860 8%,#8C1040 18%,#C83018 28%,#E85C18 38%,#F08838 48%,#F5B060 58%,#EEB8D8 68%,#B068C0 80%,#6028A0 90%,#280850 100%);
   background-attachment: fixed;
 }
 body[data-theme="ohrid-sunset"] .game-wrap   { background: rgba(80,20,10,.18) !important; }
@@ -2495,12 +2495,18 @@ body[data-theme="ohrid-sunset"] .name-entry  { background: transparent !importan
 body[data-theme="ohrid-sunset"] .game-wrap::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background:
-    radial-gradient(circle 65px at 66% 56%, #FFE840 0%, #FF8A10 40%, transparent 68%),
-    radial-gradient(ellipse 220px 110px at 66% 62%, rgba(255,110,20,.5) 0%, transparent 65%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,430 90,340 200,395 330,265 470,345 600,210 740,305 880,235 1010,295 1120,250 1200,270 1200,800' fill='%235020A0' opacity='.5'/%3E%3C/svg%3E") center/cover no-repeat,
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,530 70,490 170,520 280,455 410,500 540,430 660,475 780,420 900,460 1020,405 1130,445 1200,425 1200,800' fill='%23300818'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 55%, rgba(5,15,48,.18) 100%),
-    radial-gradient(ellipse 28px 90px at 66% 87%, rgba(255,155,35,.32) 0%, transparent 80%);
+    /* bright sun disc */
+    radial-gradient(circle 85px at 66% 54%, #FFF060 0%, #FFAC10 28%, #FF5500 52%, transparent 72%),
+    /* wide sun corona */
+    radial-gradient(circle 200px at 66% 54%, rgba(255,140,20,.38) 0%, transparent 70%),
+    /* water reflection beam */
+    radial-gradient(ellipse 28px 220px at 66% 84%, rgba(255,190,50,.45) 0%, transparent 92%),
+    /* distant purple mountain range */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,420 85,335 175,385 285,270 405,340 530,235 650,305 775,248 895,308 1010,265 1110,310 1200,285 1200,800' fill='%235520A8' opacity='.55'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* dark near shoreline */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,560 55,535 130,558 210,512 295,542 380,498 468,528 558,488 648,518 738,478 828,510 918,472 1010,504 1095,468 1200,490 1200,800' fill='%231A0830'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* lake surface — mirrors warm sky */
+    linear-gradient(to bottom, transparent 60%, rgba(160,40,80,.38) 72%, rgba(80,10,50,.65) 88%, rgba(20,4,38,.9) 100%);
 }
 @keyframes sunsetShimmer { 0%,100%{opacity:.6;} 50%{opacity:1;} }
 body[data-theme="ohrid-sunset"] .game-wrap::after {
@@ -2528,7 +2534,7 @@ body[data-theme="ohrid-sunset"] .premium-score { color:#FF8C00; }
    2. SKOPJE NEON  — cyberpunk city night, neon signs
    ═══════════════════════════════════════════ */
 body[data-theme="skopje-neon"] {
-  background: linear-gradient(180deg,#000208 0%,#020818 25%,#030D20 55%,#020610 100%);
+  background: linear-gradient(180deg,#000104 0%,#010510 20%,#020A1C 45%,#030E28 65%,#020818 82%,#010408 100%);
   background-attachment: fixed;
 }
 body[data-theme="skopje-neon"] .game-wrap   { background: rgba(1,4,14,.72) !important; color: #C8F0FF; }
@@ -2571,11 +2577,16 @@ body[data-theme="skopje-neon"] .lb-my-rank     { color: #80D8F0; }
 body[data-theme="skopje-neon"] .game-wrap::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background:
-    radial-gradient(ellipse 420px 280px at 50% 0%, rgba(0,245,224,.1) 0%, transparent 70%),
-    radial-gradient(ellipse 280px 480px at 95% 50%, rgba(255,0,200,.09) 0%, transparent 65%),
-    radial-gradient(ellipse 240px 380px at 5% 55%, rgba(0,80,255,.1) 0%, transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='40' y='470' width='55' height='330' fill='%23060C22'/%3E%3Crect x='115' y='410' width='42' height='390' fill='%23080F28'/%3E%3Crect x='180' y='350' width='75' height='450' fill='%23060C22'/%3E%3Crect x='280' y='430' width='38' height='370' fill='%23080F28'/%3E%3Crect x='340' y='290' width='88' height='510' fill='%23060C22'/%3E%3Crect x='455' y='370' width='52' height='430' fill='%23080F28'/%3E%3Crect x='535' y='240' width='95' height='560' fill='%23060C22'/%3E%3Crect x='658' y='310' width='68' height='490' fill='%23080F28'/%3E%3Crect x='750' y='390' width='48' height='410' fill='%23060C22'/%3E%3Crect x='822' y='270' width='82' height='530' fill='%23080F28'/%3E%3Crect x='930' y='340' width='62' height='460' fill='%23060C22'/%3E%3Crect x='1015' y='410' width='44' height='390' fill='%23080F28'/%3E%3Crect x='1082' y='360' width='78' height='440' fill='%23060C22'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 65%, rgba(1,3,6,.15) 100%);
+    /* atmospheric neon haze from below */
+    radial-gradient(ellipse 600px 280px at 50% 100%, rgba(0,245,224,.07) 0%, transparent 65%),
+    radial-gradient(ellipse 350px 420px at 90% 60%, rgba(255,0,200,.06) 0%, transparent 58%),
+    radial-gradient(ellipse 300px 360px at 10% 55%, rgba(0,80,255,.07) 0%, transparent 55%),
+    /* detailed high-rise city skyline */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='0' y='520' width='55' height='280' fill='%23050A1E'/%3E%3Crect x='72' y='460' width='42' height='340' fill='%23060C22'/%3E%3Crect x='132' y='390' width='68' height='410' fill='%23040818'/%3E%3Crect x='218' y='470' width='38' height='330' fill='%23060C22'/%3E%3Crect x='274' y='330' width='82' height='470' fill='%23040818'/%3E%3Crect x='374' y='415' width='50' height='385' fill='%23050A1E'/%3E%3Crect x='442' y='275' width='88' height='525' fill='%23040818'/%3E%3Crect x='548' y='355' width='62' height='445' fill='%23060C22'/%3E%3Crect x='628' y='430' width='46' height='370' fill='%23050A1E'/%3E%3Crect x='692' y='310' width='75' height='490' fill='%23040818'/%3E%3Crect x='786' y='390' width='58' height='410' fill='%23060C22'/%3E%3Crect x='862' y='355' width='52' height='445' fill='%23050A1E'/%3E%3Crect x='932' y='450' width='42' height='350' fill='%23060C22'/%3E%3Crect x='992' y='400' width='68' height='400' fill='%23040818'/%3E%3Crect x='1078' y='470' width='48' height='330' fill='%23060C22'/%3E%3Crect x='1144' y='430' width='56' height='370' fill='%23050A1E'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Stone Bridge over river Vardar */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='0' y='640' width='1200' height='160' fill='%23010308'/%3E%3Crect x='320' y='620' width='560' height='30' fill='%23080F1E'/%3E%3Cpath d='M340,650 Q370,622 400,650' fill='%23060C1A'/%3E%3Cpath d='M408,650 Q438,622 468,650' fill='%23060C1A'/%3E%3Cpath d='M476,650 Q506,622 536,650' fill='%23060C1A'/%3E%3Cpath d='M544,650 Q574,622 604,650' fill='%23060C1A'/%3E%3Cpath d='M612,650 Q642,622 672,650' fill='%23060C1A'/%3E%3Cpath d='M680,650 Q710,622 740,650' fill='%23060C1A'/%3E%3Cpath d='M748,650 Q778,622 808,650' fill='%23060C1A'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* river neon color reflections */
+    linear-gradient(to bottom, transparent 62%, rgba(0,245,224,.06) 72%, rgba(0,30,120,.2) 82%, rgba(0,2,14,.9) 100%);
 }
 @keyframes neonFlicker { 0%,88%,100%{opacity:1;} 90%{opacity:.35;} 92%{opacity:.9;} 94%{opacity:.25;} 96%{opacity:1;} }
 body[data-theme="skopje-neon"] .game-wrap::after {
@@ -2615,7 +2626,7 @@ body[data-theme="skopje-neon"] .difficulty-wrap { background:rgba(4,10,28,.85); 
    ═══════════════════════════════════════════ */
 body[data-theme="retro-yugoslav"] {
   --cream:#E8D8A0;
-  background: linear-gradient(180deg,#B87820 0%,#CC9030 18%,#E0B050 38%,#EEC860 55%,#E4B840 72%,#C89020 88%,#A06010 100%);
+  background: linear-gradient(180deg,#604010 0%,#906025 15%,#B87828 30%,#CCA038 48%,#D8B840 62%,#C49020 76%,#A07018 88%,#705015 100%);
   background-attachment: fixed;
 }
 body[data-theme="retro-yugoslav"] .game-wrap  { background: rgba(100,50,5,.22) !important; }
@@ -2626,10 +2637,16 @@ body[data-theme="retro-yugoslav"] .name-entry { background: transparent !importa
 body[data-theme="retro-yugoslav"] .game-wrap::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.4' fill='%23703010' opacity='.14'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse 85% 85% at 50% 50%, transparent 48%, rgba(60,20,0,.6) 100%),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(60,30,0,.025) 2px, rgba(60,30,0,.025) 3px),
-    linear-gradient(90deg, rgba(140,50,5,.14) 0%, transparent 22%, transparent 78%, rgba(140,50,5,.14) 100%);
+    /* film grain fine texture */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23704018' opacity='.18'/%3E%3C/svg%3E"),
+    /* socialist apartment blocks silhouette */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='0' y='500' width='110' height='300' fill='%23603010' opacity='.45'/%3E%3Crect x='20' y='440' width='75' height='360' fill='%23703818' opacity='.4'/%3E%3Crect x='140' y='520' width='90' height='280' fill='%23603010' opacity='.42'/%3E%3Crect x='155' y='460' width='60' height='340' fill='%23703818' opacity='.38'/%3E%3Crect x='320' y='480' width='105' height='320' fill='%23603010' opacity='.45'/%3E%3Crect x='335' y='415' width='78' height='385' fill='%23703818' opacity='.4'/%3E%3Crect x='520' y='510' width='95' height='290' fill='%23603010' opacity='.4'/%3E%3Crect x='538' y='450' width='62' height='350' fill='%23703818' opacity='.35'/%3E%3Crect x='750' y='490' width='100' height='310' fill='%23603010' opacity='.42'/%3E%3Crect x='762' y='428' width='76' height='372' fill='%23703818' opacity='.38'/%3E%3Crect x='940' y='505' width='92' height='295' fill='%23603010' opacity='.42'/%3E%3Crect x='955' y='445' width='64' height='355' fill='%23703818' opacity='.38'/%3E%3Crect x='1090' y='515' width='110' height='285' fill='%23603010' opacity='.4'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* horizontal scan lines (old TV/photo) */
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(50,22,0,.022) 3px, rgba(50,22,0,.022) 4px),
+    /* heavy vignette corners */
+    radial-gradient(ellipse 90% 90% at 50% 50%, transparent 42%, rgba(50,18,0,.68) 100%),
+    /* warm side light */
+    linear-gradient(90deg, rgba(130,45,5,.18) 0%, transparent 18%, transparent 82%, rgba(130,45,5,.18) 100%);
 }
 body[data-theme="retro-yugoslav"] .game-wrap::after {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
@@ -2737,7 +2754,7 @@ body[data-theme="balkan-folklore"] .difficulty-wrap { background:rgba(42,5,5,.88
    5. MOUNTAIN VILLAGE  — alpine sky, layered peaks, drifting clouds
    ═══════════════════════════════════════════ */
 body[data-theme="mountain-village"] {
-  background: linear-gradient(180deg,#3A80CC 0%,#55A0E0 14%,#78BEEE 30%,#9ED0F5 48%,#C2E4F8 62%,#9ACA90 76%,#5EA855 88%,#307030 100%);
+  background: linear-gradient(180deg,#1848A0 0%,#2E68C0 10%,#4A90D8 22%,#72B8EC 36%,#A4D4F4 50%,#C8E8F8 60%,#A8D090 70%,#68B048 82%,#3A8830 92%,#1E5020 100%);
   background-attachment: fixed;
 }
 body[data-theme="mountain-village"] .game-wrap  { background: rgba(20,60,20,.16) !important; }
@@ -2748,10 +2765,16 @@ body[data-theme="mountain-village"] .name-entry { background: transparent !impor
 body[data-theme="mountain-village"] .game-wrap::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,390 110,290 230,355 365,205 505,310 645,170 785,270 910,195 1045,260 1160,210 1200,230 1200,800' fill='%239AB0C8' opacity='.52'/%3E%3C/svg%3E") center/cover no-repeat,
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,510 85,455 195,490 305,400 430,460 555,370 675,432 800,360 920,415 1035,348 1150,390 1200,370 1200,800' fill='%23226030'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 60%, rgba(20,56,20,.12) 100%),
-    radial-gradient(circle 55px at 82% 11%, rgba(255,240,180,.55), transparent 62%);
+    /* snow caps on highest peaks */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='355,188 375,168 395,195' fill='%23EEF6FF' opacity='.95'/%3E%3Cpolygon points='632,152 652,130 672,158' fill='%23EEF6FF' opacity='.95'/%3E%3Cpolygon points='900,175 920,152 940,182' fill='%23EEF6FF' opacity='.9'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* distant snow-capped mountain range */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,400 100,298 215,362 355,188 495,318 645,152 790,278 912,198 1048,268 1162,218 1200,238 1200,800' fill='%238AAEC6' opacity='.6'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* forested hills (dark green foreground) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cpolygon points='0,800 0,515 78,462 185,498 305,412 425,468 548,378 668,440 795,368 918,422 1038,355 1155,398 1200,375 1200,800' fill='%23246430'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* morning sun haze */
+    radial-gradient(circle 65px at 80% 10%, rgba(255,245,200,.55), transparent 65%),
+    /* morning mist over valley */
+    radial-gradient(ellipse 600px 80px at 50% 60%, rgba(230,248,255,.35) 0%, transparent 75%);
 }
 @keyframes cloudDrift { 0%{transform:translateX(-18%);} 100%{transform:translateX(118%);} }
 body[data-theme="mountain-village"] .game-wrap::after {
@@ -3001,7 +3024,7 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
 .cosmetic-item.ci-active { border-color:var(--orange); background:#FFF8F0; }
 .cosmetic-item.ci-locked { opacity:.52; cursor:default; }
 .ci-icon  { font-size:2.2rem; line-height:1; }
-.ci-swatch{ width:100%; height:32px; border-radius:6px; margin-bottom:2px; }
+.ci-swatch{ width:100%; height:80px; border-radius:6px; margin-bottom:2px; overflow:hidden; }
 .ci-name  { font-family:'Oswald',sans-serif; font-size:.85rem; font-weight:700; color:var(--dark); line-height:1.2; }
 .ci-desc  { font-size:.68rem; color:var(--muted); font-family:'Nunito',sans-serif; line-height:1.35; }
 .ci-cost  { font-size:.72rem; font-weight:900; color:var(--orange); font-family:'Nunito',sans-serif; }
@@ -3033,14 +3056,136 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
 }
 .cosmetics-hub-btn:hover { background:rgba(255,255,255,.22); }
 
-/* Theme swatches inside shop */
-.swatch-ohrid-sunset    { background:linear-gradient(90deg,#C8280A,#E8501A,#F9A85C,#B06CC0,#6030A0); }
-.swatch-skopje-neon     { background:linear-gradient(90deg,#000208,#020818,#030D20); border:1px solid #00F5E0; box-shadow:inset 0 0 8px rgba(0,245,224,.3); }
-.swatch-retro-yugoslav  { background:linear-gradient(90deg,#B87820,#E0B050,#EEC860,#C89020); }
-.swatch-balkan-folklore { background:linear-gradient(90deg,#4A0808,#6A1010,#801818); border:1px solid #FFD700; box-shadow:inset 0 0 6px rgba(255,215,0,.25); }
-.swatch-mountain-village{ background:linear-gradient(90deg,#3A80CC,#78BEEE,#9ACA90,#307030); }
-.swatch-macedonian-bazaar{ background:linear-gradient(90deg,#B83C00,#E87828,#F5A045,#A86018); }
-.swatch-lake-night      { background:linear-gradient(90deg,#000106,#020818,#030B22); border:1px solid #4A9FD4; box-shadow:inset 0 0 8px rgba(74,160,212,.25); }
+/* ── Theme swatch strips — scenic landscape previews (80 px tall) ── */
+
+/* Охрид Зајдисонце — burning sunset, jagged mountain range, twilight lake */
+.swatch-ohrid-sunset {
+  background:
+    /* Mountain range silhouette — fills sky-facing up from ridge */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Cpolygon points='0,80 0,50 35,36 70,46 108,22 148,38 186,16 225,32 262,24 300,28 300,80' fill='%23190330'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Sun disc — center at 65%/18%, above mountain peak (~y=16 at x=186) */
+    radial-gradient(circle 15px at 65% 18%, #FFF070 0%, #FF8800 50%, transparent 72%),
+    /* Sun corona glow */
+    radial-gradient(circle 44px at 65% 18%, rgba(255,130,20,.38) 0%, transparent 72%),
+    /* Dark lake / twilight water at bottom */
+    linear-gradient(to bottom, transparent 60%, rgba(190,45,10,.45) 72%, rgba(90,5,35,.65) 86%, #110225 100%),
+    /* Sunset sky: deep indigo → crimson → burning orange → gold → rose → violet */
+    linear-gradient(180deg,
+      #1A0232 0%, #4A0C1E 12%, #8A2010 24%, #C83C10 36%,
+      #E85E20 47%, #F49030 56%, #F4BC7A 65%,
+      #E8A8C8 74%, #8840B8 85%, #341070 93%, #130228 100%);
+}
+
+/* Планинско Село — snow-capped alpine peaks, pine forest flanks, crisp sky */
+.swatch-mountain-village {
+  background:
+    /* Pine trees on left + right flanks, grass strip at base */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Cpolygon points='0,80 0,66 14,58 20,66 26,52 32,66 38,60 46,80' fill='%23163A16'/%3E%3Cpolygon points='260,80 264,64 270,54 276,64 282,58 290,80' fill='%23163A16'/%3E%3Crect x='0' y='70' width='300' height='10' fill='%231E4A1E'/%3E%3C/svg%3E") bottom/cover no-repeat,
+    /* Snow-capped mountain range with visible snow triangles */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Cpolygon points='0,80 0,52 48,38 90,52 130,22 170,46 208,28 252,44 300,34 300,80' fill='%236E8EA6'/%3E%3Cpolygon points='112,34 130,22 148,36' fill='%23ECF3FF'/%3E%3Cpolygon points='192,34 208,28 224,40' fill='%23E8F0FF'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Morning sun haze — top-right corner */
+    radial-gradient(circle 20px at 82% 12%, rgba(255,248,200,.85) 0%, rgba(255,205,70,.42) 52%, transparent 76%),
+    /* Alpine sky: rich blue at top fading to green meadow at base */
+    linear-gradient(180deg,
+      #0C3090 0%, #1E52B8 16%, #3878CC 32%,
+      #62A0DC 48%, #9CC8F0 60%, #C4E0F4 68%,
+      #D0E8BC 78%, #78B040 88%, #2E6A20 100%);
+}
+
+/* Македонски Чаршија — golden domes, tall minaret, hot afternoon sun */
+.swatch-macedonian-bazaar {
+  background:
+    /* Domed bazaar buildings + cobblestone ground strip */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Crect x='0' y='64' width='300' height='16' fill='%23380C00'/%3E%3Cellipse cx='60' cy='46' rx='26' ry='20' fill='%23581800'/%3E%3Crect x='38' y='46' width='44' height='34' fill='%23581800'/%3E%3Crect x='55' y='28' width='10' height='20' fill='%23701E00'/%3E%3Cellipse cx='150' cy='36' rx='38' ry='28' fill='%23681C00'/%3E%3Crect x='116' y='36' width='68' height='44' fill='%23681C00'/%3E%3Crect x='147' y='12' width='8' height='28' fill='%23882600'/%3E%3Cellipse cx='248' cy='50' rx='24' ry='18' fill='%23501400'/%3E%3Crect x='228' y='50' width='40' height='30' fill='%23501400'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Blazing afternoon sun above minaret tip (center at y~6, minaret top at y=12) */
+    radial-gradient(circle 20px at 50% 8%, rgba(255,252,180,.88) 0%, rgba(255,210,60,.5) 48%, transparent 74%),
+    /* Golden bazaar sky: deep sienna → rust → amber → warm gold */
+    linear-gradient(180deg,
+      #781600 0%, #B23200 12%, #D05410 24%,
+      #EC7C28 38%, #F5A040 52%, #F4BC54 64%,
+      #EED46A 74%, #C89826 86%, #7C4C10 100%);
+}
+
+/* Ретро Југо — warm sepia, socialist apartment blocks, film-grain texture */
+.swatch-retro-yugoslav {
+  background:
+    /* Film grain dots */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='2' cy='2' r='.75' fill='%23683210' opacity='.28'/%3E%3C/svg%3E"),
+    /* Socialist apartment block silhouettes */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Crect x='6' y='28' width='52' height='52' fill='%23643010' opacity='.52'/%3E%3Crect x='14' y='18' width='36' height='62' fill='%23784020' opacity='.46'/%3E%3Crect x='80' y='32' width='46' height='48' fill='%23643010' opacity='.5'/%3E%3Crect x='90' y='20' width='28' height='60' fill='%23784020' opacity='.44'/%3E%3Crect x='172' y='30' width='50' height='50' fill='%23643010' opacity='.52'/%3E%3Crect x='182' y='16' width='32' height='64' fill='%23784020' opacity='.46'/%3E%3Crect x='248' y='35' width='44' height='45' fill='%23643010' opacity='.48'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Heavy vignette darkening the corners */
+    radial-gradient(ellipse 88% 88% at 50% 50%, transparent 38%, rgba(42,14,0,.72) 100%),
+    /* Subtle horizontal scan-line texture */
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(38,14,0,.04) 3px, rgba(38,14,0,.04) 4px),
+    /* Warm sepia gradient */
+    linear-gradient(180deg,
+      #522808 0%, #845018 16%, #B07024 32%,
+      #CC8E30 50%, #C47E28 65%, #A06018 80%, #744010 100%);
+}
+
+/* Балкански Фолклор — deep crimson, golden diamond embroidery, folk border */
+.swatch-balkan-folklore {
+  background:
+    /* Gold zigzag embroidery border strip at bottom */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Crect x='0' y='64' width='300' height='16' fill='%23480606'/%3E%3Cpath d='M0,64 L15,56 L30,64 L45,56 L60,64 L75,56 L90,64 L105,56 L120,64 L135,56 L150,64 L165,56 L180,64 L195,56 L210,64 L225,56 L240,64 L255,56 L270,64 L285,56 L300,64' fill='none' stroke='%23FFD700' stroke-width='1.5' opacity='.65'/%3E%3C/svg%3E") bottom/cover no-repeat,
+    /* Repeating diamond folk-weave overlay */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cpath d='M14,2 L26,14 L14,26 L2,14 Z' fill='none' stroke='%23FFD700' stroke-width='.8' opacity='.2'/%3E%3Ccircle cx='14' cy='14' r='2.2' fill='%23FFD700' opacity='.14'/%3E%3C/svg%3E"),
+    /* Central lantern-glow pool */
+    radial-gradient(ellipse 90px 55px at 50% 42%, rgba(255,215,0,.28) 0%, transparent 65%),
+    /* Vignette to deepen edges */
+    radial-gradient(ellipse 82% 72% at 50% 50%, transparent 46%, rgba(18,0,0,.68) 100%),
+    /* Rich crimson field */
+    linear-gradient(180deg,
+      #180202 0%, #320606 18%, #500C0C 36%,
+      #680E0E 52%, #5A0C0C 68%, #3A0606 84%, #160202 100%);
+  border: 1px solid rgba(255,215,0,.3);
+  box-shadow: inset 0 0 8px rgba(255,215,0,.12);
+}
+
+/* Скопје Неон — dark cyberpunk skyline, neon-glowing city night */
+.swatch-skopje-neon {
+  background:
+    /* Dense city skyline with varying tower heights */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Crect x='0' y='38' width='300' height='42' fill='%23010308'/%3E%3Crect x='8' y='28' width='24' height='52' fill='%23050A1C'/%3E%3Crect x='40' y='20' width='30' height='60' fill='%23060C22'/%3E%3Crect x='80' y='18' width='20' height='62' fill='%23040818'/%3E%3Crect x='108' y='26' width='26' height='54' fill='%23050A1C'/%3E%3Crect x='144' y='20' width='34' height='60' fill='%23060C20'/%3E%3Crect x='188' y='18' width='24' height='62' fill='%23040818'/%3E%3Crect x='222' y='24' width='28' height='56' fill='%23050A1C'/%3E%3Crect x='262' y='32' width='22' height='48' fill='%23060C22'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Neon sign glows in the sky above buildings (y < 18px) */
+    radial-gradient(circle 6px at 20% 14%, #00F5E0, transparent 12px),
+    radial-gradient(circle 5px at 52% 12%, #FF00CC, transparent 10px),
+    radial-gradient(circle 6px at 80% 16%, #0088FF, transparent 12px),
+    /* City glow reflected on river */
+    linear-gradient(to bottom, transparent 58%, rgba(0,245,224,.08) 68%, rgba(0,20,80,.28) 80%, rgba(0,1,8,.92) 100%),
+    /* Deep night sky */
+    linear-gradient(180deg,
+      #000102 0%, #010416 22%, #010820 48%,
+      #020A1A 68%, #010510 88%, #000208 100%);
+  border: 1px solid rgba(0,245,224,.22);
+  box-shadow: inset 0 0 8px rgba(0,245,224,.16);
+}
+
+/* Ноќно Езеро — full moon, mountain shore silhouette, star-filled night */
+.swatch-lake-night {
+  background:
+    /* Mountain shoreline (fills lower half, sky above is transparent) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Cpolygon points='0,80 0,48 38,36 85,46 132,28 180,40 228,32 275,40 300,37 300,80' fill='%23030810'/%3E%3C/svg%3E") center/cover no-repeat,
+    /* Full moon disc — at 72%/22%, above ridge peak (~y=28 at x=132) */
+    radial-gradient(circle 14px at 72% 22%, #EEEEE0 0%, #D0D0B8 42%, transparent 68%),
+    /* Moon halo glow */
+    radial-gradient(circle 42px at 72% 22%, rgba(200,200,158,.22) 0%, transparent 70%),
+    /* Stars scattered in upper sky (all below y=15%, above highest peak) */
+    radial-gradient(circle 1.5px at  8%  8%, #fff, transparent 4px),
+    radial-gradient(circle 1px  at 20%  4%, #dde, transparent 3px),
+    radial-gradient(circle 1.5px at 34%  2%, #fff, transparent 4px),
+    radial-gradient(circle 1px  at 48%  7%, #eef, transparent 3px),
+    radial-gradient(circle 2px  at 58%  3%, #fff, transparent 5px),
+    radial-gradient(circle 1px  at 86%  5%, #dde, transparent 3px),
+    radial-gradient(circle 1px  at 14% 14%, #fff, transparent 3px),
+    radial-gradient(circle 1px  at 42%  9%, #eef, transparent 3px),
+    /* Midnight sky gradient */
+    linear-gradient(180deg,
+      #000104 0%, #010416 22%, #020818 45%,
+      #030A22 60%, #020818 72%, #010510 86%, #000208 100%);
+  border: 1px solid rgba(74,160,212,.26);
+  box-shadow: inset 0 0 8px rgba(74,160,212,.14);
+}
 
 /* ══════════════════════════════════════════════════════════════
    COIN ECONOMY UI
