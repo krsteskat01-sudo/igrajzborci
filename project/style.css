@@ -2530,96 +2530,6 @@ body[data-theme="ohrid-sunset"] .hub-coins   { background:linear-gradient(135deg
 body[data-theme="ohrid-sunset"] .star-accent { color:#FF8C00; }
 body[data-theme="ohrid-sunset"] .premium-score { color:#FF8C00; }
 
-/* ═══════════════════════════════════════════
-   2. SKOPJE NEON  — cyberpunk city night, neon signs
-   ═══════════════════════════════════════════ */
-body[data-theme="skopje-neon"] {
-  background: linear-gradient(180deg,#000104 0%,#010510 20%,#020A1C 45%,#030E28 65%,#020818 82%,#010408 100%);
-  background-attachment: fixed;
-}
-body[data-theme="skopje-neon"] .game-wrap   { background: rgba(1,4,14,.72) !important; color: #C8F0FF; }
-body[data-theme="skopje-neon"] .hub,
-body[data-theme="skopje-neon"] .result-screen,
-body[data-theme="skopje-neon"] .age-select,
-body[data-theme="skopje-neon"] .name-entry  { background: transparent !important; }
-/* text overrides for all non-card elements */
-body[data-theme="skopje-neon"] .result-title   { color: #00F5E0; }
-body[data-theme="skopje-neon"] .result-score   { color: #fff; }
-body[data-theme="skopje-neon"] .result-prev    { color: rgba(160,220,240,.9); }
-body[data-theme="skopje-neon"] .result-game    { color: rgba(140,210,238,.8); }
-body[data-theme="skopje-neon"] .result-emoji   { filter: drop-shadow(0 0 8px rgba(0,245,224,.6)); }
-body[data-theme="skopje-neon"] .btn-primary    { background: #00C8B8; color: #030D20; }
-body[data-theme="skopje-neon"] .btn-secondary  { border-color: rgba(0,245,224,.4); color: #80E8F0; }
-body[data-theme="skopje-neon"] .score-bar      { background: rgba(2,6,18,.92) !important; }
-body[data-theme="skopje-neon"] .bar-title,
-body[data-theme="skopje-neon"] .bar-stat       { color: #C8F0FF; }
-body[data-theme="skopje-neon"] .exit-btn,
-body[data-theme="skopje-neon"] .back-btn       { color: #80E8F8; border-color: rgba(0,245,224,.3); }
-body[data-theme="skopje-neon"] .hub-footer .lb-open-btn { color: #80E0F0; border-color: rgba(0,245,224,.3); }
-body[data-theme="skopje-neon"] .change-name-btn,
-body[data-theme="skopje-neon"] .delete-acc-btn { color: #80E8F8; border-color: rgba(0,245,224,.25); background: rgba(0,245,224,.06); }
-body[data-theme="skopje-neon"] .guest-banner   { background: rgba(0,30,60,.7); color: #A0D8F0; border-color: rgba(0,245,224,.2); }
-body[data-theme="skopje-neon"] .age-card       { background: rgba(4,10,28,.88); color: #C8F0FF; border-color: rgba(0,245,224,.2); }
-body[data-theme="skopje-neon"] .age-card:hover { border-color: #00F5E0; }
-body[data-theme="skopje-neon"] .age-title      { color: #00F5E0; }
-body[data-theme="skopje-neon"] .auth-card      { background: rgba(4,10,28,.94); color: #C8F0FF; border-color: rgba(0,245,224,.2); }
-body[data-theme="skopje-neon"] .auth-card label,
-body[data-theme="skopje-neon"] .auth-card h2   { color: #C8F0FF; }
-body[data-theme="skopje-neon"] .auth-input                   { background: rgba(0,20,40,.8); color: #E0F4FF; border-color: rgba(0,245,224,.25); }
-body[data-theme="skopje-neon"] .auth-input::placeholder       { color: rgba(224,244,255,.5); }
-body[data-theme="skopje-neon"] .lb-row         { background: rgba(4,12,30,.88); color: #C8F0FF; border-color: rgba(0,245,224,.1); }
-body[data-theme="skopje-neon"] .lb-row .lb-name,
-body[data-theme="skopje-neon"] .lb-row .lb-rank,
-body[data-theme="skopje-neon"] .lb-row .lb-pts { color: #C8F0FF; }
-body[data-theme="skopje-neon"] .lb-tab         { background: rgba(4,10,28,.7); border-color: rgba(0,245,224,.2); color: rgba(140,210,235,.7); }
-body[data-theme="skopje-neon"] .lb-tab-active  { background: rgba(0,245,224,.15); color: #00F5E0; }
-body[data-theme="skopje-neon"] .lb-my-rank     { color: #80D8F0; }
-body[data-theme="skopje-neon"] .game-wrap::before {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:
-    /* atmospheric neon haze from below */
-    radial-gradient(ellipse 600px 280px at 50% 100%, rgba(0,245,224,.07) 0%, transparent 65%),
-    radial-gradient(ellipse 350px 420px at 90% 60%, rgba(255,0,200,.06) 0%, transparent 58%),
-    radial-gradient(ellipse 300px 360px at 10% 55%, rgba(0,80,255,.07) 0%, transparent 55%),
-    /* detailed high-rise city skyline */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='0' y='520' width='55' height='280' fill='%23050A1E'/%3E%3Crect x='72' y='460' width='42' height='340' fill='%23060C22'/%3E%3Crect x='132' y='390' width='68' height='410' fill='%23040818'/%3E%3Crect x='218' y='470' width='38' height='330' fill='%23060C22'/%3E%3Crect x='274' y='330' width='82' height='470' fill='%23040818'/%3E%3Crect x='374' y='415' width='50' height='385' fill='%23050A1E'/%3E%3Crect x='442' y='275' width='88' height='525' fill='%23040818'/%3E%3Crect x='548' y='355' width='62' height='445' fill='%23060C22'/%3E%3Crect x='628' y='430' width='46' height='370' fill='%23050A1E'/%3E%3Crect x='692' y='310' width='75' height='490' fill='%23040818'/%3E%3Crect x='786' y='390' width='58' height='410' fill='%23060C22'/%3E%3Crect x='862' y='355' width='52' height='445' fill='%23050A1E'/%3E%3Crect x='932' y='450' width='42' height='350' fill='%23060C22'/%3E%3Crect x='992' y='400' width='68' height='400' fill='%23040818'/%3E%3Crect x='1078' y='470' width='48' height='330' fill='%23060C22'/%3E%3Crect x='1144' y='430' width='56' height='370' fill='%23050A1E'/%3E%3C/svg%3E") center/cover no-repeat,
-    /* Stone Bridge over river Vardar */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Crect x='0' y='640' width='1200' height='160' fill='%23010308'/%3E%3Crect x='320' y='620' width='560' height='30' fill='%23080F1E'/%3E%3Cpath d='M340,650 Q370,622 400,650' fill='%23060C1A'/%3E%3Cpath d='M408,650 Q438,622 468,650' fill='%23060C1A'/%3E%3Cpath d='M476,650 Q506,622 536,650' fill='%23060C1A'/%3E%3Cpath d='M544,650 Q574,622 604,650' fill='%23060C1A'/%3E%3Cpath d='M612,650 Q642,622 672,650' fill='%23060C1A'/%3E%3Cpath d='M680,650 Q710,622 740,650' fill='%23060C1A'/%3E%3Cpath d='M748,650 Q778,622 808,650' fill='%23060C1A'/%3E%3C/svg%3E") center/cover no-repeat,
-    /* river neon color reflections */
-    linear-gradient(to bottom, transparent 62%, rgba(0,245,224,.06) 72%, rgba(0,30,120,.2) 82%, rgba(0,2,14,.9) 100%);
-}
-@keyframes neonFlicker { 0%,88%,100%{opacity:1;} 90%{opacity:.35;} 92%{opacity:.9;} 94%{opacity:.25;} 96%{opacity:1;} }
-body[data-theme="skopje-neon"] .game-wrap::after {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:
-    radial-gradient(circle 5px at 29% 47%, #00F5E0, transparent 9px),
-    radial-gradient(circle 4px at 39% 40%, #FF00C8, transparent 8px),
-    radial-gradient(circle 6px at 49% 33%, #00F5E0, transparent 11px),
-    radial-gradient(circle 4px at 61% 43%, #FF00C8, transparent 8px),
-    radial-gradient(circle 5px at 74% 36%, #0088FF, transparent 10px),
-    radial-gradient(circle 4px at 83% 47%, #00F5E0, transparent 8px),
-    linear-gradient(to bottom, transparent 80%, rgba(0,245,224,.05) 83%, rgba(255,0,200,.04) 90%, transparent 100%);
-  animation: neonFlicker 7s ease-in-out infinite;
-}
-body[data-theme="skopje-neon"] .hub-header   { background:#020610; border-bottom-color:#00F5E0; }
-body[data-theme="skopje-neon"] .hub-coins    { background:linear-gradient(135deg,#006A62,#004840); box-shadow:0 0 12px rgba(0,245,224,.4); }
-body[data-theme="skopje-neon"] .game-card    { background:rgba(4,10,28,.9); color:#C8F0FF; box-shadow:0 0 18px rgba(0,245,224,.18),0 0 0 1px rgba(0,245,224,.14); }
-body[data-theme="skopje-neon"] .game-name    { color:#E0F8FF; }
-body[data-theme="skopje-neon"] .game-desc    { color:rgba(150,215,235,.7); }
-body[data-theme="skopje-neon"] .game-best    { color:rgba(0,245,224,.75); }
-body[data-theme="skopje-neon"] .game-card:hover { box-shadow:0 0 32px rgba(0,245,224,.38),0 0 0 1px #00F5E0; }
-body[data-theme="skopje-neon"] .hub-lb-card  { background:rgba(4,10,28,.92); border:1.5px solid #00F5E0; color:#A0D8F0; }
-body[data-theme="skopje-neon"] .hub-logo     { animation:neonFlicker 8s infinite; filter:drop-shadow(0 0 14px rgba(0,245,224,.85)); }
-body[data-theme="skopje-neon"] .hub-player       { background:rgba(4,12,34,.88); box-shadow:0 2px 12px rgba(0,245,224,.12),0 0 0 1px rgba(0,245,224,.1); }
-body[data-theme="skopje-neon"] .hub-player strong { color:#C8F0FF; }
-body[data-theme="skopje-neon"] .change-name-btn  { background:rgba(0,245,224,.12); color:#80F0F8; border-color:rgba(0,245,224,.4); box-shadow:none; }
-body[data-theme="skopje-neon"] .change-name-btn:hover { background:rgba(0,245,224,.24); color:#00F5E0; }
-body[data-theme="skopje-neon"] .delete-acc-btn   { background:rgba(255,50,50,.1); color:#FF8080; border-color:rgba(255,80,80,.45); box-shadow:none; }
-body[data-theme="skopje-neon"] .hub-sub      { color:rgba(150,210,235,.7); }
-body[data-theme="skopje-neon"] .star-accent  { color:#00F5E0; }
-body[data-theme="skopje-neon"] .premium-score { color:#00F5E0; }
-body[data-theme="skopje-neon"] .premium-label { color:rgba(150,215,240,.9); }
-body[data-theme="skopje-neon"] .difficulty-wrap { background:rgba(4,10,28,.85); }
 
 /* ═══════════════════════════════════════════
    3. RETRO YUGOSLAV  — vintage propaganda poster, warm grain
@@ -2797,50 +2707,6 @@ body[data-theme="mountain-village"] .hub-logo    { filter:drop-shadow(0 2px 5px 
 body[data-theme="mountain-village"] .star-accent  { color:#2A8A2A; }
 body[data-theme="mountain-village"] .premium-score { color:#2A8A2A; }
 
-/* ═══════════════════════════════════════════
-   6. MACEDONIAN BAZAAR  — golden domes, spice dust, hot sun
-   ═══════════════════════════════════════════ */
-body[data-theme="macedonian-bazaar"] {
-  background: linear-gradient(180deg,#B83C00 0%,#D05510 16%,#E87828 32%,#F5A045 52%,#EEB848 68%,#D89030 84%,#A86018 100%);
-  background-attachment: fixed;
-}
-body[data-theme="macedonian-bazaar"] .game-wrap  { background: rgba(80,25,0,.20) !important; }
-body[data-theme="macedonian-bazaar"] .hub,
-body[data-theme="macedonian-bazaar"] .result-screen,
-body[data-theme="macedonian-bazaar"] .age-select,
-body[data-theme="macedonian-bazaar"] .name-entry { background: transparent !important; }
-body[data-theme="macedonian-bazaar"] .game-wrap::before {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:
-    radial-gradient(circle 80px at 50% 7%, rgba(255,238,100,.78) 0%, rgba(255,175,25,.45) 48%, transparent 68%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'%3E%3Cellipse cx='190' cy='572' rx='85' ry='68' fill='%23581800'/%3E%3Crect x='148' y='572' width='84' height='228' fill='%23581800'/%3E%3Crect x='178' y='504' width='28' height='80' fill='%23781E00'/%3E%3Cellipse cx='490' cy='512' rx='115' ry='88' fill='%23682000'/%3E%3Crect x='418' y='512' width='144' height='288' fill='%23682000'/%3E%3Crect x='462' y='432' width='22' height='90' fill='%23882A00'/%3E%3Cellipse cx='880' cy='532' rx='98' ry='78' fill='%23581800'/%3E%3Crect x='820' y='532' width='118' height='268' fill='%23581800'/%3E%3Crect x='852' y='454' width='24' height='88' fill='%23782200'/%3E%3Cellipse cx='1090' cy='595' rx='76' ry='58' fill='%23481400'/%3E%3Crect x='1038' y='595' width='104' height='205' fill='%23481400'/%3E%3C/svg%3E") center/cover no-repeat,
-    linear-gradient(to bottom, transparent 58%, rgba(72,20,0,.12) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M9,0 L18,9 L9,18 L0,9 Z' fill='none' stroke='%23FFA820' stroke-width='.45' opacity='.12'/%3E%3C/svg%3E");
-}
-@keyframes heatHaze { 0%,100%{opacity:.45;} 50%{opacity:.78;} }
-body[data-theme="macedonian-bazaar"] .game-wrap::after {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:
-    radial-gradient(circle 3px at 17% 79%, rgba(255,185,55,.92), transparent 6px),
-    radial-gradient(circle 2px at 39% 84%, rgba(255,205,75,.85), transparent 5px),
-    radial-gradient(circle 3px at 60% 77%, rgba(255,165,35,.9), transparent 6px),
-    radial-gradient(circle 2px at 77% 81%, rgba(255,190,65,.85), transparent 5px),
-    radial-gradient(circle 4px at 87% 75%, rgba(255,175,45,.88), transparent 8px),
-    linear-gradient(to bottom, transparent 58%, rgba(255,155,25,.055) 68%, transparent 78%);
-  animation: heatHaze 2.2s ease-in-out infinite;
-}
-body[data-theme="macedonian-bazaar"] .hub-player  { background:rgba(255,245,218,.82); }
-body[data-theme="macedonian-bazaar"] .hub-sub,
-body[data-theme="macedonian-bazaar"] .result-prev,
-body[data-theme="macedonian-bazaar"] .result-game { color: var(--dark); }
-body[data-theme="macedonian-bazaar"] .hub-header  { background:linear-gradient(90deg,#340A00,#602000); border-bottom-color:#FFA030; }
-body[data-theme="macedonian-bazaar"] .hub-coins   { background:linear-gradient(135deg,#804000,#602000); }
-body[data-theme="macedonian-bazaar"] .game-card   { background:rgba(255,242,215,.93); color:var(--dark); box-shadow:5px 5px 0 rgba(90,35,0,.2); }
-body[data-theme="macedonian-bazaar"] .hub-logo    { filter:drop-shadow(0 0 9px rgba(255,148,18,.65)); animation:heatHaze 3.2s ease-in-out infinite; }
-body[data-theme="macedonian-bazaar"] .star-accent  { color:#D45808; }
-body[data-theme="macedonian-bazaar"] .premium-score { color:#D45808; }
-body[data-theme="macedonian-bazaar"] .auth-card,
-body[data-theme="macedonian-bazaar"] .name-form    { background:rgba(255,242,215,.95); border-color:#D4620A; box-shadow:6px 6px 0 #5C1A00; }
 
 /* ═══════════════════════════════════════════
    7. LAKE NIGHT  — midnight Ohrid, moon, stars, water shimmer
@@ -3092,20 +2958,6 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
       #D0E8BC 78%, #78B040 88%, #2E6A20 100%);
 }
 
-/* Македонски Чаршија — golden domes, tall minaret, hot afternoon sun */
-.swatch-macedonian-bazaar {
-  background:
-    /* Domed bazaar buildings + cobblestone ground strip */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Crect x='0' y='64' width='300' height='16' fill='%23380C00'/%3E%3Cellipse cx='60' cy='46' rx='26' ry='20' fill='%23581800'/%3E%3Crect x='38' y='46' width='44' height='34' fill='%23581800'/%3E%3Crect x='55' y='28' width='10' height='20' fill='%23701E00'/%3E%3Cellipse cx='150' cy='36' rx='38' ry='28' fill='%23681C00'/%3E%3Crect x='116' y='36' width='68' height='44' fill='%23681C00'/%3E%3Crect x='147' y='12' width='8' height='28' fill='%23882600'/%3E%3Cellipse cx='248' cy='50' rx='24' ry='18' fill='%23501400'/%3E%3Crect x='228' y='50' width='40' height='30' fill='%23501400'/%3E%3C/svg%3E") center/cover no-repeat,
-    /* Blazing afternoon sun above minaret tip (center at y~6, minaret top at y=12) */
-    radial-gradient(circle 20px at 50% 8%, rgba(255,252,180,.88) 0%, rgba(255,210,60,.5) 48%, transparent 74%),
-    /* Golden bazaar sky: deep sienna → rust → amber → warm gold */
-    linear-gradient(180deg,
-      #781600 0%, #B23200 12%, #D05410 24%,
-      #EC7C28 38%, #F5A040 52%, #F4BC54 64%,
-      #EED46A 74%, #C89826 86%, #7C4C10 100%);
-}
-
 /* Ретро Југо — warm sepia, socialist apartment blocks, film-grain texture */
 .swatch-retro-yugoslav {
   background:
@@ -3140,25 +2992,6 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
       #680E0E 52%, #5A0C0C 68%, #3A0606 84%, #160202 100%);
   border: 1px solid rgba(255,215,0,.3);
   box-shadow: inset 0 0 8px rgba(255,215,0,.12);
-}
-
-/* Скопје Неон — dark cyberpunk skyline, neon-glowing city night */
-.swatch-skopje-neon {
-  background:
-    /* Dense city skyline with varying tower heights */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 80'%3E%3Crect x='0' y='38' width='300' height='42' fill='%23010308'/%3E%3Crect x='8' y='28' width='24' height='52' fill='%23050A1C'/%3E%3Crect x='40' y='20' width='30' height='60' fill='%23060C22'/%3E%3Crect x='80' y='18' width='20' height='62' fill='%23040818'/%3E%3Crect x='108' y='26' width='26' height='54' fill='%23050A1C'/%3E%3Crect x='144' y='20' width='34' height='60' fill='%23060C20'/%3E%3Crect x='188' y='18' width='24' height='62' fill='%23040818'/%3E%3Crect x='222' y='24' width='28' height='56' fill='%23050A1C'/%3E%3Crect x='262' y='32' width='22' height='48' fill='%23060C22'/%3E%3C/svg%3E") center/cover no-repeat,
-    /* Neon sign glows in the sky above buildings (y < 18px) */
-    radial-gradient(circle 6px at 20% 14%, #00F5E0, transparent 12px),
-    radial-gradient(circle 5px at 52% 12%, #FF00CC, transparent 10px),
-    radial-gradient(circle 6px at 80% 16%, #0088FF, transparent 12px),
-    /* City glow reflected on river */
-    linear-gradient(to bottom, transparent 58%, rgba(0,245,224,.08) 68%, rgba(0,20,80,.28) 80%, rgba(0,1,8,.92) 100%),
-    /* Deep night sky */
-    linear-gradient(180deg,
-      #000102 0%, #010416 22%, #010820 48%,
-      #020A1A 68%, #010510 88%, #000208 100%);
-  border: 1px solid rgba(0,245,224,.22);
-  box-shadow: inset 0 0 8px rgba(0,245,224,.16);
 }
 
 /* Ноќно Езеро — full moon, mountain shore silhouette, star-filled night */
@@ -3366,11 +3199,6 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
 }
 
 /* Dark themes — glowing glass */
-body[data-theme="skopje-neon"] .lb-mini-badge {
-  background: rgba(0,245,224,.1); border-color: rgba(0,245,224,.35);
-  color: #00F5E0;
-  box-shadow: 0 0 8px rgba(0,245,224,.2), 0 2px 5px rgba(0,0,0,.35), inset 0 1px 0 rgba(0,245,224,.12);
-}
 body[data-theme="balkan-folklore"] .lb-mini-badge {
   background: rgba(255,215,0,.1); border-color: rgba(255,215,0,.35);
   color: #FFD700;
@@ -3406,7 +3234,6 @@ body[data-theme="lake-night"] .lb-mini-badge {
   padding: 10px 14px 14px 52px;
   border-top: 1px solid rgba(0,0,0,.07);
 }
-body[data-theme="skopje-neon"]    .lb-expand-panel { background: rgba(1,4,18,.97); border-top-color: rgba(0,245,224,.1); }
 body[data-theme="balkan-folklore"] .lb-expand-panel { background: rgba(30,4,4,.97); border-top-color: rgba(255,215,0,.1); }
 body[data-theme="lake-night"]     .lb-expand-panel { background: rgba(2,6,26,.97); border-top-color: rgba(74,160,212,.1); }
 
@@ -3424,9 +3251,6 @@ body[data-theme="lake-night"]     .lb-expand-panel { background: rgba(2,6,26,.97
 .lbep-avatar { background: rgba(59,31,58,.08);   color: var(--dark); }
 
 /* Dark theme chip colors */
-body[data-theme="skopje-neon"] .lbep-theme,
-body[data-theme="skopje-neon"] .lbep-frame,
-body[data-theme="skopje-neon"] .lbep-avatar { background: rgba(0,245,224,.07); color: rgba(0,245,224,.85); border: 1px solid rgba(0,245,224,.15); }
 body[data-theme="balkan-folklore"] .lbep-theme,
 body[data-theme="balkan-folklore"] .lbep-frame,
 body[data-theme="balkan-folklore"] .lbep-avatar { background: rgba(255,215,0,.08); color: rgba(255,215,0,.85); border: 1px solid rgba(255,215,0,.15); }
@@ -3458,8 +3282,6 @@ body[data-theme="lake-night"] .lbep-avatar { background: rgba(74,160,212,.08); c
 }
 
 /* Dark theme achievement cards */
-body[data-theme="skopje-neon"] .lbep-ach    { background: rgba(0,18,32,.95); border-color: rgba(0,245,224,.25); box-shadow: 0 2px 10px rgba(0,0,0,.5), 0 0 6px rgba(0,245,224,.1); }
-body[data-theme="skopje-neon"] .lbep-ach-name { color: rgba(0,245,224,.8); }
 body[data-theme="balkan-folklore"] .lbep-ach  { background: rgba(20,4,4,.95); border-color: rgba(255,215,0,.25); box-shadow: 0 2px 10px rgba(0,0,0,.5), 0 0 6px rgba(255,215,0,.1); }
 body[data-theme="balkan-folklore"] .lbep-ach-name { color: rgba(255,215,0,.85); }
 body[data-theme="lake-night"] .lbep-ach      { background: rgba(2,10,28,.95); border-color: rgba(74,160,212,.25); box-shadow: 0 2px 10px rgba(0,0,0,.5), 0 0 6px rgba(74,160,212,.1); }
@@ -3469,7 +3291,6 @@ body[data-theme="lake-night"] .lbep-ach-name { color: rgba(122,191,237,.85); }
   font-size: .75rem; color: #999; font-family: 'Nunito', sans-serif;
   font-style: italic;
 }
-body[data-theme="skopje-neon"] .lbep-empty,
 body[data-theme="balkan-folklore"] .lbep-empty,
 body[data-theme="lake-night"] .lbep-empty { color: rgba(255,255,255,.3); }
 
@@ -3495,34 +3316,29 @@ body[data-theme="lake-night"] .lbep-empty { color: rgba(255,255,255,.3); }
 /* ══════════════════════════════════════════════════════════════
    COMPREHENSIVE DARK-THEME GAME CARD OVERRIDES
    Fixes white-card elements that are unreadable on dark themed
-   game-wrap backgrounds (skopje-neon, balkan-folklore, lake-night)
+   game-wrap backgrounds (balkan-folklore, lake-night)
    ══════════════════════════════════════════════════════════════ */
 
 /* ── Shared helper: card background mixin per dark theme ────── */
-/* skopje-neon accent: #00F5E0  balkan-folklore: #FFD700  lake-night: #4AB0E8 */
+/* balkan-folklore: #FFD700  lake-night: #4AB0E8 */
 
 /* ── True/False card ─────────────────────────────────────────── */
-body[data-theme="skopje-neon"]    .tf-card,
 body[data-theme="balkan-folklore"] .tf-card,
 body[data-theme="lake-night"]     .tf-card {
   background: rgba(10,18,32,.92);
   border-color: rgba(255,255,255,.12);
   box-shadow: 0 4px 16px rgba(0,0,0,.5);
 }
-body[data-theme="skopje-neon"]    .tf-card { border-color: rgba(0,245,224,.25); }
 body[data-theme="balkan-folklore"] .tf-card { border-color: rgba(255,215,0,.2); }
 body[data-theme="lake-night"]     .tf-card { border-color: rgba(74,160,212,.25); }
 
-body[data-theme="skopje-neon"]    .tf-word,
 body[data-theme="balkan-folklore"] .tf-word,
 body[data-theme="lake-night"]     .tf-word { color: #fff; }
 
-body[data-theme="skopje-neon"]    .tf-def,
 body[data-theme="balkan-folklore"] .tf-def,
 body[data-theme="lake-night"]     .tf-def { color: rgba(255,255,255,.7); }
 
 /* ── Quiz definition card & options ─────────────────────────── */
-body[data-theme="skopje-neon"]    .quiz-def,
 body[data-theme="balkan-folklore"] .quiz-def,
 body[data-theme="lake-night"]     .quiz-def {
   background: rgba(10,18,32,.92);
@@ -3530,170 +3346,127 @@ body[data-theme="lake-night"]     .quiz-def {
   color: #fff;
   box-shadow: 0 4px 16px rgba(0,0,0,.5);
 }
-body[data-theme="skopje-neon"]    .quiz-def { border-color: rgba(0,245,224,.25); }
 body[data-theme="balkan-folklore"] .quiz-def { border-color: rgba(255,215,0,.2); }
 body[data-theme="lake-night"]     .quiz-def { border-color: rgba(74,160,212,.25); }
 
-body[data-theme="skopje-neon"]    .quiz-opt,
 body[data-theme="balkan-folklore"] .quiz-opt,
 body[data-theme="lake-night"]     .quiz-opt {
   background: rgba(10,18,32,.88);
   border-color: rgba(255,255,255,.1);
   color: rgba(255,255,255,.9);
 }
-body[data-theme="skopje-neon"]    .quiz-opt { border-color: rgba(0,245,224,.2); }
 body[data-theme="balkan-folklore"] .quiz-opt { border-color: rgba(255,215,0,.18); }
 body[data-theme="lake-night"]     .quiz-opt { border-color: rgba(74,160,212,.2); }
 
-body[data-theme="skopje-neon"]    .quiz-opt:hover,
 body[data-theme="balkan-folklore"] .quiz-opt:hover,
 body[data-theme="lake-night"]     .quiz-opt:hover { background: rgba(255,255,255,.1); }
 
-body[data-theme="skopje-neon"]    .quiz-opt.opt-correct { background: rgba(0,180,130,.35); border-color: #00F5C0; color: #fff; }
-body[data-theme="skopje-neon"]    .quiz-opt.opt-wrong   { background: rgba(220,50,50,.35); border-color: #FF6B6B; color: #fff; }
 body[data-theme="balkan-folklore"] .quiz-opt.opt-correct { background: rgba(0,180,80,.35); border-color: #80FF80; color: #fff; }
 body[data-theme="balkan-folklore"] .quiz-opt.opt-wrong   { background: rgba(200,40,40,.35); border-color: #FF8080; color: #fff; }
 body[data-theme="lake-night"]     .quiz-opt.opt-correct  { background: rgba(0,160,120,.35); border-color: #40F5C0; color: #fff; }
 body[data-theme="lake-night"]     .quiz-opt.opt-wrong    { background: rgba(200,50,50,.35); border-color: #FF7070; color: #fff; }
 
-body[data-theme="skopje-neon"]    .quiz-hint-box,
 body[data-theme="balkan-folklore"] .quiz-hint-box,
 body[data-theme="lake-night"]     .quiz-hint-box { background: rgba(10,18,32,.88); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
 
 /* ── Match game cards ────────────────────────────────────────── */
-body[data-theme="skopje-neon"]    .match-card,
 body[data-theme="balkan-folklore"] .match-card,
 body[data-theme="lake-night"]     .match-card {
   background: rgba(10,18,32,.88);
   border-color: rgba(255,255,255,.1);
   color: rgba(255,255,255,.9);
 }
-body[data-theme="skopje-neon"]    .match-card { border-color: rgba(0,245,224,.2); }
 body[data-theme="balkan-folklore"] .match-card { border-color: rgba(255,215,0,.18); }
 body[data-theme="lake-night"]     .match-card { border-color: rgba(74,160,212,.2); }
 
-body[data-theme="skopje-neon"]    .match-card.selected,
 body[data-theme="balkan-folklore"] .match-card.selected,
 body[data-theme="lake-night"]     .match-card.selected { background: rgba(255,255,255,.18); }
-body[data-theme="skopje-neon"]    .match-card.matched  { background: rgba(0,180,130,.3); }
 body[data-theme="balkan-folklore"] .match-card.matched  { background: rgba(80,180,0,.3); }
 body[data-theme="lake-night"]     .match-card.matched   { background: rgba(0,140,200,.3); }
 
 /* ── Hangman tiles, keyboard, definition ─────────────────────── */
-body[data-theme="skopje-neon"]    .hm-tile.revealed,
 body[data-theme="balkan-folklore"] .hm-tile.revealed,
 body[data-theme="lake-night"]     .hm-tile.revealed { color: #fff; background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); }
 
-body[data-theme="skopje-neon"]    .hm-tile,
 body[data-theme="balkan-folklore"] .hm-tile,
 body[data-theme="lake-night"]     .hm-tile { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.06); }
 
-body[data-theme="skopje-neon"]    .key-btn,
 body[data-theme="balkan-folklore"] .key-btn,
 body[data-theme="lake-night"]     .key-btn { background: rgba(20,28,50,.92); color: rgba(255,255,255,.9); border-color: rgba(255,255,255,.15); }
-body[data-theme="skopje-neon"]    .key-btn  { border-color: rgba(0,245,224,.2); }
 body[data-theme="balkan-folklore"] .key-btn { border-color: rgba(255,215,0,.18); }
 body[data-theme="lake-night"]     .key-btn  { border-color: rgba(74,160,212,.2); }
 
-body[data-theme="skopje-neon"]    .key-btn:hover,
 body[data-theme="balkan-folklore"] .key-btn:hover,
 body[data-theme="lake-night"]     .key-btn:hover { background: rgba(255,255,255,.14); }
 
-body[data-theme="skopje-neon"]    .key-btn.used,
 body[data-theme="balkan-folklore"] .key-btn.used,
 body[data-theme="lake-night"]     .key-btn.used  { background: rgba(255,255,255,.04); color: rgba(255,255,255,.3); border-color: rgba(255,255,255,.06); }
 
-body[data-theme="skopje-neon"]    .hm-def,
 body[data-theme="balkan-folklore"] .hm-def,
 body[data-theme="lake-night"]     .hm-def { background: rgba(10,18,32,.92); border-color: rgba(255,255,255,.12); color: rgba(255,255,255,.8); }
-body[data-theme="skopje-neon"]    .hm-def { border-color: rgba(0,245,224,.25); }
 body[data-theme="balkan-folklore"] .hm-def { border-color: rgba(255,215,0,.2); }
 body[data-theme="lake-night"]     .hm-def { border-color: rgba(74,160,212,.25); }
 
-body[data-theme="skopje-neon"]    .hm-hint,
 body[data-theme="balkan-folklore"] .hm-hint,
 body[data-theme="lake-night"]     .hm-hint { color: rgba(255,255,255,.55); }
 
 /* ── Speed Round card ────────────────────────────────────────── */
-body[data-theme="skopje-neon"]    .sr-card,
 body[data-theme="balkan-folklore"] .sr-card,
 body[data-theme="lake-night"]     .sr-card { background: rgba(10,18,32,.92); box-shadow: 0 4px 20px rgba(0,0,0,.5); }
-body[data-theme="skopje-neon"]    .sr-word,
 body[data-theme="balkan-folklore"] .sr-word,
 body[data-theme="lake-night"]     .sr-word { color: #fff; }
-body[data-theme="skopje-neon"]    .sr-def,
 body[data-theme="balkan-folklore"] .sr-def,
 body[data-theme="lake-night"]     .sr-def  { color: rgba(255,255,255,.65); }
-body[data-theme="skopje-neon"]    .sr-time-label,
 body[data-theme="balkan-folklore"] .sr-time-label,
 body[data-theme="lake-night"]     .sr-time-label { color: #fff; }
-body[data-theme="skopje-neon"]    .sr-stats,
 body[data-theme="balkan-folklore"] .sr-stats,
 body[data-theme="lake-night"]     .sr-stats { color: rgba(255,255,255,.55); }
 
 /* ── Word Builder definition & tiles ─────────────────────────── */
-body[data-theme="skopje-neon"]    .wb-def,
 body[data-theme="balkan-folklore"] .wb-def,
 body[data-theme="lake-night"]     .wb-def { background: rgba(10,18,32,.92); border-color: rgba(255,255,255,.14); color: #fff; box-shadow: 4px 4px 0 rgba(0,0,0,.4); }
-body[data-theme="skopje-neon"]    .wb-def { border-color: rgba(0,245,224,.25); }
 body[data-theme="balkan-folklore"] .wb-def { border-color: rgba(255,215,0,.2); }
 body[data-theme="lake-night"]     .wb-def { border-color: rgba(74,160,212,.25); }
 
-body[data-theme="skopje-neon"]    .wb-tile,
 body[data-theme="balkan-folklore"] .wb-tile,
 body[data-theme="lake-night"]     .wb-tile { background: rgba(20,30,50,.95); color: #fff; border-color: rgba(255,255,255,.2); }
-body[data-theme="skopje-neon"]    .wb-slot,
 body[data-theme="balkan-folklore"] .wb-slot,
 body[data-theme="lake-night"]     .wb-slot { border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.05); }
-body[data-theme="skopje-neon"]    .wb-instruction,
 body[data-theme="balkan-folklore"] .wb-instruction,
 body[data-theme="lake-night"]     .wb-instruction { color: rgba(255,255,255,.55); }
 
 /* ── Memory Flip cards ────────────────────────────────────────── */
-body[data-theme="skopje-neon"]    .mf-front,
 body[data-theme="balkan-folklore"] .mf-front,
 body[data-theme="lake-night"]     .mf-front { background: rgba(10,20,40,.95); border-color: rgba(255,255,255,.15); }
-body[data-theme="skopje-neon"]    .mf-back,
 body[data-theme="balkan-folklore"] .mf-back,
 body[data-theme="lake-night"]     .mf-back  { background: rgba(15,28,50,.95); border-color: rgba(255,255,255,.2); color: #fff; }
-body[data-theme="skopje-neon"]    .mf-back  { border-color: rgba(0,245,224,.3); }
 body[data-theme="balkan-folklore"] .mf-back { border-color: rgba(255,215,0,.25); }
 body[data-theme="lake-night"]     .mf-back  { border-color: rgba(74,160,212,.3); }
-body[data-theme="skopje-neon"]    .mf-hint,
 body[data-theme="balkan-folklore"] .mf-hint,
 body[data-theme="lake-night"]     .mf-hint  { color: rgba(255,255,255,.5); }
 
 /* ── Fast Typing word display ─────────────────────────────────── */
-body[data-theme="skopje-neon"]    .ft-word,
 body[data-theme="balkan-folklore"] .ft-word,
 body[data-theme="lake-night"]     .ft-word  { color: #fff; }
-body[data-theme="skopje-neon"]    .ft-input,
 body[data-theme="balkan-folklore"] .ft-input,
 body[data-theme="lake-night"]     .ft-input { background: rgba(10,18,32,.9); color: #fff; border-color: rgba(255,255,255,.2); }
-body[data-theme="skopje-neon"]    .ft-input { border-color: rgba(0,245,224,.3); }
 body[data-theme="balkan-folklore"] .ft-input { border-color: rgba(255,215,0,.22); }
 body[data-theme="lake-night"]     .ft-input { border-color: rgba(74,160,212,.3); }
-body[data-theme="skopje-neon"]    .ft-input::placeholder,
 body[data-theme="balkan-folklore"] .ft-input::placeholder,
 body[data-theme="lake-night"]     .ft-input::placeholder { color: rgba(255,255,255,.35); }
 
 /* ── Cosmetics shop items on dark themes ─────────────────────── */
-body[data-theme="skopje-neon"]    .cosmetic-item,
 body[data-theme="balkan-folklore"] .cosmetic-item,
 body[data-theme="lake-night"]     .cosmetic-item {
   background: rgba(10,18,32,.92);
   border-color: rgba(255,255,255,.1);
 }
-body[data-theme="skopje-neon"]    .cosmetic-item  { border-color: rgba(0,245,224,.15); }
 body[data-theme="balkan-folklore"] .cosmetic-item { border-color: rgba(255,215,0,.14); }
 body[data-theme="lake-night"]     .cosmetic-item  { border-color: rgba(74,160,212,.15); }
-body[data-theme="skopje-neon"]    .ci-name,
 body[data-theme="balkan-folklore"] .ci-name,
 body[data-theme="lake-night"]     .ci-name { color: #fff; }
-body[data-theme="skopje-neon"]    .ci-desc,
 body[data-theme="balkan-folklore"] .ci-desc,
 body[data-theme="lake-night"]     .ci-desc { color: rgba(255,255,255,.55); }
-body[data-theme="skopje-neon"]    .ci-cost,
 body[data-theme="balkan-folklore"] .ci-cost,
 body[data-theme="lake-night"]     .ci-cost { color: rgba(255,255,255,.7); }
 
@@ -3702,53 +3475,39 @@ body[data-theme="lake-night"]     .ci-cost { color: rgba(255,255,255,.7); }
    but don't override the text — causing white text on cream backgrounds.   */
 body[data-theme="ohrid-sunset"]    .game-card .game-name,
 body[data-theme="retro-yugoslav"]  .game-card .game-name,
-body[data-theme="mountain-village"] .game-card .game-name,
-body[data-theme="macedonian-bazaar"] .game-card .game-name { color: var(--dark); }
+body[data-theme="mountain-village"] .game-card .game-name { color: var(--dark); }
 
 /* ── Collection / mistakes list items on dark themes ────────── */
-body[data-theme="skopje-neon"]    .collection-item,
 body[data-theme="balkan-folklore"] .collection-item,
 body[data-theme="lake-night"]     .collection-item { background: rgba(10,18,32,.92); border: 1px solid rgba(255,255,255,.08); }
-body[data-theme="skopje-neon"]    .ci-word,
 body[data-theme="balkan-folklore"] .ci-word,
 body[data-theme="lake-night"]     .ci-word { color: #fff; }
-body[data-theme="skopje-neon"]    .ci-def,
 body[data-theme="balkan-folklore"] .ci-def,
 body[data-theme="lake-night"]     .ci-def { color: rgba(255,255,255,.6); }
 
 /* ── Age-select screen on dark themes ────────────────────────── */
-body[data-theme="skopje-neon"]    .age-select,
 body[data-theme="balkan-folklore"] .age-select,
 body[data-theme="lake-night"]     .age-select { color: #fff; }
-body[data-theme="skopje-neon"]    .age-option,
 body[data-theme="balkan-folklore"] .age-option,
 body[data-theme="lake-night"]     .age-option { background: rgba(10,18,32,.88); border-color: rgba(255,255,255,.12); color: #fff; }
-body[data-theme="skopje-neon"]    .age-option:hover  { background: rgba(0,245,224,.12); border-color: rgba(0,245,224,.4); }
 body[data-theme="balkan-folklore"] .age-option:hover { background: rgba(255,215,0,.1); border-color: rgba(255,215,0,.4); }
 body[data-theme="lake-night"]     .age-option:hover  { background: rgba(74,160,212,.12); border-color: rgba(74,160,212,.4); }
 
 /* ── Name entry on dark themes ────────────────────────────────── */
-body[data-theme="skopje-neon"]    .name-entry h2,
 body[data-theme="balkan-folklore"] .name-entry h2,
 body[data-theme="lake-night"]     .name-entry h2 { color: #fff; }
-body[data-theme="skopje-neon"]    .name-entry p,
 body[data-theme="balkan-folklore"] .name-entry p,
 body[data-theme="lake-night"]     .name-entry p { color: rgba(255,255,255,.65); }
 
 /* ── Hub extra panels on dark themes ─────────────────────────── */
-body[data-theme="skopje-neon"]    .streak-card,
 body[data-theme="balkan-folklore"] .streak-card,
 body[data-theme="lake-night"]     .streak-card { background: rgba(10,18,32,.88); color: #fff; }
-body[data-theme="skopje-neon"]    .daily-card,
 body[data-theme="balkan-folklore"] .daily-card,
 body[data-theme="lake-night"]     .daily-card { background: rgba(10,18,32,.88); color: #fff; }
-body[data-theme="skopje-neon"]    .ach-item,
 body[data-theme="balkan-folklore"] .ach-item,
 body[data-theme="lake-night"]     .ach-item { background: rgba(10,18,32,.85); border-color: rgba(255,255,255,.08); }
-body[data-theme="skopje-neon"]    .ach-item .ach-name,
 body[data-theme="balkan-folklore"] .ach-item .ach-name,
 body[data-theme="lake-night"]     .ach-item .ach-name { color: #fff; }
-body[data-theme="skopje-neon"]    .ach-item .ach-desc,
 body[data-theme="balkan-folklore"] .ach-item .ach-desc,
 body[data-theme="lake-night"]     .ach-item .ach-desc { color: rgba(255,255,255,.55); }
 
@@ -3893,36 +3652,27 @@ body.theme-dark .confirm-dialog p  { color: rgba(224,236,255,.75); }
 .htp-start-btn { font-size: 1rem; padding: 13px 32px; }
 
 /* Dark theme overrides */
-body[data-theme="skopje-neon"]    .htp-section,
 body[data-theme="balkan-folklore"] .htp-section,
 body[data-theme="lake-night"]     .htp-section {
   background: rgba(10,18,32,.92);
   border-color: rgba(255,255,255,.1);
 }
-body[data-theme="skopje-neon"]    .htp-heading,
 body[data-theme="balkan-folklore"] .htp-heading,
 body[data-theme="lake-night"]     .htp-heading,
-body[data-theme="skopje-neon"]    .htp-game-info strong,
 body[data-theme="balkan-folklore"] .htp-game-info strong,
 body[data-theme="lake-night"]     .htp-game-info strong,
-body[data-theme="skopje-neon"]    .htp-tip,
 body[data-theme="balkan-folklore"] .htp-tip,
 body[data-theme="lake-night"]     .htp-tip { color: #fff; }
-body[data-theme="skopje-neon"]    .htp-game-info p,
 body[data-theme="balkan-folklore"] .htp-game-info p,
 body[data-theme="lake-night"]     .htp-game-info p { color: rgba(255,255,255,.6); }
 /* Dark theme intro card */
-body[data-theme="skopje-neon"]    .htp-intro,
 body[data-theme="balkan-folklore"] .htp-intro,
 body[data-theme="lake-night"]     .htp-intro { background: rgba(10,18,32,.92); border-color: rgba(255,255,255,.1); }
-body[data-theme="skopje-neon"]    .htp-intro  { border-color: rgba(0,245,224,.2); }
 body[data-theme="balkan-folklore"] .htp-intro { border-color: rgba(255,215,0,.18); }
 body[data-theme="lake-night"]     .htp-intro  { border-color: rgba(74,160,212,.2); }
 
-body[data-theme="skopje-neon"]    .htp-logo .logo-zbor,
 body[data-theme="balkan-folklore"] .htp-logo .logo-zbor,
 body[data-theme="lake-night"]     .htp-logo .logo-zbor { color: #fff; }
-body[data-theme="skopje-neon"]    .htp-tagline,
 body[data-theme="balkan-folklore"] .htp-tagline,
 body[data-theme="lake-night"]     .htp-tagline { color: rgba(255,255,255,.55); }
 
@@ -3939,12 +3689,10 @@ body[data-theme="lake-night"]     .htp-tagline { color: rgba(255,255,255,.55); }
 
 /* ── Dark-theme leaderboard overrides ───────────────────────── */
 body.theme-dark .lb-age-tab,
-body[data-theme="skopje-neon"]    .lb-age-tab,
 body[data-theme="balkan-folklore"] .lb-age-tab,
 body[data-theme="lake-night"]     .lb-age-tab {
   background: rgba(255,255,255,.06) !important;
 }
-body[data-theme="skopje-neon"]    .lb-count-line,
 body[data-theme="balkan-folklore"] .lb-count-line,
 body[data-theme="lake-night"]     .lb-count-line { color: rgba(255,255,255,.45); }
 

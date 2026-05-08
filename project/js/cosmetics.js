@@ -7,10 +7,8 @@ const COSMETIC_CATALOG = {
     { id: 'default',            name: 'Оригинален',           icon: '🎨', cost: 0,   desc: 'Класичниот Зборци изглед',                swatch: '' },
     { id: 'ohrid-sunset',       name: 'Охрид Зајдисонце',     icon: '🌅', cost: 10,  desc: 'Топли тонови на охридскиот зајдисонце',   swatch: 'swatch-ohrid-sunset' },
     { id: 'mountain-village',   name: 'Планинско Село',       icon: '⛰️', cost: 15,  desc: 'Свежи земни тонови на планината',         swatch: 'swatch-mountain-village' },
-    { id: 'macedonian-bazaar',  name: 'Македонски Чаршија',   icon: '🏪', cost: 15,  desc: 'Топли боји на традиционалниот пазар',     swatch: 'swatch-macedonian-bazaar' },
     { id: 'retro-yugoslav',     name: 'Ретро Југо',           icon: '📼', cost: 25,  desc: 'Носталгичен стил на 80-тите',             swatch: 'swatch-retro-yugoslav' },
     { id: 'balkan-folklore',    name: 'Балкански Фолклор',    icon: '🎭', cost: 40,  desc: 'Богати фолклорни бои и шари',             swatch: 'swatch-balkan-folklore' },
-    { id: 'skopje-neon',        name: 'Скопје Неон',          icon: '🌃', cost: 50,  desc: 'Неонска светлина на ноќниот Скопје',      swatch: 'swatch-skopje-neon' },
     { id: 'lake-night',         name: 'Ноќно Езеро',          icon: '🌙', cost: 60,  desc: 'Мирна сина палета на ноќното езеро',      swatch: 'swatch-lake-night' },
   ],
   frames: [
@@ -28,7 +26,7 @@ const COSMETIC_CATALOG = {
   ],
 };
 
-const DARK_THEMES = new Set(['skopje-neon', 'lake-night']);
+const DARK_THEMES = new Set(['lake-night']);
 
 // ── Storage helpers ────────────────────────────────────────────
 function _cosKey(suffix) { return `zb_${_uid()}_cos_${suffix}`; }

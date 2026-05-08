@@ -28,11 +28,9 @@ function _lbUserColor(uid) {
 // ── Cosmetic theme → subtle row tint mapping ─────────────────
 const LB_THEME_TINTS = {
   'ohrid-sunset':       'rgba(255,180,120,.08)',
-  'skopje-neon':        'rgba(0,245,224,.07)',
   'retro-yugoslav':     'rgba(192,136,42,.08)',
   'balkan-folklore':    'rgba(255,215,0,.08)',
   'mountain-village':   'rgba(74,138,74,.08)',
-  'macedonian-bazaar':  'rgba(212,98,10,.08)',
   'lake-night':         'rgba(74,160,212,.08)',
 };
 
@@ -166,9 +164,9 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
 
 function _lbThemeBorderColor(themeId) {
   const map = {
-    'ohrid-sunset': '#FF8C42', 'skopje-neon': '#00F5E0', 'retro-yugoslav': '#C0882A',
+    'ohrid-sunset': '#FF8C42', 'retro-yugoslav': '#C0882A',
     'balkan-folklore': '#FFD700', 'mountain-village': '#4A8A4A',
-    'macedonian-bazaar': '#D4620A', 'lake-night': '#4A9FD4',
+    'lake-night': '#4A9FD4',
   };
   return map[themeId] || 'transparent';
 }
