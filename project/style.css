@@ -747,6 +747,29 @@ body {
 
 /* ── Leaderboard ── */
 .lb-wrap { display: flex; flex-direction: column; flex: 1; }
+
+/* Age-group tab pills */
+.lb-age-tabs {
+  display: flex; gap: 8px; padding: 14px 14px 0; flex-wrap: wrap;
+}
+.lb-age-tab {
+  padding: 8px 16px; border-radius: 50px;
+  border: 2px solid; font-family: 'Oswald', sans-serif;
+  font-size: .88rem; font-weight: 700; cursor: pointer;
+  background: transparent;
+  transition: background .14s, color .14s, transform .1s;
+  white-space: nowrap;
+}
+.lb-age-tab:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+/* Player count line */
+.lb-count-line {
+  padding: 8px 14px 2px;
+  font-size: .8rem; font-family: 'Nunito', sans-serif;
+  color: var(--muted);
+}
+
+/* Legacy score tabs kept for any other uses */
 .lb-tabs {
   display: flex;
   gap: 6px;
@@ -3767,6 +3790,23 @@ body[data-theme="lake-night"]     .htp-tagline { color: rgba(255,255,255,.55); }
   .htp-game-info p { font-size: .78rem; }
   .auth-features { gap: 6px; }
   .af-item { font-size: .7rem; padding: 3px 9px; }
+}
+
+/* ── Dark-theme leaderboard overrides ───────────────────────── */
+body.theme-dark .lb-age-tab,
+body[data-theme="skopje-neon"]    .lb-age-tab,
+body[data-theme="balkan-folklore"] .lb-age-tab,
+body[data-theme="lake-night"]     .lb-age-tab {
+  background: rgba(255,255,255,.06) !important;
+}
+body[data-theme="skopje-neon"]    .lb-count-line,
+body[data-theme="balkan-folklore"] .lb-count-line,
+body[data-theme="lake-night"]     .lb-count-line { color: rgba(255,255,255,.45); }
+
+/* Mobile age tabs */
+@media (max-width: 480px) {
+  .lb-age-tab { padding: 6px 12px; font-size: .78rem; }
+  .lb-count-line { font-size: .75rem; }
 }
 
 /* ══════════════════════════════════════════════════════════════

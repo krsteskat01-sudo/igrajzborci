@@ -651,7 +651,6 @@ window.showHub = function() {
   setTimeout(() => {
     _extInjectWordOfWeek();
     // _extInjectHubButtons(); // Отстрането по барање
-    _extInjectDifficulty();
-    // if (typeof chatInject === 'function') chatInject(); // Отстрането по барање
+    // _extInjectDifficulty(); // Отстрането — нивоата не влијаат на играта
   }, 150);
 };

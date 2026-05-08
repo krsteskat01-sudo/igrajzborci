@@ -2,8 +2,28 @@
 // Поените се чуваат под users/{uid}
 
 let _lbPlayers    = []; // Листа со играчи
-let _lbTab        = 'score'; // Кое јазиче е активно
+let _lbTab        = 'mladi'; // Активна возрасна група
 let _lbUnsubscribe = null; // Функција за исклучување на Firebase слушателот
+
+// ── Age-group tab definitions ─────────────────────────────────
+const LB_AGE_TABS = [
+  { key: 'mladi',  label: 'Мали Зборчари',  icon: '🌱', color: '#2E7D32' },
+  { key: 'sredno', label: 'Млади Зборчари', icon: '🌿', color: '#1A7A6E' },
+  { key: 'pro',    label: 'Зборчари Про',   icon: '🌳', color: '#E85A1A' },
+];
+
+// ── Deterministic per-user row color from uid ─────────────────
+const LB_USER_COLORS = [
+  '#FFF3E0','#E8F5E9','#E3F2FD','#FCE4EC','#F3E5F5',
+  '#E0F2F1','#FFF8E1','#FBE9E7','#E8EAF6','#F1F8E9',
+  '#E0F7FA','#EDE7F6','#FFF9C4','#FFEBEE','#E8F4FD',
+];
+function _lbUserColor(uid) {
+  if (!uid) return '#fff';
+  let h = 0;
+  for (let i = 0; i < uid.length; i++) h = (h * 31 + uid.charCodeAt(i)) >>> 0;
+  return LB_USER_COLORS[h % LB_USER_COLORS.length];
+}
 
 // ── Cosmetic theme → subtle row tint mapping ─────────────────
 const LB_THEME_TINTS = {
@@ -101,8 +121,8 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
   const folkAvId   = (settings.avatar && settings.avatar !== 'none') ? settings.avatar : null;
   const frameClass = frameId  ? 'frame-' + frameId  : '';
   const folkClass  = folkAvId ? 'folk-' + folkAvId  : '';
-  // Don't apply tintBg on top-3 rows — it overrides their solid orange/teal/lavender backgrounds
-  const tintBg     = (themeId && rankIndex >= 3) ? LB_THEME_TINTS[themeId] || '' : '';
+  // Top-3 keep their brand colours; everyone else gets a unique pastel from their uid
+  const userColor  = rankIndex >= 3 ? _lbUserColor(player.id) : '';
   const tintBorder = themeId ? `border-left:3px solid ${_lbThemeBorderColor(themeId)};` : '';
 
   const isMe      = player.id === myUid;
@@ -123,7 +143,7 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
   return `
     <div class="${rowClasses.join(' ')}" data-uid="${player.id}"
       onclick="lbToggleExpand('${expandId}')"
-      style="${tintBg ? `background:${tintBg};` : ''}${tintBorder}">
+      style="${userColor ? `background:${userColor};` : ''}${tintBorder}${isMe && rankIndex >= 3 ? 'box-shadow:inset 3px 0 0 var(--orange);' : ''}">
       <span class="lb-rank">${rankDisp}</span>
       <div class="avatar-frame-wrap ${frameClass} ${folkClass} lb-av-wrap" style="flex-shrink:0;">
         ${_lbAvatarHtml(player, 34)}
@@ -283,6 +303,8 @@ window.lbDetach = lbDetach;
  */
 async function showLeaderboard() {
   const cat = loadCategory();
+  // Default to the viewer's own age group so they land on a relevant tab
+  if (cat && LB_AGE_TABS.some(t => t.key === cat)) _lbTab = cat;
   document.body.className = getThemeClass(cat);
 
   showScreen(`
@@ -315,7 +337,7 @@ async function showLeaderboard() {
     // Следи ги топ 200 играчи во реално време (onSnapshot)
     _lbUnsubscribe = db.collection('users')
       .orderBy('score', 'desc')
-      .limit(200)
+      .limit(500)
       .onSnapshot(snap => {
         _lbPlayers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderLeaderboard(); // Прецртај ја табелата со новите податоци
@@ -343,70 +365,55 @@ async function showLeaderboard() {
  * Враќа: ништо
  */
 function renderLeaderboard() {
-  const tabs = [
-    { key: 'score',          label: 'Вкупно', icon: '🏆' },
-    { key: 'best_match',     label: 'Спој',   icon: '🔗' },
-    { key: 'best_truefalse', label: 'Т/Н',    icon: '✓✗' },
-    { key: 'best_hangman',   label: 'Збор',   icon: '⭐' },
-    { key: 'best_quiz',      label: 'Кој',    icon: '❓' },
-  ];
+  const currentUserId = currentUser ? currentUser.uid : null;
 
-  // Сортирај ги играчите според активното јазиче (пример: најдобри во Т/Н)
-  // Филтрирај: Позитивни поени, валидно ime и активност во последните 30 дена
-  const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+  // Filter to the active age-group tab, require name and at least 1 point
+  const filtered = [..._lbPlayers]
+    .filter(p =>
+      p.category === _lbTab &&
+      p.displayName && p.displayName.trim() !== '' &&
+      (p.score || 0) > 0
+    )
+    .sort((a, b) => (b.score || 0) - (a.score || 0));
 
-  const allSorted = [..._lbPlayers]
-    .filter(player => {
-      const hasPoints = (player[_lbTab] || 0) > 0;
-      const hasName   = player.displayName && player.displayName.trim() !== '';
+  const totalCount = filtered.length;
 
-      // Ако нема timestamp (стари профили), претпостави дека се активни за почеток
-      const lastActive = player.lastActive ? player.lastActive.toMillis() : Date.now();
-      const isActive   = lastActive > thirtyDaysAgo;
-
-      return hasPoints && hasName && isActive;
-    })
-    .sort((a, b) => (b[_lbTab] || 0) - (a[_lbTab] || 0));
-
-  const currentUserId    = currentUser ? currentUser.uid : null;
-  // For the current user, fill in avatar/photo from localStorage if Firestore doc is missing
-  // them (race condition during signup, or account predating the fields).
-  // For the current user, localStorage is always the most up-to-date source for
-  // avatarId and googlePhotoUrl (synced from Firestore on login, set on signup).
-  // Firestore may lag behind or be missing these fields due to signup race conditions.
+  // Patch current user's local avatar data
   const localAvId  = currentUserId && typeof loadAvatarId      === 'function' ? loadAvatarId()      : '';
   const localGpUrl = currentUserId && typeof loadGooglePhotoUrl === 'function' ? loadGooglePhotoUrl() : '';
-  const topPlayers = allSorted.slice(0, 20).map(player => {
+  const topPlayers = filtered.slice(0, 20).map(player => {
     if (currentUserId && player.id === currentUserId) {
       const patched = { ...player };
-      if (localAvId)  patched.avatarId       = localAvId;   // always trust local
+      if (localAvId)  patched.avatarId       = localAvId;
       if (localGpUrl) patched.googlePhotoUrl = localGpUrl;
       return patched;
     }
     return player;
   });
-  const currentUserRankIndex = currentUserId ? allSorted.findIndex(player => player.id === currentUserId) : -1;
-  const myRank           = currentUserRankIndex + 1;
 
-  const tabsHtml = tabs.map(t =>
-    `<button class="lb-tab${_lbTab === t.key ? ' lb-tab-active' : ''}"
-      onclick="lbSwitchTab('${t.key}')">${t.icon} ${t.label}</button>`
-  ).join('');
+  const currentUserRankIndex = currentUserId ? filtered.findIndex(p => p.id === currentUserId) : -1;
+  const myRank = currentUserRankIndex + 1;
 
-  // Ицртај ги редовите со козметика (без да се гледа е-пошта или ID)
+  // Age-group tab pills
+  const tabsHtml = LB_AGE_TABS.map(t => {
+    const active = _lbTab === t.key;
+    return `<button class="lb-tab lb-age-tab${active ? ' lb-tab-active' : ''}"
+      style="${active ? `background:${t.color};border-color:${t.color};color:#fff;` : `border-color:${t.color};color:${t.color};`}"
+      onclick="lbSwitchTab('${t.key}')">${t.icon} ${t.label}</button>`;
+  }).join('');
+
   const rowsHtml = topPlayers.length === 0
-    ? '<div class="lb-empty">Нема резултати уште — биди прв! 🎮</div>'
+    ? '<div class="lb-empty">Нема играчи во оваа група уште — биди прв! 🎮</div>'
     : topPlayers.map((player, rankIndex) =>
-        _lbBuildRow(player, rankIndex, currentUserId, _lbTab)
+        _lbBuildRow(player, rankIndex, currentUserId, 'score')
       ).join('');
 
-  // Инфо за рангот ако корисникот не е во топ 20
   let myRankHtml = '';
   if (currentUserId) {
     if (currentUserRankIndex === -1) {
-      myRankHtml = `<div class="lb-my-rank">🎮 Немаш поени уште — започни да играш!</div>`;
+      myRankHtml = `<div class="lb-my-rank">🎮 Играј во оваа група за да се рангираш!</div>`;
     } else if (myRank > 20) {
-      myRankHtml = `<div class="lb-my-rank">📍 Ти си на место <strong>#${myRank}</strong> — продолжи да играш за да влезеш во Топ 20! 🚀</div>`;
+      myRankHtml = `<div class="lb-my-rank">📍 Место <strong>#${myRank}</strong> од <strong>${totalCount}</strong> играчи</div>`;
     }
   }
 
@@ -416,10 +423,11 @@ function renderLeaderboard() {
     <div class="game-wrap">
       <div class="score-bar">
         <button class="exit-btn" onclick="showHub()">✕</button>
-        <span class="bar-title">🏆 Топ 20 Играчи</span>
-        <span class="bar-stat">${_lbPlayers.length} играчи</span>
+        <span class="bar-title">🏆 Табела</span>
       </div>
       <div class="lb-wrap">
+        <div class="lb-age-tabs">${tabsHtml}</div>
+        <div class="lb-count-line">👥 Вкупно играчи: <strong>${totalCount}</strong></div>
         <div class="lb-list">${rowsHtml}${myRankHtml}</div>
       </div>
     </div>`;
