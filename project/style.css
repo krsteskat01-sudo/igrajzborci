@@ -878,6 +878,7 @@ body {
 }
 @media (min-width: 900px) {
   .games-grid { grid-template-columns: repeat(5, 1fr); }
+  .premium-section .games-grid { grid-template-columns: repeat(3, 1fr); }
   .game-card  { min-height: 160px; }
 }
 @media (min-width: 1200px) {
@@ -2187,6 +2188,12 @@ body.mladi-zborcari .star-on:nth-child(5) { animation-delay: .72s; }
 /* ── Premium section ───────────────────────────────────────── */
 .premium-section {
   padding: 0 0 10px;
+}
+.premium-section .games-grid {
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  max-width: 640px;
+  margin: 0 auto;
 }
 .premium-label {
   text-align: center;
