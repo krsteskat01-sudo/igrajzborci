@@ -32,20 +32,55 @@ function initWordBuilder(category) {
     return arrayCopy;
   }
 
-  // Split word into tile chunks: ≤5 chars → individual, ≤10 → pairs, else → triples
-  function splitIntoTiles(word) {
+  // Syllabify a Macedonian word into сложуви (syllables)
+  // Every syllable needs a vowel; consonants attach to the following vowel.
+  // For clusters, the longest valid Macedonian onset from the end goes with the next vowel.
+  function syllabifyMk(word) {
+    const isVowel = c => 'аеиоуАЕИОУ'.includes(c);
+
+    // Valid 3- and 2-consonant syllable onsets in Macedonian (lowercase Cyrillic)
+    const O3 = new Set(['стр','скр','спр','здр','збр','згр']);
+    const O2 = new Set([
+      'бл','бр','вл','вр','гл','гр','дв','дн','др',
+      'зб','зг','зм','зр','кл','кн','кр','мн','пл','пн','пр',
+      'св','ск','сл','см','сн','сп','ср','ст','тр','фр','цр','чр','шт',
+    ]);
+
     const chars = [...word];
-    if (chars.length <= 5) return chars;
-    if (chars.length <= 10) {
-      const result = [];
-      for (let i = 0; i < chars.length; i += 2)
-        result.push(chars[i] + (chars[i + 1] || ''));
-      return result;
+    const len = chars.length;
+
+    // Collect vowel positions
+    const vpos = chars.reduce((acc, c, i) => (isVowel(c) ? [...acc, i] : acc), []);
+    if (vpos.length <= 1) return [word]; // mono-syllabic or no vowel — return as-is
+
+    // Build syllable start boundaries
+    const bounds = [0];
+    for (let vi = 0; vi < vpos.length - 1; vi++) {
+      const v1 = vpos[vi];       // current vowel index
+      const v2 = vpos[vi + 1];   // next vowel index
+      const gap = v2 - v1 - 1;   // number of consonants between the two vowels
+
+      let splitAt;
+      if (gap === 0) {
+        splitAt = v2;             // adjacent vowels → split right before next vowel
+      } else if (gap === 1) {
+        splitAt = v1 + 1;         // single consonant → belongs to next syllable
+      } else {
+        // Multiple consonants: find longest valid Macedonian onset from the cluster end
+        const cluster = chars.slice(v1 + 1, v2).map(c => c.toLowerCase()).join('');
+        let onsetLen = 1;         // default: last consonant is the onset
+        if (gap >= 3 && O3.has(cluster.slice(-3))) onsetLen = 3;
+        else if (gap >= 2 && O2.has(cluster.slice(-2))) onsetLen = 2;
+        splitAt = v2 - onsetLen;
+      }
+      bounds.push(splitAt);
     }
-    const result = [];
-    for (let i = 0; i < chars.length; i += 3)
-      result.push(chars.slice(i, i + 3).join(''));
-    return result;
+
+    // Slice the original word at each boundary
+    return bounds.map((start, i) => {
+      const end = i + 1 < bounds.length ? bounds[i + 1] : len;
+      return chars.slice(start, end).join('');
+    });
   }
 
   // ── Game flow ─────────────────────────────────────────────────
@@ -54,7 +89,7 @@ function initWordBuilder(category) {
   function loadNextWord() {
     if (wordsDone >= TOTAL_WORDS) { endGame(); return; }
     currentWord  = wordQueue[wordsDone];
-    correctTiles = splitIntoTiles(currentWord.zbor.toUpperCase());
+    correctTiles = syllabifyMk(currentWord.zbor.toUpperCase());
     tiles        = shuffle(correctTiles).map((text, idx) => ({ text, idx, used: false, slotIdx: -1 }));
     slotValues   = new Array(correctTiles.length).fill(null);
     wordStartTime = Date.now();
