@@ -97,12 +97,32 @@ async function checkAchievements() {
     const highestScore = Math.max(userData.best_match || 0, userData.best_truefalse || 0, userData.best_hangman || 0, userData.best_quiz || 0);
     const updates = {};
 
+    const totalScore   = userData.score || 0;
+    const allGameBest  = Math.max(
+      userData.best_match || 0, userData.best_truefalse || 0,
+      userData.best_hangman || 0, userData.best_quiz || 0,
+      userData.best_speedround || 0
+    );
+    const premiumBest  = Math.max(
+      userData.best_wordbuilder || 0, userData.best_memoryflip || 0, userData.best_fasttyping || 0
+    );
+    const mainGamesPlayed = [
+      userData.best_match, userData.best_truefalse, userData.best_hangman,
+      userData.best_quiz, userData.best_speedround
+    ].filter(v => (v || 0) > 0).length;
+
     // Услови за значки
-    if (!achievements.prv_zbor   && (userData.score || 0) > 0)       updates['achievements.prv_zbor']   = true;
-    if (!achievements.sto_poeni  && (userData.score || 0) >= 100)    updates['achievements.sto_poeni']  = true;
-    if (!achievements.streak7    && _streakDays >= 7)                 updates['achievements.streak7']    = true;
-    if (!achievements.majstor    && (userData.score || 0) >= 500)    updates['achievements.majstor']    = true;
-    if (!achievements.sovrsheno  && highestScore >= 80)               updates['achievements.sovrsheno']  = true;
+    if (!achievements.prv_zbor        && totalScore > 0)                       updates['achievements.prv_zbor']        = true;
+    if (!achievements.sto_poeni       && totalScore >= 100)                    updates['achievements.sto_poeni']       = true;
+    if (!achievements.streak7         && _streakDays >= 7)                     updates['achievements.streak7']         = true;
+    if (!achievements.majstor         && totalScore >= 500)                    updates['achievements.majstor']         = true;
+    if (!achievements.sovrsheno       && highestScore >= 80)                   updates['achievements.sovrsheno']       = true;
+    if (!achievements.hiljada         && totalScore >= 1000)                   updates['achievements.hiljada']         = true;
+    if (!achievements.brzac           && (userData.best_speedround || 0) >= 50) updates['achievements.brzac']          = true;
+    if (!achievements.mesec           && _streakDays >= 30)                    updates['achievements.mesec']           = true;
+    if (!achievements.pet_igri        && mainGamesPlayed >= 5)                 updates['achievements.pet_igri']        = true;
+    if (!achievements.premium_igrach  && premiumBest > 0)                      updates['achievements.premium_igrach'] = true;
+    if (!achievements.virtuoz         && allGameBest >= 200)                   updates['achievements.virtuoz']         = true;
 
     if (Object.keys(updates).length > 0) {
       await ref.update(updates);
@@ -334,11 +354,17 @@ window.toggleFunFacts = function() {
 // ═══════════════════════════════════════════════════════════════
 
 const BADGES = [
-  { key: 'prv_zbor',  icon: '🏅', label: 'Прв збор',   tip: 'Одиграј ја прва игра' },
-  { key: 'streak7',   icon: '🔥', label: '7 дена',      tip: '7 дена по ред' },
-  { key: 'sto_poeni', icon: '⭐', label: '100 поени',   tip: 'Освои 100 вкупни поени' },
-  { key: 'majstor',   icon: '🧠', label: 'Мајстор',    tip: 'Освои 500 вкупни поени' },
-  { key: 'sovrsheno', icon: '🎯', label: 'Совршено',    tip: 'Освои 80+ поени во игра' },
+  { key: 'prv_zbor',       icon: '🏅', label: 'Прв збор',    tip: 'Одиграј ја прва игра' },
+  { key: 'sto_poeni',      icon: '⭐', label: '100 поени',    tip: 'Освои 100 вкупни поени' },
+  { key: 'streak7',        icon: '🔥', label: '7 дена',       tip: '7 дена по ред' },
+  { key: 'sovrsheno',      icon: '🎯', label: 'Совршено',     tip: 'Освои 80+ поени во игра' },
+  { key: 'majstor',        icon: '🧠', label: 'Мајстор',      tip: 'Освои 500 вкупни поени' },
+  { key: 'hiljada',        icon: '🏆', label: '1000 поени',   tip: 'Освои 1000 вкупни поени' },
+  { key: 'brzac',          icon: '⚡', label: 'Брзак',         tip: 'Освои 50+ поени во Брза Рунда' },
+  { key: 'pet_igri',       icon: '🎮', label: 'Мултиплеер',   tip: 'Одиграј ги сите 5 основни игри' },
+  { key: 'premium_igrach', icon: '💎', label: 'Премиум',      tip: 'Одиграј напредна отклучена игра' },
+  { key: 'virtuoz',        icon: '🌟', label: 'Виртуоз',      tip: 'Освои 200+ поени во една игра' },
+  { key: 'mesec',          icon: '🌙', label: 'Месечар',       tip: '30 дена стрик по ред' },
 ];
 
 /**
