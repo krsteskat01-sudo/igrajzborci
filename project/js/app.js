@@ -589,7 +589,7 @@ window.showHowToPlay = function() {
         </div>
 
         <div class="htp-section">
-          <h3 class="htp-heading">🎨 Козметика и теми</h3>
+          <h3 class="htp-heading">🛍️ Продавница</h3>
           <div class="htp-tips">
             <div class="htp-tip"><span class="htp-tip-icon">🎨</span><span>Отклучи <strong>уникатни теми</strong> — од Охриd до Ноќно Езеро</span></div>
             <div class="htp-tip"><span class="htp-tip-icon">✨</span><span>Купи <strong>рамки</strong> за твојот аватар со монети</span></div>

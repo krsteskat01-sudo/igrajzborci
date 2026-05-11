@@ -206,7 +206,7 @@ function _renderCosmeticsShop() {
     <div class="game-wrap">
       <div class="score-bar">
         <button class="exit-btn" onclick="showHub()">✕</button>
-        <span class="bar-title">🎨 Изглед &amp; Козметика</span>
+        <span class="bar-title">🛍️ Продавница</span>
         <span class="bar-stat coins-stat">🪙 <strong id="shop-coins-val">${coins}</strong></span>
       </div>
       <div class="cosmetics-screen">
