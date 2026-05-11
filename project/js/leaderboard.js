@@ -36,17 +36,11 @@ const LB_THEME_TINTS = {
 
 // ── Achievement icon map for expand panels ───────────────────
 const LB_ACH_DEFS = {
-  prv_zbor:       { icon: '🏅', name: 'Прв збор' },
-  sto_poeni:      { icon: '⭐', name: '100 поени' },
-  streak7:        { icon: '🔥', name: '7 дена' },
-  sovrsheno:      { icon: '🎯', name: 'Совршено' },
-  majstor:        { icon: '🧠', name: 'Мајстор' },
-  hiljada:        { icon: '🏆', name: '1000 поени' },
-  brzac:          { icon: '⚡', name: 'Брзак' },
-  pet_igri:       { icon: '🎮', name: 'Мултиплеер' },
-  premium_igrach: { icon: '💎', name: 'Премиум' },
-  virtuoz:        { icon: '🌟', name: 'Виртуоз' },
-  mesec:          { icon: '🌙', name: 'Месечар' },
+  prv_zbor:  { icon: '🏅', name: 'Прв збор' },
+  sto_poeni: { icon: '⭐', name: '100 поени' },
+  streak7:   { icon: '🔥', name: '7 дена' },
+  majstor:   { icon: '🧠', name: 'Мајстор' },
+  sovrsheno: { icon: '🎯', name: 'Совршено' },
 };
 
 // ── Per-player avatar with folk-avatar support ───────────────
