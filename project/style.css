@@ -462,8 +462,9 @@ body {
 .card-teal     { background: var(--teal); }
 /* white at opacity .8 on lavender = 3.0:1 (fails for small text) — force full-opacity white */
 .card-lavender { background: var(--lavender); }
+.card-lavender .game-name,
 .card-lavender .game-desc,
-.card-lavender .game-best { opacity: 1; color: #fff; }
+.card-lavender .game-best { color: var(--dark); }
 .card-dark     { background: var(--dark); }
 .card-orange   { background: var(--orange); }
 .game-icon { font-size: 1.8rem; }

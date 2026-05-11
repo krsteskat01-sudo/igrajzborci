@@ -159,7 +159,8 @@ function initHangman(category) {
 
   window.hmExit = function() {
     document.removeEventListener('keydown', _hmKey);
-    showHub();
+    clearInterval(window._hmTimer);
+    showResult(score, 'hangman');
   };
 
   function startWord() {

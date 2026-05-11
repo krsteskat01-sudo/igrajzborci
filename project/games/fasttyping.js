@@ -47,7 +47,7 @@ function initFastTyping(category) {
       <div class="game-wrap fade-in">
         ${GAME_BG}
         <div class="score-bar">
-          <button class="exit-btn" onclick="clearInterval(window._ftTimer);showHub()">✕</button>
+          <button class="exit-btn" onclick="clearInterval(window._ftTimer);if(window._ftCleanup)window._ftCleanup();showHub()">✕</button>
           <span class="bar-title">⌨️ Fast Typing</span>
           <span class="bar-stat">⭐ <strong id="ft-score">${score}</strong></span>
           ${multiplier > 1 ? `<span class="bar-stat ft-mult-badge">${multLabel}</span>` : ''}
@@ -64,7 +64,7 @@ function initFastTyping(category) {
             <input type="text" id="ft-input" class="ft-input"
               autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
               placeholder="Напиши го зборот..."
-              onkeydown="if(event.key==='Enter'){ftSubmit();}else if(event.key==='Tab'){event.preventDefault();ftSkip();}">
+              onkeydown="if(event.key==='Enter'){ftSubmit();}">
             <button class="ft-submit-btn" onclick="ftSubmit()">→</button>
           </div>
           <div id="ft-feedback" class="ft-feedback"></div>
@@ -166,11 +166,20 @@ function initFastTyping(category) {
     if (timeLeft <= 5 && timeLeft > 0) SoundFX.tick();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
+      if (typeof window._ftCleanup === 'function') window._ftCleanup();
       if (typeof animateCoinReward === 'function') animateCoinReward(score);
       setTimeout(() => showResult(score, 'fasttyping'), 420);
     }
   }, 1000);
   window._ftTimer = timerInterval;
+
+  // Tab key captured at document level (capture phase) — prevents browser
+  // inserting a tab character into the input before the event is handled
+  function _ftTabKey(e) {
+    if (e.key === 'Tab') { e.preventDefault(); window.ftSkip(); }
+  }
+  document.addEventListener('keydown', _ftTabKey, true);
+  window._ftCleanup = function() { document.removeEventListener('keydown', _ftTabKey, true); };
 
   render();
 }
