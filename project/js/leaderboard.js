@@ -143,8 +143,9 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
       onclick="lbToggleExpand('${expandId}')"
       style="${userColor ? `background:${userColor};` : ''}${tintBorder}${isMe && rankIndex >= 3 ? 'box-shadow:inset 3px 0 0 var(--orange);' : ''}">
       <span class="lb-rank">${rankDisp}</span>
-      <div class="avatar-frame-wrap ${frameClass} ${folkClass} lb-av-wrap" style="flex-shrink:0;">
+      <div class="avatar-frame-wrap ${frameClass} ${folkClass} lb-av-wrap" style="flex-shrink:0;position:relative;">
         ${_lbAvatarHtml(player, 34)}
+        ${folkAvId ? `<span class="lb-folk-badge av-${folkAvId}" title="${folkAvId.replace('folklore-','Аватар ')}"></span>` : ''}
       </div>
       <div class="lb-name-col">
         <div class="lb-name-row">

@@ -3133,6 +3133,15 @@ body[data-theme="lake-night"] .difficulty-wrap { background:rgba(2,8,22,.88); }
 /* Avatar wrapper in rows (allows frame to show) */
 .lb-av-wrap { position: relative; display: inline-flex; flex-shrink: 0; }
 
+/* Folk-avatar badge — small circle overlaid bottom-right of the avatar */
+.lb-folk-badge {
+  position: absolute; bottom: -3px; right: -3px;
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid #fff;
+  display: block; flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.35);
+}
+
 /* ── Name column (username + badge + theme bar) ─────────────── */
 .lb-name-col {
   flex: 1; min-width: 0;
@@ -3613,9 +3622,10 @@ body.theme-dark .confirm-dialog p  { color: rgba(224,236,255,.75); }
 }
 
 /* Game list */
-.htp-games { display: flex; flex-direction: column; gap: 12px; }
+.htp-games { display: flex; flex-direction: column; gap: 12px; align-items: center; }
 .htp-game {
   display: flex; align-items: flex-start; gap: 12px;
+  width: 100%; max-width: 480px;
 }
 .htp-icon {
   display: inline-flex; align-items: center; justify-content: center;
@@ -3628,6 +3638,20 @@ body.theme-dark .confirm-dialog p  { color: rgba(224,236,255,.75); }
 .htp-icon.card-dark      { background: var(--dark); }
 .htp-icon.card-orange    { background: var(--orange); }
 .htp-icon.card-speed     { background: #1a1a2e; }
+.htp-icon.card-gold      { background: linear-gradient(135deg,#C9960A,#F4C430); }
+.htp-icon.card-crimson   { background: linear-gradient(135deg,#7A0020,#C0392B); }
+.htp-icon.card-electric  { background: linear-gradient(135deg,#0A2A6E,#2255C0); }
+
+/* Unlock-with-coins section note */
+.htp-unlock-note {
+  font-size: .82rem; font-family: 'Nunito', sans-serif;
+  color: var(--muted); text-align: center; margin: -4px 0 10px;
+}
+/* Coin cost badge inside game title */
+.htp-cost {
+  font-family: 'Nunito', sans-serif; font-size: .75rem; font-weight: 900;
+  color: var(--orange); margin-left: 6px; white-space: nowrap;
+}
 .htp-game-info { flex: 1; }
 .htp-game-info strong {
   display: block; font-family: 'Oswald', sans-serif; font-size: .95rem;

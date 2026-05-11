@@ -256,9 +256,9 @@ window.showStats = async function() {
         </div>
         <div class="stats-section-title">Напредни игри</div>
         <div class="stats-grid">
-          <div class="stat-box"><div class="sb-val">${userData.best_wordbuilder||0}</div><div class="sb-label">🧩 Word Builder</div></div>
-          <div class="stat-box"><div class="sb-val">${userData.best_memoryflip||0}</div><div class="sb-label">🃏 Memory Flip</div></div>
-          <div class="stat-box"><div class="sb-val">${userData.best_fasttyping||0}</div><div class="sb-label">⌨️ Fast Typing</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_wordbuilder||0}</div><div class="sb-label">🧩 Слогалица</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_memoryflip||0}</div><div class="sb-label">🃏 Меморија</div></div>
+          <div class="stat-box"><div class="sb-val">${userData.best_fasttyping||0}</div><div class="sb-label">⌨️ Брзопис</div></div>
         </div>
       </div>
     </div>`;
@@ -312,9 +312,9 @@ const _tabDefinitions = [
   { key: 'best_hangman',     label: 'Збор',    icon: '⭐' },
   { key: 'best_quiz',        label: 'Кој',     icon: '❓' },
   { key: 'best_speedround',  label: 'Брза',    icon: '⚡' },
-  { key: 'best_wordbuilder', label: 'Builder', icon: '🧩' },
-  { key: 'best_memoryflip',  label: 'Flip',    icon: '🃏' },
-  { key: 'best_fasttyping',  label: 'Typing',  icon: '⌨️' },
+  { key: 'best_wordbuilder', label: 'Слога',   icon: '🧩' },
+  { key: 'best_memoryflip',  label: 'Мемо',    icon: '🃏' },
+  { key: 'best_fasttyping',  label: 'Брзо',    icon: '⌨️' },
   { key: 'weeklyScore',      label: 'Недела',  icon: '📅' },
 ];
 
@@ -390,9 +390,9 @@ window.renderLeaderboard = function() {
       }
       [
         { key:'best_speedround',  label:'Брза',    icon:'⚡' },
-        { key:'best_wordbuilder', label:'Builder', icon:'🧩' },
-        { key:'best_memoryflip',  label:'Flip',    icon:'🃏' },
-        { key:'best_fasttyping',  label:'Typing',  icon:'⌨️' },
+        { key:'best_wordbuilder', label:'Слога',  icon:'🧩' },
+        { key:'best_memoryflip',  label:'Мемо',   icon:'🃏' },
+        { key:'best_fasttyping',  label:'Брзо',   icon:'⌨️' },
         { key:'weeklyScore',      label:'Недела',  icon:'📅' },
       ]
         .forEach(tabDefinition => {

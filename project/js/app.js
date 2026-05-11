@@ -448,9 +448,9 @@ function showResult(score, game) {
     hangman:     'Збор по збор',
     quiz:        'Кој збор е тоа',
     speedround:  'Брза Рунда',
-    wordbuilder: 'Word Builder',
-    memoryflip:  'Memory Flip',
-    fasttyping:  'Fast Typing',
+    wordbuilder: 'Слогалица',
+    memoryflip:  'Меморија',
+    fasttyping:  'Брзопис',
   };
 
   // Постави различно емоџи зависно од освоените поени
@@ -542,10 +542,38 @@ window.showHowToPlay = function() {
         </div>
 
         <div class="htp-section">
+          <h3 class="htp-heading">🔒 Игри за отклучување со монети</h3>
+          <p class="htp-unlock-note">Собирај монети играјќи ги основните игри и отклучи ги овие напредни режими!</p>
+          <div class="htp-games">
+            <div class="htp-game">
+              <span class="htp-icon card-gold">🧩</span>
+              <div class="htp-game-info">
+                <strong>Слогалица <span class="htp-cost">🪙 30</span></strong>
+                <p>Сложи ги слоговите во точниот редослед за да го формираш зборот според дефиницијата. Брзината носи бонус поени!</p>
+              </div>
+            </div>
+            <div class="htp-game">
+              <span class="htp-icon card-crimson">🃏</span>
+              <div class="htp-game-info">
+                <strong>Меморија <span class="htp-cost">🪙 60</span></strong>
+                <p>Свртувај карти и спарувај зборови со нивните дефиниции. Тестирај ја меморијата — помалку свртувања, повеќе поени!</p>
+              </div>
+            </div>
+            <div class="htp-game">
+              <span class="htp-icon card-electric">⌨️</span>
+              <div class="htp-game-info">
+                <strong>Брзопис <span class="htp-cost">🪙 100</span></strong>
+                <p>Напиши го зборот во 60 секунди, колку побрзо — толку повеќе поени. Секоја точна буква е важна!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="htp-section">
           <h3 class="htp-heading">📊 Поени, монети и напредок</h3>
           <div class="htp-tips">
             <div class="htp-tip"><span class="htp-tip-icon">⭐</span><span>Освојуваш <strong>поени</strong> со секој точен одговор — рекордот се чува автоматски</span></div>
-            <div class="htp-tip"><span class="htp-tip-icon">🪙</span><span>Добиваш <strong>монети</strong> по секоја игра — трошете ги во продавницата за теми и рамки</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">🪙</span><span>Добиваш <strong>монети</strong> по секоја игра — трошете ги за теми, рамки и нови игри</span></div>
             <div class="htp-tip"><span class="htp-tip-icon">🔥</span><span>Играј секој ден за да го зголемиш <strong>стрикот</strong> и да освоиш бонус монети</span></div>
             <div class="htp-tip"><span class="htp-tip-icon">🏆</span><span>Споредувај ги своите резултати со другите на <strong>Табелата</strong></span></div>
           </div>
@@ -563,7 +591,7 @@ window.showHowToPlay = function() {
         <div class="htp-section">
           <h3 class="htp-heading">🎨 Козметика и теми</h3>
           <div class="htp-tips">
-            <div class="htp-tip"><span class="htp-tip-icon">🎨</span><span>Отклучи <strong>7 уникатни теми</strong> — од Охрид до Скопје Неон</span></div>
+            <div class="htp-tip"><span class="htp-tip-icon">🎨</span><span>Отклучи <strong>уникатни теми</strong> — од Охриd до Ноќно Езеро</span></div>
             <div class="htp-tip"><span class="htp-tip-icon">✨</span><span>Купи <strong>рамки</strong> за твојот аватар со монети</span></div>
             <div class="htp-tip"><span class="htp-tip-icon">👤</span><span>Избери <strong>фолклорен аватар</strong> за уникатен идентитет</span></div>
           </div>

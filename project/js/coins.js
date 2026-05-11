@@ -10,9 +10,9 @@ const UNLOCK_COSTS = {
 };
 
 const PREMIUM_GAMES = [
-  { id: 'wordbuilder', icon: '🧩', name: 'Word Builder',  desc: 'Сложи ги делови од зборови', color: 'card-gold' },
-  { id: 'memoryflip',  icon: '🃏', name: 'Memory Flip',   desc: 'Спои збор со дефиниција',   color: 'card-crimson' },
-  { id: 'fasttyping',  icon: '⌨️', name: 'Fast Typing',   desc: '60 секунди — колку побрзо!', color: 'card-electric' },
+  { id: 'wordbuilder', icon: '🧩', name: 'Слогалица',      desc: 'Сложи ги слоговите во збор',  color: 'card-gold' },
+  { id: 'memoryflip',  icon: '🃏', name: 'Меморија',       desc: 'Спои збор со дефиниција',    color: 'card-crimson' },
+  { id: 'fasttyping',  icon: '⌨️', name: 'Брзопис',        desc: '60 секунди — колку побрзо!', color: 'card-electric' },
 ];
 
 function getUnlockCost(gameId) {
