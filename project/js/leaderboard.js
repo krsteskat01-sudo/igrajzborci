@@ -140,14 +140,14 @@ function _lbBuildRow(player, rankIndex, myUid, scoreKey) {
       onclick="lbToggleExpand('${expandId}')"
       style="${userColor ? `background:${userColor};` : ''}${tintBorder}${isMe && rankIndex >= 3 ? 'box-shadow:inset 3px 0 0 var(--orange);' : ''}">
       <span class="lb-rank">${rankDisp}</span>
-      <div class="avatar-frame-wrap ${frameClass} ${folkClass} lb-av-wrap" style="flex-shrink:0;position:relative;">
+      <div class="avatar-frame-wrap ${frameClass} ${folkClass} lb-av-wrap" style="flex-shrink:0;">
         ${_lbAvatarHtml(player, 34)}
-        ${folkAvId ? `<span class="lb-folk-badge av-${folkAvId}" title="${folkAvId.replace('folklore-','Аватар ')}"></span>` : ''}
       </div>
       <div class="lb-name-col">
         <div class="lb-name-row">
           <span class="lb-name">${escHtml(player.displayName || '')}</span>
           ${isMe ? '<span class="lb-you">ти</span>' : ''}
+          ${folkAvId ? `<span class="lb-av-badge av-${folkAvId}" title="${({'folklore-1':'Везена Маска','folklore-2':'Охридско Небо','folklore-3':'Шумски Орел'})[folkAvId]||folkAvId}">${({'folklore-1':'🎭','folklore-2':'🌊','folklore-3':'🦅'})[folkAvId]||'👤'}</span>` : ''}
         </div>
         ${_lbMiniBadgesHtml(player)}
         ${_lbThemeBar(themeId)}
