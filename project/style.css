@@ -460,11 +460,11 @@ body {
 }
 .game-card:hover { transform: translateY(-4px) rotate(.4deg); box-shadow: 6px 8px 0 rgba(0,0,0,.22); }
 .card-teal     { background: var(--teal); }
-/* white at opacity .8 on lavender = 3.0:1 (fails for small text) — force full-opacity white */
-.card-lavender { background: var(--lavender); }
+/* Darker lavender so white text passes contrast on all card elements */
+.card-lavender { background: #6B5AA8; }
 .card-lavender .game-name,
 .card-lavender .game-desc,
-.card-lavender .game-best { color: var(--dark); }
+.card-lavender .game-best { color: #fff; }
 .card-dark     { background: var(--dark); }
 .card-orange   { background: var(--orange); }
 .game-icon { font-size: 1.8rem; }
@@ -3491,9 +3491,15 @@ body[data-theme="lake-night"]     .ci-cost { color: rgba(255,255,255,.7); }
 /* ── Light theme: game card .game-name text ─────────────────── */
 /* .game-card sets color:#fff globally; light theme cards override bg to cream
    but don't override the text — causing white text on cream backgrounds.   */
-body[data-theme="ohrid-sunset"]    .game-card .game-name,
-body[data-theme="retro-yugoslav"]  .game-card .game-name,
-body[data-theme="mountain-village"] .game-card .game-name { color: var(--dark); }
+body[data-theme="ohrid-sunset"]     .game-card .game-name,
+body[data-theme="retro-yugoslav"]   .game-card .game-name,
+body[data-theme="mountain-village"] .game-card .game-name,
+body[data-theme="ohrid-sunset"]     .game-card .game-desc,
+body[data-theme="retro-yugoslav"]   .game-card .game-desc,
+body[data-theme="mountain-village"] .game-card .game-desc,
+body[data-theme="ohrid-sunset"]     .game-card .game-best,
+body[data-theme="retro-yugoslav"]   .game-card .game-best,
+body[data-theme="mountain-village"] .game-card .game-best { color: var(--dark); }
 
 /* ── Collection / mistakes list items on dark themes ────────── */
 body[data-theme="balkan-folklore"] .collection-item,
@@ -3733,6 +3739,151 @@ body[data-theme="lake-night"]     .lb-count-line { color: rgba(255,255,255,.45);
 @media (max-width: 480px) {
   .lb-age-tab { padding: 6px 12px; font-size: .78rem; }
   .lb-count-line { font-size: .75rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ALL-DEVICE RESPONSIVE — comprehensive breakpoint coverage
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Premium games section: 3-col base overrides mobile — fix it ── */
+@media (max-width: 768px) {
+  .premium-section .games-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    max-width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .premium-section .games-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Small phones (≤480px) — font & layout scaling ── */
+@media (max-width: 480px) {
+  /* Game hub cards — 1.75rem name is too wide for 2-col on phones */
+  .game-name { font-size: 1.2rem; }
+  .game-desc { font-size: .85rem; }
+
+  /* Score bar — 1.3rem title pushes stat badges off screen */
+  .bar-title { font-size: 1rem; }
+  .bar-stat  { font-size: .78rem; padding: 2px 7px; }
+
+  /* True/False — 2.6rem word doesn't fit small viewport */
+  .tf-word { font-size: 2rem; }
+  .tf-def  { font-size: 1.05rem; }
+
+  /* Quiz */
+  .quiz-def { font-size: 1.1rem; }
+
+  /* Speed Round */
+  .sr-word       { font-size: 1.6rem; }
+  .sr-time-label { font-size: 1.8rem; }
+
+  /* Fast Typing */
+  .ft-time-label { font-size: 1.8rem; }
+
+  /* Word Builder — 52px tiles overflow on ~320–400px phones */
+  .wb-tile { min-width: 44px; height: 42px; padding: 0 8px; font-size: 1rem; }
+  .wb-slot { min-width: 44px; height: 42px; font-size: 1rem; }
+
+  /* Auth / name-form — reduce box shadow so shadow doesn't overflow */
+  .auth-card, .name-form { box-shadow: 3px 3px 0 var(--dark); }
+
+  /* Leaderboard expand panel — reduce deep 52px left-indent */
+  .lb-expand-panel.lb-exp-open { padding-left: 40px; }
+
+  /* Hub header buttons — shrink so they fit in wrapped second row */
+  .logout-btn, .how-to-hub-btn, .cosmetics-hub-btn {
+    font-size: .72rem;
+    padding: 4px 8px;
+  }
+  .hub-coins, .hub-total { font-size: .78rem; padding: 3px 8px; }
+
+  /* Toasts — prevent horizontal overflow on narrow viewports */
+  .streak-bonus-toast,
+  .unlock-toast {
+    max-width: calc(100vw - 32px);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ── Mid-range phones (481px–768px) — gentle font reduction ── */
+@media (min-width: 481px) and (max-width: 768px) {
+  .game-name { font-size: 1.4rem; }
+  .tf-word   { font-size: 2.3rem; }
+  .quiz-def  { font-size: 1.2rem; }
+}
+
+/* ── Extra-small phones (≤360px) — aggressive scaling ── */
+@media (max-width: 360px) {
+  .game-name  { font-size: 1rem; }
+  .game-icon  { font-size: 1.5rem; }
+  .game-desc  { font-size: .78rem; }
+
+  .tf-word  { font-size: 1.6rem; }
+  .tf-def   { font-size: .95rem; }
+
+  .quiz-def { font-size: 1rem; }
+
+  .result-score { font-size: 3rem; }
+  .result-title { font-size: 1.5rem; }
+
+  .sr-word { font-size: 1.35rem; }
+
+  .bar-title { font-size: .9rem; }
+
+  /* Word Builder — tightest tiles for ~320px */
+  .wb-tile { min-width: 38px; height: 38px; padding: 0 5px; font-size: .88rem; }
+  .wb-slot { min-width: 38px; height: 38px; font-size: .88rem; padding: 0 6px; }
+
+  /* Leaderboard expand panel — minimal indent */
+  .lb-expand-panel.lb-exp-open { padding-left: 26px; }
+
+  /* Avatar select — 3 columns instead of 6 on tiny phones */
+  .avatar-select-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Hub header buttons removed at smallest size to avoid wrapping chaos */
+  .how-to-hub-btn    { display: none; }
+  .cosmetics-hub-btn { font-size: .68rem; padding: 3px 6px; }
+  .hub-coins, .hub-total { font-size: .68rem; padding: 2px 6px; }
+}
+
+/* ── Landscape phones (short viewport) ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Compact game bodies so content stays visible without scrolling */
+  .tf-body { gap: 8px; }
+  .tf-card { min-height: auto; max-height: 40vh; padding: 12px 18px; }
+  .tf-word { font-size: 1.8rem; }
+  .tf-def  { font-size: .95rem; }
+  .btn-true, .btn-false { min-height: 46px; font-size: 1rem; }
+  .tf-feedback { min-height: 22px; }
+
+  .quiz-body { gap: 8px; padding: 8px 14px; }
+  .quiz-def  { font-size: 1rem; min-height: 70px; }
+  .quiz-opt  { min-height: 46px; max-height: 70px; font-size: 1rem; }
+  .hint-btn  { min-height: 36px; }
+
+  .hm-body { gap: 6px; padding: 8px 12px; }
+  .hm-stars { font-size: 1.3rem; }
+
+  .sr-body { gap: 6px; padding: 6px 14px; }
+  .sr-time-label { font-size: 1.6rem; }
+  .sr-word { font-size: 1.5rem; }
+
+  .ft-body { gap: 6px; padding: 6px 14px; }
+  .ft-time-label { font-size: 1.6rem; }
+
+  .wb-body { gap: 8px; padding: 10px 14px; }
+
+  .result-screen { padding: 16px 20px; gap: 8px; }
+  .result-emoji  { font-size: 2.2rem; }
+  .result-score  { font-size: 2.8rem; }
+  .result-title  { font-size: 1.6rem; }
+
+  /* Hub scrollable in landscape */
+  .hub-body { overflow-y: auto; }
+  .age-cards { grid-template-columns: repeat(3, 1fr) !important; max-width: 100%; }
 }
 
 /* ══════════════════════════════════════════════════════════════

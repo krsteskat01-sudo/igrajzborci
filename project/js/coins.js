@@ -4,9 +4,9 @@
 
 // Premium-game unlock costs in coins
 const UNLOCK_COSTS = {
-  wordbuilder: 30,
-  memoryflip:  60,
-  fasttyping:  100,
+  wordbuilder: 150,
+  memoryflip:  300,
+  fasttyping:  500,
 };
 
 const PREMIUM_GAMES = [
